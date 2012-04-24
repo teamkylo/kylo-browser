@@ -1,0 +1,77 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+#tab-chooser {
+    -moz-appearance: none;
+    -moz-border-top-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    background: rgba(56, 56, 56, 0.98);
+    border: none;
+    padding: 75px;
+}
+
+#tab-chooser > description {
+    font-size: 26px;
+}
+
+#tab-chooser > separator {
+    height: 25px;
+}
+
+#tab-chooser > richlistbox {
+    -moz-appearance: none;
+    -moz-border-top-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    background: none;
+    margin: 0;
+    border: none;
+    margin: 20px 0;
+}
+
+browser-snapshot {
+    -moz-appearance: none;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    color: #EFEFEF;
+    font-size: 22px;
+    padding: 10px 15px 8px 15px;
+    margin: 0 0 0 0;
+    border-style: solid;
+    border-width: 0 0 2px 0px;
+    border-color: rgba(85, 94, 100, 0.50);
+    background: url("common/images/tab-bg.png") left repeat-y;
+}
+
+browser-snapshot:hover {
+    -moz-border-top-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-left-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-right-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-bottom-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    padding: 5px 10px;
+    border-width: 5px;    
+    background: url("common/images/tab-bg.png") left repeat-y;
+}
+
+browser-snapshot[selected="true"] {
+    -moz-border-top-colors: #001f7c #001f7c #001f7c #474d5d #474d5d;
+    -moz-border-left-colors: #001f7c #001f7c #001f7c #474d5d #474d5d;
+    -moz-border-right-colors: #001f7c #001f7c #001f7c #474d5d #474d5d;
+    -moz-border-bottom-colors: #001f7c #001f7c #001f7c #474d5d #474d5d;
+    padding: 5px 10px;
+    border-width: 5px;
+    background: url("common/images/tab-bg-selected.png") repeat-x top;
+}
+
+browser-snapshot > description {
+    margin: 0px 20px;
+}

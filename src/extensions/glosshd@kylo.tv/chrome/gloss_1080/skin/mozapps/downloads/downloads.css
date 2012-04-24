@@ -1,0 +1,83 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+richlistitem {
+    -moz-border-image: url("../../polo/common/images/listitem_bg.png") 15 15 21 15 / 15px 15px 21px 15px;
+}
+
+richlistitem[type="download"] {
+  padding: 6px 12px 6px 6px;
+  min-height: 69px;
+}
+
+richlistitem[type="download"] button {
+	-moz-border-image: url("../../global/images/btn/button_embed_off.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+richlistitem[type="download"] button:not([disabled=true]):hover {
+    -moz-border-image: url("../../global/images/btn/button_embed_over.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+richlistitem[type="download"] button.closeBtn {
+	margin-left: 15px;
+	width: 75px;
+	height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    background: url("../../polo/common/images/close.png") no-repeat;
+}
+
+richlistitem[type="download"] button.closeBtn:not([disabled=true]):hover {
+    background: url("../../polo/common/images/close_over.png") no-repeat;
+}
+
+#search {
+    height: 99px;
+}
+
+.name {
+    text-shadow: 0 0 10px #000000;
+    font-size: 34px;
+}
+
+progressmeter {
+    margin-left: 15px !important;
+}
+
+richlistitem[type="download"] .name {
+    font-size: 34px;
+}
+
+richlistitem[type="download"] .dateTime {
+    font-size: 32px;
+}
+
+.dateTime {
+    font-size: 32px;
+    text-shadow: 0 0 10px #000000;  
+}
+
+.status {
+    font-size: 32px;
+    text-shadow: 0 0 10px #000000;
+}
+
+button[cmd=cmd_open] {
+    margin-left: 36px;
+}
+
+.downloadTypeIcon {
+  min-height: 48px;
+  min-width: 48px;
+  margin-right: 36px;
+}
+
+.button-container {
+    margin-left: 12px;
+}

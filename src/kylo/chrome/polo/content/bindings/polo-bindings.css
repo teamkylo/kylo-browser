@@ -1,0 +1,25 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+browser-snapshot {
+    -moz-binding: url("chrome://polo/content/bindings/polo-bindings.xml#browser-snapshot");
+}
+
+/* TODO resolve these defitions already defined in moz-settings.css */
+setting[type="bool"] {
+  -moz-binding: url("chrome://polo/content/bindings/polo-bindings.xml#setting-bool");
+}
+
+setting[type="boolint"] {
+  -moz-binding: url("chrome://polo/content/bindings/polo-bindings.xml#setting-boolint");
+}
+
+setting[type="integer"] {
+  -moz-binding: url("chrome://polo/content/bindings/polo-bindings.xml#setting-integer");
+}

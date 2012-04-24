@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>udlrcursor@kylo.tv</em:id>
+    <em:version>1.0</em:version>
+    <em:type>2</em:type>
+    <em:targetApplication>
+        <Description>
+            <em:id>{dd77d456-f77d-4302-a7df-f6f8868ded4e}</em:id>
+            <em:minVersion>0.8.1</em:minVersion>
+            <em:maxVersion>1.0.*</em:maxVersion>
+        </Description>
+    </em:targetApplication>
+    <em:name>UDLR Cursor Support</em:name>
+    <em:description>Move the cursor with standard Up/Down/Left/Right arrow key input.</em:description>
+    <em:creator>Hillcrest Labs</em:creator>
+    <em:developer>JT Burgess</em:developer>
+    <em:developer>Khalid Zubair</em:developer>
+    <em:contributor>Brad Dyer</em:contributor>
+    <em:contributor>Kit Wood</em:contributor>
+  </Description>
+</RDF>

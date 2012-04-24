@@ -1,0 +1,19 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. 
+# 
+# Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+# Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+# trademarks of Hillcrest Laboratories, Inc.
+
+content     udlrcursor                  chrome/content/
+locale      udlrcursor      en-US       chrome/locale/en-US/
+
+overlay     chrome://polo/content/about/settings.xul    chrome://udlrcursor/content/udlrsettings.xul
+overlay     about:help                                  chrome://udlrcursor/content/udlrhelp.xul
+overlay     chrome://polo/content/about/help.xul        chrome://udlrcursor/content/udlrhelp.xul
+overlay     chrome://polo/content/polo.xul              chrome://udlrcursor/content/udlrcontrols.xul
+
+binary-component components/UDLRtool.dll abi=WINNT_x86-msvc
+interfaces components/IUDLRTool.xpt
+contract @hcrest.com/UDLRTool;1 {5357C90C-0DCD-4a50-9051-637C24C1E578}

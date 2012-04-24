@@ -1,0 +1,110 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+page {
+    -moz-appearance: none;
+    background: url("chrome://polo/skin/common/images/help_bg.jpg") repeat top left;
+}
+
+
+.help-item, .faq-item {
+    margin: 0 0 0 12px;
+    padding: 32px 0 22px 0;
+    -moz-box-align: center;
+    border-bottom: 2px solid;    
+    -moz-border-bottom-colors: #222327 #1e1f23;
+    
+}
+
+#tabCap {
+	-moz-border-image: url("chrome://polo/skin/global/images/tabs/tabs_v_end.png") 0 28 20 0 / 0 28px 20px 0;
+}
+
+.help-item:first-child, .faq-item:first-child {
+    padding-top: 10px;
+}
+
+.help-item:last-child, .faq-item:last-child {
+    -moz-border-bottom-colors: transparent transparent;
+}
+
+.help-item > image, .faq-item > image {
+    margin-right: 30px;
+    width: 60px;
+    height: 60px;
+}
+
+.help-item > description {
+    font-size: 24px;
+    color: #efefef;
+    padding: 0 10px;
+}
+
+.help-emphasis {
+    font-weight: bold;
+}
+
+.help-emphasis2 {
+    color: #00aaff;
+}
+
+.help-link {
+    text-decoration: underline;
+}
+
+.help-link:hover {
+	color: #00aaff;
+}
+
+.icon-home{
+    -moz-border-image: url('images/icon_home.png') 0 / 0;
+}
+
+.icon-urlEntry {
+    -moz-border-image: url('images/icon_www.png') 0 / 0;
+}
+
+.icon-pageList {
+    -moz-border-image: url('images/icon_tabs.png') 0 / 0;
+}
+
+.icon-panZoom {
+    -moz-border-image: url('images/icon_pan-zoom.png') 0 / 0;
+}
+
+.icon-bookmarks {
+    -moz-border-image: url('images/icon_favorites.png') 0 / 0;
+}
+
+.icon-keyboard {
+    -moz-border-image: url('images/icon_keyboard.png') 0 / 0;
+}
+
+.icon-menu {
+    -moz-border-image: url('images/icon_power.png') 0 / 0;
+}
+
+.icon-onlinehelp {
+    /*-moz-border-image: url('images/icon_www.png') 0 / 0;*/
+	display: none;
+}
+
+.faq-title {
+    font-size: 26px;
+    color: #00aaff; 
+}
+
+.spacer-icon-align {
+	width: 100px;
+	min-width: 100px;
+}
+
+.text-link:hover {
+    color: #00aaff;
+}

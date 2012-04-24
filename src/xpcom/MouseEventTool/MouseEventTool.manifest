@@ -1,0 +1,10 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright 2005-2012 Hillcrest Laboratories, Inc.  All rights reserved.  Hillcrest Laboratories, and the Hillcrest logo are registered trademarks of Hillcrest Laboratories, Inc.
+
+binary-component MouseEventTool.dylib abi=DARWIN_x86-gcc3
+binary-component MouseEventTool.dll abi=WINNT_x86-msvc
+interfaces IMouseEventTool.xpt
+contract @hcrest.com/MouseEventTool;1 {185DA900-2844-42df-9D56-6478510089E8}

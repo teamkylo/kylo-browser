@@ -1,0 +1,542 @@
+<?xml version="1.0"?>
+
+<!-- 
+    Originally from Mozilla Fennec: mobile/chrome/content/bindings.xml
+    and portions inside #popup_autocompleteresult from Mozilla Toolkit: tookit/content/widgets/autocomplete.xml
+ -->
+ 
+<!DOCTYPE bindings [
+<!ENTITY % browserDTD SYSTEM "chrome://polo/content/keyboard/moz-autocomplete.dtd">
+%browserDTD;
+]>
+
+<bindings
+    xmlns="http://www.mozilla.org/xbl"
+    xmlns:xbl="http://www.mozilla.org/xbl"
+    xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <binding id="autocomplete-aligned" extends="chrome://global/content/bindings/autocomplete.xml#autocomplete">
+    <implementation>
+      <method name="openPopup">
+        <body><![CDATA[
+          this.popup.openAutocompletePopup(this, document.getElementById(this.getAttribute("alignelement")));
+        ]]></body>
+      </method>
+      <method name="closePopup">
+        <body><![CDATA[
+          // hack! we want to revert to the "all results" popup when the
+          // controller would otherwise close us because of an empty search
+          // string, and handle closing ourselves (via reallyClosePopup).
+          if (this.value == "")
+            this.showHistoryPopup();
+        ]]></body>
+      </method>
+      <method name="reallyClosePopup">
+        <body><![CDATA[
+          this.mConsumeRollupEvent = false;
+          this.popup.closePopup();
+        ]]></body>
+      </method>
+    </implementation>
+    <handlers>
+      <handler event="keypress" keycode="VK_RETURN" phase="capturing">
+        <![CDATA[
+          if (this.popup.allBookmarksItemSelected) {
+            this.popup.closePopup();
+            CommandUpdater.doCommand("cmd_bookmarks");
+          }
+        ]]>
+      </handler>
+    </handlers>
+  </binding>
+
+  <binding id="popup_autocompleteresult">
+    <content>
+        <xul:image class="autocomplete-item-image" src="" xbl:inherits="src"/>
+        <xul:vbox flex="1" class="autocomplete-item-inner-container">
+        	<xul:hbox class="autocomplete-item-title-container">
+                <xul:description class="autocomplete-item-title" anonid="title-desc"/>
+			</xul:hbox>
+            <xul:hbox class="autocomplete-item-url-container">
+                <xul:description class="autocomplete-item-url" anonid="url-desc"/>
+            </xul:hbox>
+        </xul:vbox>
+    </content>
+    <implementation implements="nsIDOMXULSelectControlItemElement">
+    
+      <constructor>
+        <![CDATA[
+            this._title = document.getAnonymousElementByAttribute(this, "anonid", "title-desc");
+            this._url = document.getAnonymousElementByAttribute(this, "anonid", "url-desc");
+          ]]>
+      </constructor>    
+    
+      <field name="_boundaryCutoff">null</field>
+
+      <property name="boundaryCutoff" readonly="true">
+        <getter>
+          <![CDATA[
+          if (!this._boundaryCutoff) {
+            this._boundaryCutoff =
+              Components.classes["@mozilla.org/preferences-service;1"].
+              getService(Components.interfaces.nsIPrefBranch).
+              getIntPref("toolkit.autocomplete.richBoundaryCutoff");
+          }
+          return this._boundaryCutoff;
+          ]]>
+        </getter>
+      </property>
+
+      <method name="_getBoundaryIndices">
+        <parameter name="aText"/>
+        <parameter name="aSearchTokens"/>
+        <body>
+          <![CDATA[
+          // Short circuit for empty search ([""] == "")
+          if (aSearchTokens == "")
+            return [0, aText.length];
+
+          // Find which regions of text match the search terms
+          let regions = [];
+          for each (let search in aSearchTokens) {
+            let matchIndex;
+            let startIndex = 0;
+            let searchLen = search.length;
+
+            // Find all matches of the search terms, but stop early for perf
+            let lowerText = aText.toLowerCase().substr(0, this.boundaryCutoff);
+            while ((matchIndex = lowerText.indexOf(search, startIndex)) >= 0) {
+              // Start the next search from where this one finished
+              startIndex = matchIndex + searchLen;
+              regions.push([matchIndex, startIndex]);
+            }
+          }
+
+          // Sort the regions by start position then end position
+          regions = regions.sort(function(a, b) let (start = a[0] - b[0])
+            start == 0 ? a[1] - b[1] : start);
+
+          // Generate the boundary indices from each region
+          let start = 0;
+          let end = 0;
+          let boundaries = [];
+          let len = regions.length;
+          for (let i = 0; i < len; i++) {
+            // We have a new boundary if the start of the next is past the end
+            let region = regions[i];
+            if (region[0] > end) {
+              // First index is the beginning of match
+              boundaries.push(start);
+              // Second index is the beginning of non-match
+              boundaries.push(end);
+
+              // Track the new region now that we've stored the previous one
+              start = region[0];
+            }
+
+            // Push back the end index for the current or new region
+            end = Math.max(end, region[1]);
+          }
+
+          // Add the last region
+          boundaries.push(start);
+          boundaries.push(end);
+
+          // Put on the end boundary if necessary
+          if (end < aText.length)
+            boundaries.push(aText.length);
+
+          // Skip the first item because it's always 0
+          return boundaries.slice(1);
+          ]]>
+        </body>
+      </method>
+
+      <method name="_getSearchTokens">
+        <parameter name="aSearch"/>
+        <body>
+          <![CDATA[
+          let search = aSearch.toLowerCase();
+          return search.split(/\s+/);
+          ]]>
+        </body>
+      </method>
+
+      <method name="_needsAlternateEmphasis">
+        <parameter name="aText"/>
+        <body>
+          <![CDATA[
+          for (let i = aText.length; --i >= 0; ) {
+            let charCode = aText.charCodeAt(i);
+            // Arabic, Syriac, Indic languages are likely to have ligatures
+            // that are broken when using the main emphasis styling
+            if (0x0600 <= charCode && charCode <= 0x109F)
+              return true;
+          }
+
+          return false;
+          ]]>
+        </body>
+      </method>
+
+      <method name="_setUpDescription">
+        <parameter name="aDescriptionElement"/>
+        <parameter name="aText"/>
+        <body>
+          <![CDATA[
+          // Get rid of all previous text
+          while (aDescriptionElement.hasChildNodes())
+            aDescriptionElement.removeChild(aDescriptionElement.firstChild);
+
+          // Get the indices that separate match and non-match text
+          let search = this.getAttribute("searchTerms");
+          let tokens = this._getSearchTokens(search);
+          let indices = this._getBoundaryIndices(aText, tokens);
+
+          // If we're searching for something that needs alternate emphasis,
+          // we'll need to check the text that we match
+          let checkAlt = this._needsAlternateEmphasis(search);
+    
+          let next;
+          let start = 0;
+          let len = indices.length;
+          // Even indexed boundaries are matches, so skip the 0th if it's empty
+          for (let i = indices[0] == 0 ? 1 : 0; i < len; i++) {
+            next = indices[i];
+            let text = aText.substr(start, next - start);
+            start = next;
+
+            if (i % 2 == 0) {
+              // Emphasize the text for even indices
+              let span = aDescriptionElement.appendChild(
+                document.createElementNS("http://www.w3.org/1999/xhtml", "span"));
+              span.className = checkAlt && this._needsAlternateEmphasis(text) ?
+                "ac-emphasize-alt" : "ac-emphasize-text";
+              span.textContent = text;
+            } else {
+              // Otherwise, it's plain text
+              aDescriptionElement.appendChild(document.createTextNode(text));
+            }
+          }
+          ]]>
+        </body>
+      </method>
+
+      <method name="_adjustAcItem">
+        <body>
+          <![CDATA[
+          var url = this.getAttribute("url");
+          var title = this.getAttribute("title");
+          var type = this.getAttribute("type");
+		  var terms = this.getAttribute("searchTerms");
+            
+		  
+		  if (type == "auto_search") {
+		      while (this._title.hasChildNodes())
+                    this._title.removeChild(this._title.firstChild);
+              this._title.appendChild(document.createTextNode(title));
+			  
+			  while (this._url.hasChildNodes())
+                    this._url.removeChild(this._url.firstChild);
+              this._url.appendChild(document.createTextNode("\"" + terms + "\""));
+		  } else {
+	          // Emphasize the matching search terms for the description
+	          this._setUpDescription(this._title, title.slice(0, 200));
+              this._setUpDescription(this._url, url.slice(0, 60));
+		  }
+          ]]>
+        </body>
+      </method>
+
+    
+    </implementation>
+  </binding>
+
+  <binding id="popup_autocomplete">
+    <content>
+      <xul:richlistbox class="autocomplete-box" flex="1">
+        <xul:scrollbox orient="vertical"
+                       class="autocomplete-items"
+                       anonid="autocomplete-items"
+                       flex="1000">
+			<xul:autocompleteresult hidden="true"/>
+		</xul:scrollbox>
+        <children/>
+      </xul:richlistbox>  
+    </content>
+
+    <implementation implements="nsIAutoCompletePopup, nsIDOMEventListener">
+      <constructor><![CDATA[
+        window.addEventListener("blur", this, true);
+      ]]></constructor>
+
+      <!-- Used by the chrome input handler -->
+      <property name="boxObject"
+                readonly="true"
+                onget="return this._items.boxObject;"/>
+
+      <field name="_scrollBoxObject">
+        this.boxObject.QueryInterface(Components.interfaces.nsIScrollBoxObject);
+      </field>
+
+      <!-- nsIAutocompleteInput -->
+      <property name="overrideValue"
+                readonly="true"
+                onget="return null;"/>
+
+      <field name="_input"/>
+      <property name="input"
+                readonly="true"
+                onget="return this._input;"/>
+
+      <field name="_selectedIndex">-1</field>
+      <field name="_selectedItem"/>
+      <property name="selectedIndex"
+                onget="return this._selectedIndex;">
+        <setter><![CDATA[
+          // Ignore invalid indices
+          if (val < -1 ||
+              val > this._matchCount - 1)
+            return val;
+
+          if (this._selectedItem)
+            this._styleItem(this._selectedItem, false);
+
+          // highlight the selected item
+          let item = this._items.childNodes.item(val);
+          if (item) {
+            this._selectedItem = item;
+            this._styleItem(this._selectedItem, true);
+            this._scrollBoxObject.ensureElementIsVisible(this._selectedItem);
+          }
+
+          return this._selectedIndex = val;
+        ]]></setter>
+      </property>
+
+      <field name="_popupOpen">false</field>
+      <property name="popupOpen"
+                readonly="true"
+                onget="return this._popupOpen;"/>
+
+      <method name="openAutocompletePopup">
+        <parameter name="aInput"/>
+        <parameter name="aElement"/>
+        <body><![CDATA[
+          if (this._popupOpen)
+            return;
+
+          this._input = aInput;
+
+          if (this.hidden)
+            this.hidden = false;
+          this.collapsed = false;
+          this._popupOpen = true;
+            
+          //this.setAttribute("height", aElement.clientHeight - (parseInt(this.getAttribute("heightadjustment")) || 0));
+          this.invalidate();
+        ]]></body>
+      </method>
+
+      <method name="closePopup">
+        <body><![CDATA[
+          if (!this._popupOpen)
+            return;
+
+          this.selectedIndex = -1;
+          this.input.controller.stopSearch();
+
+          this._popupOpen = false;
+
+        ]]></body>
+      </method>
+
+      <!-- Helper used by active dialog system -->
+      <method name="close">
+        <body><![CDATA[
+          this.closePopup();
+        ]]></body>
+      </method>
+
+      <field name="_XULNS">("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul")</field>
+
+      <method name="invalidate">
+        <body><![CDATA[
+          // Don't bother doing work if we're not even open
+          if (!this.popupOpen)
+            return;
+          
+          
+          // Scroll to the top left if only if necessary
+          if (this._items.scrollTop || this._items.scrollLeft)
+            this._scrollBoxObject.scrollTo(0, 0);
+
+          let controller = this.input.controller;
+          let searchString = controller.searchString;
+          let items = this._items;
+
+          let trimmedSearchString = controller.searchString.replace(/^\s+/, "").replace(/\s+$/, "");
+          let nsITextToSubURI = Components.classes["@mozilla.org/intl/texttosuburi;1"].getService(Components.interfaces.nsITextToSubURI);
+
+          // Need to iterate over all our existing entries at a minimum, to make
+          // sure they're either updated or cleared out. We might also have to
+          // add extra items.
+          let matchCount = this._matchCount;
+          let children = items.childNodes;
+          let iterCount = Math.max(children.length, matchCount);
+          
+          for (let i = 0; i < iterCount; ++i) {
+            let item = children.item(i);
+
+            // Create an item if needed
+            if (!item) {
+              item = document.createElementNS(this._XULNS, "xul:autocompleteresult");
+              items.appendChild(item);
+            }
+            item._index = i;
+
+            // Check whether there's an entry to fill
+            if (i > matchCount - 1) {
+              // Hide the old item
+              item.setAttribute("hidden", true);
+              item._empty = true;
+              continue;
+            }
+            item.setAttribute("hidden", false);
+            item._empty = false;
+
+            // Assign the values
+            let type = controller.getStyleAt(i);
+            let title = controller.getCommentAt(i);
+			
+			/*
+            let tags = '';
+            
+            if (type == "tag")
+              [, title, tags] = title.match(/^(.+) \u2013 (.+)$/);
+            item.setAttribute("tags", tags);
+			*/
+			item.setAttribute("type", type);
+
+            let url = controller.getValueAt(i);
+            // Unescape the URI spec for showing as an entry in the popup
+            url = nsITextToSubURI.unEscapeURIForUI("UTF-8", url);                        
+        	item.setAttribute("title", title || "");
+        	item.setAttribute("url", url);
+
+            let isBookmark = ((type == "bookmark") || (type == "tag"));
+            item.setAttribute("favorite", isBookmark);
+            item.setAttribute("src", controller.getImageAt(i));
+            item.setAttribute("searchTerms", trimmedSearchString);
+            
+            item._adjustAcItem();
+          }
+
+          // Show the "no results" or "all bookmarks" entries as needed
+          this._updateNoResultsItem(matchCount);
+        ]]></body>
+      </method>
+
+      <method name="_updateNoResultsItem">
+        <parameter name="isResults" />
+        <body><![CDATA[
+          let noResultsItem = this._items.childNodes.item(0);
+          if (isResults) {
+            noResultsItem.className = "";
+          }
+          else {
+            noResultsItem.className = "noresults";
+            noResultsItem.setAttribute("title", "]]>&noResults.label;<![CDATA[");
+          }
+        ]]></body>
+      </method>
+
+      <method name="selectBy">
+        <parameter name="aReverse"/>
+        <parameter name="aPage"/>
+        <body><![CDATA[
+          let newIndex;
+          let lastIndex = this._matchCount - 1;
+
+          if (this._selectedIndex == -1)
+            newIndex = aReverse ? lastIndex : 0;
+          else
+            newIndex = this._selectedIndex + (aReverse ? -1 : 1);
+
+          // Deal with rollover
+          if (newIndex > lastIndex)
+            newIndex = 0;
+          else if (newIndex < 0)
+            newIndex = lastIndex;
+
+          this.selectedIndex = newIndex;
+        ]]></body>
+      </method>
+
+      <!-- Helpers -->
+      <field name="_items">
+        document.getAnonymousElementByAttribute(this,
+                        "anonid", "autocomplete-items");
+      </field>
+
+      <field name="_maxEntries">20</field>
+      <property name="_matchCount"
+                readonly="true">
+        <getter><![CDATA[
+          let matches = Math.min(this.input.controller.matchCount, this._maxEntries);
+          return matches;
+        ]]></getter>
+      </property>
+
+      <!-- Handles blur events on the window while the popup is open. -->
+      <method name="handleEvent">
+        <parameter name="aEvent"/>
+        <body><![CDATA[
+          if (aEvent.type == "blur")
+            this.closePopup();
+          else
+            Components.utils.reportError("autocomplete popup received " +
+                                         "unexpected event: " + aEvent.type);
+        ]]></body>
+      </method>
+
+      <method name="_styleItem">
+        <parameter name="aItem"/>
+        <parameter name="aAddStyle"/>
+        <body><![CDATA[
+          if (aAddStyle)
+            aItem.className += " autocompleteresult-selected";
+          else
+            aItem.className = aItem.className.replace(/\s*autocompleteresult-selected/, "");
+        ]]></body>
+      </method>
+    </implementation>
+
+    <handlers>
+      <handler event="click" button="0">
+        <![CDATA[
+          // the structure of the <autocompleteresult> is complex
+          // work our way backwards from the click target up to DEEPEST_CHILD_DEPTH
+          // to see if we can get to a <autocompleteresult>
+          // if we do, treat that as the item that was clicked.
+          let DEEPEST_CHILD_DEPTH = 3;
+          let i = 0;
+          let element = event.originalTarget;
+          do {
+            if (element.localName == "autocompleteresult") {
+                this._selectedIndex = element._index;
+                this.input.controller.handleEnter(true);
+                return;                
+            }
+            element = element.parentNode;
+          } while (i++ < DEEPEST_CHILD_DEPTH);
+          
+          debug("Click on autocomplete result, could not find item's index");
+          debug(event.target.id, "       target-id");
+          debugObj(event.target, "       target");
+          debugObj(event,  "       event");
+        ]]>
+      </handler>
+    </handlers>
+  </binding>
+</bindings>

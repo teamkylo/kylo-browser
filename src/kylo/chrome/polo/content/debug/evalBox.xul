@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<dialog id="evalBox" title="JavaScript to Eval in Chrome"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        buttons="accept,extra1,cancel"
+        buttonlabelaccept="Eval"
+        buttonlabelextra1="Clear"
+        buttonlabelcancel="Cancel"
+        buttonaccesskeyaccept="E"
+        buttonaccesskeyextra1="C"
+        buttonaccesskeycancel="a"
+        ondialogaccept="return accept();"
+        ondialogextra1="return clear();"
+        ondialogcancel="return cancel();"
+        persist="screenX screenY width height"
+        onload="load()"
+        width="800"
+        height="300"
+        >
+
+<script>
+<![CDATA[
+
+var menupopup;
+var list;
+
+function changedEvent(evt) {
+    text.value = menupopup.childNodes.item(list.selectedIndex).getAttribute("label");
+}
+
+function load() {
+    var src = window.arguments[0].src;
+    
+    text = document.getElementById('text');
+    menupopup = document.getElementById("menupopup");
+    list = document.getElementById("menulist");
+    
+    list.addEventListener("select", changedEvent, false);
+    
+    for (var i = 0; i < src.length; i++) {
+        var e = document.createElement("menuitem");
+        e.setAttribute("label", src[i]);
+        menupopup.appendChild(e);
+    }
+    
+    list.selectedIndex = 0; 
+
+    text.label = src[0];
+    text.focus();
+    
+    text.addEventListener("keypress", function (evt) {
+        if (evt.keyCode == 9) {
+            // kill tab!
+            evt.preventDefault();
+                        
+        }
+        
+        if (evt.ctrlKey) {
+            if (evt.keyCode == 38) { // up
+                list.selectedIndex--;
+            }
+    
+            if (evt.keyCode == 40) { // down
+                list.selectedIndex++;            
+            }        
+        }
+    }, false);
+}
+
+function accept() {
+    var v = document.getElementById("text").value;
+    var src = window.arguments[0].src;
+    var idx = src.indexOf(v);
+    
+    if (idx != -1) {
+        src.splice(idx, 1);
+    } else if (src.length > 24) {
+        src.pop();
+    }
+    
+    src.unshift(v);
+    window.close();
+}
+
+function cancel() {
+    window.arguments[0].src  = null;
+    window.close();
+}
+
+function clear() {
+    text.value = "";
+    text.focus();
+}
+
+]]>
+</script>
+
+<!--<dialogheader title="Evil code evaluator" description="Evil code evaluator"/>-->
+<groupbox flex="1">
+    <menulist id="menulist">
+        <menupopup id="menupopup"/>
+    </menulist>
+
+    <textbox id="text" multiline="true" flex="1"/>
+</groupbox>
+
+</dialog>

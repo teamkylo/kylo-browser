@@ -1,0 +1,375 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/helpPage.css" type="text/css"?>
+
+<!DOCTYPE page [
+	<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd">
+	%brandDTD;
+	<!ENTITY % helpDTD SYSTEM "chrome://polo/locale/help.dtd">
+    %helpDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<page id="help-page" title="&help.pageTitle;" onload="onload()" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript" src="chrome://polo/content/utils/utils.js" />
+    <script type="application/x-javascript" src="chrome://polo/content/about/help.js" />
+    <script type="application/x-javascript">
+    <![CDATA[
+    
+[
+    [
+        "chromeWindow", 
+        function () {   
+            var w = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShellTreeItem)
+                                .rootTreeItem
+                                .QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIDOMWindow); 
+        
+            return w;   
+        }
+    ],
+    [
+        "gChromePageHelper",
+        function () {
+            return chromeWindow.gChromePageHelper;
+        }
+    ],
+].forEach(function (service) {
+  let [name, getter] = service;
+  window.__defineGetter__(name, function () {
+    delete window[name];
+    window[name] = getter();
+    return window[name];
+  });
+});
+
+    ]]>
+    </script>
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    <hbox id="topBar">
+        <description class="about-title help-icon" value="Help" />
+        <spacer flex="1" />
+        <button id="close-tab-btn" oncommand="gChromePageHelper.closePage(window)" label="Close" />
+    </hbox>
+    <description id="divider-image" class="divider-image" value="" />
+    <hbox flex="1">
+        <tabbox id="contentBox" orient="horizontal" flex="1" selectedIndex="0">
+            <tabs id="tabs" orient="vertical">
+                <tab id="controlsTab" label="&help.controlsTabLabel;" />
+                <tab id="faqTab" label="&help.faqTabLabel;" />
+                <tab id="onlineHelpTab" label="&help.onlineHelpTabLabel;" />
+                <tab id="shortcutsTab" label="&help.shortcutTabLabel;" />
+				<image id="tabCap"/>
+            </tabs>
+            <tabpanels id="tabPanels" flex="1">
+                <tabpanel id="controlsTabPanel" orient="vertical">
+                	<hbox class="help-item" hint="home">
+                        <image class="icon-home" />
+                        <description flex="1">&help.homeLabel;</description>
+                    </hbox>
+                    <hbox class="help-item" hint="addressbar">
+                        <image class="icon-urlEntry" />
+                        <description flex="1">
+                        	&help.urlLabel;
+                            <html:span title=" " class="help-emphasis"><html:br/>&help.tipLabel;</html:span>
+						    &help.urlTip;  
+                        </description>
+                    </hbox>
+                    <hbox id="pageListItem" class="help-item" hint="pagelist">
+                        <image class="icon-pageList" />
+                        <description flex="1">&help.pageListLabel;</description>
+                    </hbox>
+                    <hbox class="help-item" id="panZoomItem" hint="panzoom">
+                        <image class="icon-panZoom" />
+                        <description flex="1">
+                        	&help.panZoomLabel;
+						    <html:span title=" " class="help-emphasis"><html:br/>&help.tipLabel;</html:span>
+							<html:span class="help-emphasis2">&help.panZoomTip;</html:span>
+						</description>
+                    </hbox>
+                    <hbox class="help-item" id="bookmarksItem" hint="bookmarks">
+                        <image class="icon-bookmarks" />
+                        <description flex="1">&help.bookmarkLabel;</description>
+                    </hbox>
+                    <hbox class="help-item" id="keyboardItem" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <description flex="1">&help.keyboardLabel;</description>
+                    </hbox>
+                    <hbox class="help-item" id="menuItem" hint="menu">
+                        <image class="icon-menu" />
+                        <description flex="1">&help.menuLabel;</description>
+                    </hbox>
+                </tabpanel>
+                <tabpanel id="faqTabPanel" orient="vertical">
+                    <hbox class="faq-item" hint="panzoom">
+                        <image class="icon-panZoom" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.zoomPageTitle;</description>
+                            <description>&help.zoomPageEntry;</description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item" hint="menu">
+                        <image class="icon-menu" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.zoomSettingTitle;</description>
+                            <description>&help.zoomSettingEntry;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item" hint="pagelist">
+                        <image class="icon-pageList" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.newPageTitle;</description>
+                            <description>
+                                &help.newPageEntry;
+                                <html:span title=" " class="help-emphasis">&help.newPageEntryAction;</html:span>
+                            </description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item" hint="pagelist">
+                        <image class="icon-pageList" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.newPageBarTitle;</description>
+                            <description>
+                                &help.newPageBarEntry;
+                            </description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item" hint="addressbar">
+                        <image class="icon-urlEntry" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.newWebsiteTitle;</description>
+                            <description>&help.newWebsiteEntry;</description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item" hint="addressbar">
+                        <image class="icon-urlEntry" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.searchWebTitle;</description>
+                            <description>&help.searchWebEntry;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item" hint="menu">
+                        <image class="icon-menu" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.downloadTitle;</description>
+                            <description>
+                                &help.downloadEntry;
+                                <html:span title=" " class="help-emphasis">&help.downloadEntryAction;</html:span>
+                            </description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.textTitle;</description>
+                            <description>&help.textEntry;</description>
+                        </vbox>
+                    </hbox>
+                </tabpanel>
+                <tabpanel id="onlineHelpTab" orient="vertical" flex="1">
+                	<hbox class="faq-item">
+                        <image class="icon-onlinehelp" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.pointerTitle;</description>
+                            <description>
+                                &help.pointerPre;
+                                <html:span title=" " id="loop-link" class="help-link">&help.pointerLabel;</html:span>
+                                &help.pointerPost;
+                            </description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item">
+                        <image class="icon-onlinehelp" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.pcTvTitle;</description>
+                            <description>
+                                &help.pcTvBodyPre;
+                                <html:span title=" " id="pctotv-link" class="help-link">&help.pcTvLabel;</html:span>
+								&help.pcTvBodyPost;
+                            </description>
+                        </vbox>
+                    </hbox>
+					<hbox class="faq-item">
+                        <image class="icon-onlinehelp" />
+                        <vbox flex="1">
+                            <description class="faq-title">&help.moreHelpTitle;</description>
+                            <description>
+                                &help.moreHelpBodyPre;
+                                <html:span title=" " id="support-link" class="help-link">&help.moreHelpLabel;</html:span>
+								&help.moreHelpBodyPost;
+                            </description>
+                        </vbox>
+                    </hbox>					
+                </tabpanel>
+                <tabpanel id="shortcutsTabPanel" orient="vertical" flex="1">
+                    <hbox class="faq-item">
+                        <description class="faq-title">&help.generalTitle;</description>
+                    </hbox>         
+                    <hbox class="faq-item" hint="home">
+                        <image class="icon-home" />
+                        <vbox flex="1">
+                            <description>&help.shortcutHome;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item" hint="bookmarks">
+                        <image class="icon-bookmarks" />
+                        <vbox flex="1">
+                            <description>&help.shortcutBookmark;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item">
+                        <description class="faq-title">&help.keyboardTitle;</description>
+                    </hbox>
+                    
+                         <!-- Windows specific keyboard shortcuts -->    
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutNewTab;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutGoBack;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutGoForward;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutKeyboard;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutUrlEntry;</description>
+                        </vbox>
+                    </hbox>                    
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutGoHome;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutZoom;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutResetZoom;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutMinimzie;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutReload;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutQuit;</description>
+                        </vbox>
+                    </hbox>
+                    
+                        <!-- Mac OSX specific keyboard shortcuts -->
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutNewTab;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutGoBack;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutGoForward;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutKeyboard;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutUrlEntry;</description>
+                        </vbox>
+                    </hbox>                    
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutGoHome;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutZoom;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutResetZoom;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutMinimzie;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutReload;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-osx" hint="keyboard">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutQuit;</description>
+                        </vbox>
+                    </hbox>                    
+                </tabpanel>
+            </tabpanels>
+        </tabbox>
+    </hbox>
+</page>

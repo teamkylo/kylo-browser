@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE overlay [
+  <!ENTITY % downloadsOverlayDTD SYSTEM "chrome://polo/locale/downloads.dtd">
+  %downloadsOverlayDTD;
+]>
+
+<overlay id="dialogs-overlay"  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <window id="downloadManager">
+        <script type="text/javascript">
+        <![CDATA[
+
+function overlay_Startup() {
+    /*
+    var spacer = document.createElement("spacer");
+    spacer.setAttribute("flex", 1);
+    document.documentElement.insertBefore(spacer, document.documentElement.firstChild);
+    
+    document.getElementById("downloadView").removeAttribute("flex");
+    */
+    /* TODO need to figure out a better way to get the correct reason value in the array" */
+    if (!window.arguments) {
+        window.arguments = [null, true];
+    }
+            
+    // move the clear all button to the end; replace the 
+    var search = document.getElementById("search");
+    
+    // Hide the search field
+    search.lastChild.hidden = true;
+    
+    search.insertBefore(search.childNodes.item(1), search.firstChild);
+    
+    // call base
+    Startup();
+};
+
+// hijack onload
+document.documentElement.setAttribute("onload", "overlay_Startup();");
+        ]]>
+        </script>
+    </window>
+</overlay>

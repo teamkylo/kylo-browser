@@ -1,0 +1,95 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!-- Help -->
+<!-- Controls -->
+<!ENTITY help.tipLabel "Tip: ">
+<!ENTITY help.homeLabel "Go back to the Kylo Directory">
+<!ENTITY help.pageTitle "Help">
+<!ENTITY help.controlsTabLabel "Controls">
+<!ENTITY help.faqTabLabel "Tips">
+<!ENTITY help.onlineHelpTabLabel "More Help">
+<!ENTITY help.shortcutTabLabel "Shortcuts">
+<!ENTITY help.shortcutTitle "Shortcuts in Kylo">
+<!ENTITY help.urlLabel "Click the address bar to go to a new page.  Enter a web address or search the web using your favorite search engine.">
+<!ENTITY help.urlTip "Set your favorite search engine by going to Kylo Settings under the Power button menu.">
+<!ENTITY help.pageListLabel "Click on the title bar to list all of your open pages. Switch to an open page, or click &quot;Open new page&quot; to browse multiple sites at once.">
+<!ENTITY help.panZoomLabel "Zoom in to make pages easier to use. Zoom out to see more of the page at once.">
+<!ENTITY help.panZoomTip "Click the scroll wheel on your mouse or pointer device as a shortcut to zooming.">
+<!ENTITY help.bookmarkLabel "Go to one of your bookmarked pages, or save the current site for easy access later.">
+<!ENTITY help.keyboardLabel "Use the on screen keyboard for entering text.">
+<!ENTITY help.searchLabel "Search the web.">
+<!ENTITY help.menuLabel "Exit or Minimize Kylo. Adjust your Kylo Settings.">
+<!-- FAQs -->
+<!ENTITY help.textTitle "I don’t have a keyboard. How do I enter text?">
+<!ENTITY help.textEntry "Click where you want to type, and in most cases the on screen keyboard will appear. Click the Keyboard button if it does not. If you’d rather not use the onscreen keyboard, you can disable it in Settings.">
+<!ENTITY help.zoomPageTitle "The website I’m looking at is hard to read. How can I make it bigger?">
+<!ENTITY help.zoomPageEntry "Click the Zoom button or the scroll wheel on your mouse or pointer device to go into Zoom mode. Use your scroll wheel or the Plus button on the screen to zoom in. When the screen is the way you want it, click the Zoom button again to go back to surfing. Kylo will remember the zoom level for this website whenever you use it from now on.">
+<!ENTITY help.zoomSettingTitle "Most websites are hard to use. Do I have to zoom every one?">
+<!ENTITY help.zoomSettingEntry "No. Use the Power button to go to the Settings screen. Under Zoom, pick a default zoom level that works best for your screen. All new websites you visit will automatically zoom to this level.">
+<!ENTITY help.newPageTitle "I want to open a second web page.">
+<!ENTITY help.newPageEntry "Click the title bar and select">
+<!ENTITY help.newPageBarTitle "I opened a page but I can’t see it. Where did it go?">
+<!ENTITY help.newPageBarEntry "Click the title bar and then select the page you want to see. Close the other ones if you like. If you hear audio from more than one page, do this to clean up the ones you’re not interested in.">
+<!ENTITY help.newWebsiteTitle "How do I go to a particular site on the web?">
+<!ENTITY help.newWebsiteEntry "Click the address bar to open the search screen. If you know the address of the website that you want, just type it in.">
+<!ENTITY help.searchWebTitle "How do I search the web?">
+<!ENTITY help.searchWebEntry "Click the address bar to open the search screen. Type your search terms. Then click on the search link that appears on the right. You can pick your search engine in the Settings area if you’d rather not use Kylo’s default.">
+
+<!ENTITY help.newPageEntryAction "Open new page.">
+<!ENTITY help.downloadTitle "Where are the files I just downloaded?">
+<!ENTITY help.downloadEntry "Click the Power button and select ">
+<!ENTITY help.downloadEntryAction "Downloads.">
+<!ENTITY help.openPageTitle "I opened a page but I can’t see it. Where did it go?">
+<!ENTITY help.openPageEntry "Click the title bar and then select the page you want to see. Close the other ones if you like.">
+<!-- Online Help -->
+<!ENTITY help.pointerTitle "What is the best way to control Kylo?">
+<!ENTITY help.pointerPre "A wireless in-air pointer is the best way to control Kylo.  Visit">
+<!ENTITY help.pointerLabel "Hillcrest Labs">
+<!ENTITY help.pointerPost "to learn more about in-air pointers.">
+
+<!ENTITY help.pcTvTitle "How do I use Kylo on my television?">
+<!ENTITY help.pcTvBodyPre "Kylo is designed to be used in places like the living room, on your HDTV. ">
+<!ENTITY help.pcTvLabel "View a simple guide">
+<!ENTITY help.pcTvBodyPost " to help you connect your computer to your television in order to get the most out of Kylo.">
+
+<!ENTITY help.moreHelpTitle "Where can I find more help for using Kylo?">
+<!ENTITY help.moreHelpBodyPre "Read the full Kylo FAQ and ">
+<!ENTITY help.moreHelpLabel "visit the Kylo Community forum.">
+<!ENTITY help.moreHelpBodyPost "The Kylo Community forum is the best way to get help with your Kylo system or to suggest changes for future versions of Kylo.">
+
+<!--Shortcuts -->
+<!ENTITY help.generalTitle "General Shortcuts">
+<!ENTITY help.keyboardTitle "Keyboard Shortcuts">
+<!ENTITY help.shortcutHome "Click and hold the home icon to set the current page as the home page">
+<!ENTITY help.shortcutBookmark "Click and hold the bookmarks icon to bookmark the current page in the default bookmarks directory">
+
+<!ENTITY help.win32.shortcutGoBack "Use Ctrl + left arrow or Backspace to navigate back">
+<!ENTITY help.win32.shortcutGoForward "Use Ctrl + right arrow or Shift + Backspace to navigate forward">
+<!ENTITY help.win32.shortcutNewTab "Use Ctrl + n to open a new page">
+<!ENTITY help.win32.shortcutUrlEntry "Use Ctrl + l to enter a new URL">
+<!ENTITY help.win32.shortcutKeyboard "Use Ctrl + k to open the text entry keyboard">
+<!ENTITY help.win32.shortcutGoHome "Use Ctrl + h to navigate home">
+<!ENTITY help.win32.shortcutZoom "Use Ctrl + + to zoom in, Ctrl + - to zoom out of a page">
+<!ENTITY help.win32.shortcutResetZoom "Use Ctrl + 0 to reset the zoom level">
+<!ENTITY help.win32.shortcutMinimzie "Use Ctrl + m minimize Kylo">
+<!ENTITY help.win32.shortcutReload "Use Ctrl + r reload the current page">
+<!ENTITY help.win32.shortcutQuit "Use Ctrl + q to quit Kylo">
+
+<!ENTITY help.osx.shortcutGoBack "Use Command + [ to navigate back">
+<!ENTITY help.osx.shortcutGoForward "Use Command + ] to navigate forward">
+<!ENTITY help.osx.shortcutNewTab "Use Command + n to open a new page">
+<!ENTITY help.osx.shortcutUrlEntry "Use Command + l to enter a new URL">
+<!ENTITY help.osx.shortcutKeyboard "Use Command + k to open the text entry keyboard">
+<!ENTITY help.osx.shortcutGoHome "Use Command + h to navigate home">
+<!ENTITY help.osx.shortcutZoom "Use Command + + to zoom in, Command + - to zoom out of a page">
+<!ENTITY help.osx.shortcutResetZoom "Use Command + 0 to reset the zoom level">
+<!ENTITY help.osx.shortcutMinimzie "Use Command + m minimize Kylo">
+<!ENTITY help.osx.shortcutReload "Use Command + r reload the current page">
+<!ENTITY help.osx.shortcutQuit "Use Command + q to quit Kylo">

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/menulist.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/unknownContentType.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="unknownContentType-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <dialog id="unknownContentType" hidechrome="true" buttonpack="end">
+        <hbox id="title-bar"/>
+        <script type="text/javascript">
+            <![CDATA[
+            
+window.addEventListener("load", function(event) {
+	// Remove the separator element in the toolkit implementation 
+    var otherHandler = document.getElementById("otherHandler");
+    otherHandler.parentNode.removeChild(otherHandler.nextSibling);
+    
+    // Make the icon bigger
+    var el = document.getElementById("contentTypeImage");
+    el.src = el.src.replace("size=16", "size=32");
+    
+}, false);
+
+            ]]>
+        </script>
+        
+        
+    </dialog>
+</overlay>

@@ -1,0 +1,34 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+#include "nsISupports.idl"
+
+[scriptable, uuid(5357C90C-0DCD-4a50-9051-637C24C1E578)]
+interface IUDLRTool : nsISupports
+{
+    void EnableUDLR();
+    void DisableUDLR();
+    
+    // Capture keypresses for keys assigned to motion or buttons
+    void CaptureKeypresses(in boolean shouldCapture);
+
+    void SetUDLRKeys(in short upKey,
+                     in short downKey,
+                     in short leftKey,
+                     in short rightKey);
+
+    void SetButtonKeys(in short leftClickKey,
+                       in short rightClickKey,
+                       in short middleClickKey,
+                       in short scrollUpKey,
+                       in short scrollDownKey);
+
+    void SetSpeed(in short min, in short max);
+
+};

@@ -1,0 +1,33 @@
+settings {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#settings");
+}
+
+setting[type="bool"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-bool");
+}
+
+setting[type="boolint"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-boolint");
+}
+
+setting[type="integer"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-integer");
+}
+
+setting[type="control"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-control");
+}
+
+setting[type="string"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-string");
+}
+
+
+setting[type="file"] {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#setting-file");
+}
+
+richlistitem.themeItem {
+  -moz-binding: url("chrome://polo/content/bindings/moz-settings.xml#theme-item");
+}
+

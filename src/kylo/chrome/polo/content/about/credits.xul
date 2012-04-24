@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/credits.css" type="text/css"?>
+
+<!DOCTYPE page [
+<!ENTITY % aboutDTD SYSTEM "chrome://polo/locale/credits.dtd" >
+%aboutDTD;
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<page id="credits-page" title="&credits.creditsPageTitle;" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript" src="chrome://polo/content/utils/utils.js"/>
+    <script type="application/x-javascript">
+    <![CDATA[
+    
+[
+    [
+        "chromeWindow", 
+        function () {   
+            var w = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShellTreeItem)
+                                .rootTreeItem
+                                .QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIDOMWindow); 
+        
+            return w;   
+        }
+    ],
+    [
+        "gChromePageHelper",
+        function () {
+            return chromeWindow.gChromePageHelper;
+        }
+    ],
+].forEach(function (service) {
+  let [name, getter] = service;
+  window.__defineGetter__(name, function () {
+    delete window[name];
+    window[name] = getter();
+    return window[name];
+  });
+});
+
+    ]]>
+    </script>
+    
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+
+    <hbox id="topBar">
+        <description class="about-title" value="&credits.creditsPageTitle;" />
+        <spacer flex="1" />
+        <button id="close-tab-btn" oncommand="gChromePageHelper.closePage(window)" label="&credits.closeButtonLabel;" />
+    </hbox>
+    <vbox id="contentBox" flex="1">
+        <html:div id="content">
+            <html:h1>&credits.creditsTeamTitle;</html:h1>
+            <html:p>&credits.creditsTeamIntro;</html:p>
+            <html:div id="credits">
+                <html:h2>&credits.creditsCoreTeamHeader;</html:h2>
+                <html:ul>
+                    <html:li>Nick Augustus</html:li>
+                    <html:li>Rob Breault</html:li>
+                    <html:li>JT Burgess</html:li>
+                    <html:li>Dave Coleman</html:li>
+                    <html:li>Brad Dyer</html:li>
+                    <html:li>Jim Gable</html:li>
+                    <html:li>Seth Sternberg</html:li>
+                    <html:li>Ken Walker</html:li>
+                    <html:li>Kit Wood</html:li>
+                    <html:li>Khalid Zubair</html:li>
+                </html:ul>
+                <html:h3>&credits.supportingCastHeader;</html:h3>
+                <html:p class="credits">Jessica Blackburn, Chuck Gritton, Negar Moshiri, Jay Renbaum, Bill Rouady, Jeremy Pemble, Steve Scheirey, Mitesh Shah, Dan Simpkins, Ben Tett, David Tucker, Rich Vary, Jessica Weissman</html:p>
+                <html:h3>&credits.specialThanksHeader;</html:h3>
+                <html:p class="credits">Mozilla IRC Channels, Dogfish Head, dingdong.com</html:p>
+            </html:div>
+        </html:div>
+    </vbox>
+</page>

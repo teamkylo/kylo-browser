@@ -1,0 +1,84 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!-- Settings page -->
+<!ENTITY settings.closeButtonLabel "Close">
+<!ENTITY settings.settingsPageTitle "Settings">
+<!ENTITY settings.mainTabLabel "Main">
+<!ENTITY settings.controlsTabLabel "Controls">
+<!ENTITY settings.contentTabLabel "Content">
+<!ENTITY settings.zoomTabLabel "Zoom">
+<!ENTITY settings.privacyTabLabel "Privacy">
+<!ENTITY settings.networkTabLabel "Network">
+<!ENTITY settings.screenTabLabel "Screen">
+<!ENTITY settings.compatibilityTabLabel "Compatibility">
+<!ENTITY settings.themeTabLabel "Theme">
+<!-- Main -->
+<!ENTITY settings.homePageLabel "Home page">
+<!ENTITY settings.openPageButton "Select an open page">
+<!ENTITY settings.selectPageTitle "Select an open page to set as your home page">
+<!ENTITY settings.setHomepageButtonLabel "Set as Homepage">
+<!ENTITY settings.cancelButtonLabel "Cancel">
+<!ENTITY settings.restoreDefaultButtonLabel "Restore default">
+<!ENTITY settings.downloadsDirectoryLabel "Downloads directory">
+<!ENTITY settings.browseButtonLabel "Browse">
+<!ENTITY settings.restoreDefaultsButtonLabel "Restore all defaults">
+<!ENTITY settings.pleaseWaitLabel "Please wait...">
+<!ENTITY settings.restoreButtonLabel "Restore">
+<!ENTITY settings.chooseSearch "Search Provider">
+<!ENTITY settings.google "Google">
+<!ENTITY settings.bing "Bing">
+<!ENTITY settings.yahoo "Yahoo">
+<!ENTITY settings.ask "Ask">
+<!ENTITY settings.restoreTabs "Remember my pages on restart">
+<!-- Controls -->
+<!ENTITY settings.autoHideLabel "Auto-hide the control bar">
+<!ENTITY settings.enableAutoLaunchLabel "Show the on-screen keyboard when form fields are selected">
+<!ENTITY settings.enableAutoZoomLabel "Zoom in on form fields when typing">
+<!-- Content -->
+<!ENTITY settings.enableJSLabel "Enable JavaScript">
+<!ENTITY settings.textSizeLabel "Set the minimum text size">
+<!ENTITY settings.noMinimumButtonLabel "No minimum">
+<!ENTITY settings.mediumButtonLabel "Medium">
+<!ENTITY settings.largeButtonLabel "Large">
+<!ENTITY settings.xlButtonLabel "Extra Large">
+<!ENTITY settings.sampleTextButtonLabel "Sample text:">
+<!ENTITY settings.sampleText "This is some sample text set to the default minimum font size.  As you change the minimum text size on the left, you will see this text get bigger or smaller.">
+
+<!-- Privacy -->
+<!ENTITY settings.clearDataLabel "Clear all history, passwords, cookies, cache, etc.">
+<!ENTITY settings.clearDataButtonLabel "Clear private data">
+<!-- Network -->
+<!ENTITY settings.proxyLabel "Configure proxy for Internet access">
+<!ENTITY settings.noProxyLabel "No proxy">
+<!ENTITY settings.autoDetectLabel "Auto-detect proxy settings for this network">
+<!ENTITY settings.systemSettingsLabel "Use system proxy settings">
+<!ENTITY settings.manualConfigLabel "Manual proxy configuration">
+<!ENTITY settings.proxyHostLabel "Proxy Host">
+<!ENTITY settings.proxyPortLabel "Proxy Port">
+<!-- Screen -->
+<!ENTITY settings.screenLabel "Select display screen">
+<!ENTITY settings.screenChoice "Screen">
+<!ENTITY settings.confirmButtonLabel "Confirm">
+<!ENTITY settings.refreshButtonLabel "Refresh screen list">
+<!ENTITY settings.adjustScreenLabel "Adjust screen size">
+<!ENTITY settings.adjustScreenButtonLabel "Fit &brandShortName; to your screen">
+<!-- DefaultZoom -->
+<!ENTITY settings.defaultZoomLabel "Set the default zoom level">
+<!ENTITY settings.100Percent "100">
+<!ENTITY settings.125Percent "125">
+<!ENTITY settings.150Percent "150">
+<!ENTITY settings.175Percent "175">
+<!ENTITY settings.200Percent "200">
+
+<!-- Themes -->
+<!ENTITY settings.addons.unknownDate "Unknown">
+<!ENTITY settings.addons.enableAddon.label "Enable">
+<!ENTITY settings.addons.disableAddon.label "Disable">
+<!ENTITY settings.addons.uninstallAddon.label "Uninstall">

@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/bindings/polo-bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/places/places.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE page [
+    <!ENTITY % placesDTD SYSTEM "chrome://polo/locale/places/places.dtd">
+        %placesDTD;
+    <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd">
+        %brandDTD;
+    ]>
+<page id="add-bookmark" title="Add Bookmark" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript" src="chrome://polo/content/places/add.js" />
+        
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    <vbox id="mainBox" flex="1">
+    	<hbox id="topBar">
+    		<description id="pageTitle" class="add-title">Add Bookmark</description>
+			<spacer flex="1"/>
+			<button id="cancelButton" label="Cancel"/>
+			<button id="saveButton" label="Save"/>
+		</hbox>
+		<hbox id="openPageBox">
+    		<button id="openPageButton" label="Select Open Page"/>
+		</hbox>
+		<hbox id="contentBox">
+			<vbox id="canvasBox" class="canvas"/>
+			<vbox id="textEntryBox">
+				<hbox id="nameBox">
+					<label id="nameLabel" value="Name: " control="nameField"/>
+					<textbox id="nameField"/>
+				</hbox>
+				<hbox id="urlBox">
+                    <label id="urlLabel" value="URL: " control="urlField"/>
+                    <textbox id="urlField"/>
+                </hbox>
+			</vbox>	
+		</hbox>
+		<hbox id="folderBox">
+			<vbox id="folderBox">
+				<description value="Choose folder: "/>
+				<button id="folderButton" label="Bookmarks"/>
+			</vbox>
+		</hbox>
+		<hbox id="tipBox">
+			<description>
+				Did You Know?: You can bookmark the current page quickly by pressing and holding the bookmark button.
+			</description>
+		</hbox>
+    </vbox>
+	<vbox id="folder-chooser" hidden="true">
+        <hbox id="folderTreeBox">
+			<tree id="folderTree" flex="1" hidecolumnpicker="true" >
+				
+				
+			</tree>
+            <vbox>
+                <button id="chooseFolderButton" label="Choose this folder"/>
+				<button id="newFolderButton" label="Create new folder"/>
+				<button id="deleteFolderButton" label="Remove this folder"/>
+				<spacer flex="1"/>
+				<button id="closeFolderPanel" label="Cancel"/>
+			</vbox>
+		</hbox>
+		<vbox id="folderNameEntry" hidden="true">
+			<hbox id="folderNameBox">
+                <label id="folderNameLabel" value="Name: " control="folderNameField"/>
+                <textbox id="folderNameField"/>
+            </hbox>
+			<hbox>
+			    <button id="folderOkay" label="Ok"/>
+				<button id="folderCancel" label="Cancel"/>
+			</hbox>
+		</vbox>
+	</vbox>
+	<panel id="tab-chooser">
+	    <description id="tab-chooser-title"/>
+	    <separator/>
+	    <richlistbox id="tab-chooser-box" flex="1"/>
+	    <hbox>
+	        <spacer flex="1"/>
+	        <button id="tab-chooser-ok"/>
+	        <button id="tab-chooser-cancel"/>
+	    </hbox>
+	</panel>
+		
+</page>

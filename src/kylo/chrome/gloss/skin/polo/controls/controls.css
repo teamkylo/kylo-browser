@@ -1,0 +1,464 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+/*
+ * Main Control Bar
+ */
+#topBar {	
+    height: 50px;
+	background: url("images/topbar_bg.png") repeat top left;
+    -moz-border-image: url("images/topbar_shadow.png") 13 0 7 0 / 13px 0 7px 0;	
+}
+
+#topBar:not([open]):hover {   
+    background: url("images/topbar_bg_over.png") repeat top left;   
+}
+
+#bottomBar {
+    height: 76px;
+    -moz-box-align: center;
+    background: -moz-linear-gradient(#757575,#959595 5%,#393939 50%,#2f2f2f 51%,#0f0f0f);
+    padding: 0 25px 0 25px;
+}
+
+/**
+ * Control bar in minimized state
+ */
+#controlsTrigger {
+	height:20px;
+    background: url("images/topbar_bg.png") repeat top left;
+	-moz-border-image: url("images/topbar_shadow.png") 13 0 7 0 / 13px 0 0 0;
+}
+
+#controlsOverlay[loading=true] > #controlsTrigger {
+    background: url("images/topbar_progress.gif") repeat top left;
+}
+
+/**
+ * Title area for current page without tablist visible
+ */
+#titleBox {
+    padding: 0 25px;
+	margin: -13px 0 -7px 0;
+}
+
+#titleBox #icon {
+	background: url("images/favicon_bg.png") no-repeat top;
+	width: 36px;
+	height: 50px;
+	padding: 17px 10px;
+}
+
+#controlsOverlay[loading=true] #topBar {
+    background: url("images/topbar_progress.gif") repeat top left;
+}
+
+#controlsOverlay[loading=true] #topBar:not([open]):hover {
+    background: url("images/topbar_progress_over.gif") repeat top left;
+}
+
+.titleLabel {
+	padding: 8px 0 0 0;
+	font-size: 26px;
+	color: #dedede;
+	text-shadow: 2px 2px 3px #000000, 0 0 7px #000000;
+	cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+#titleBox:hover .titleLabel {
+    /*text-shadow: 2px 2px 3px #000000, 0 0 7px #b5dd16;*/
+}
+
+
+#tabSwitcher {  
+    margin: -13px 0 -7px 0;
+    padding: 0;
+}
+
+#tab-listbox {
+    -moz-appearance: none;
+    background: none;
+    max-height: 299px;
+    padding: 0;
+	margin: 0;
+}
+
+richlistitem[type="tabswitch"] {
+    -moz-appearance: none;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    margin: 2px 30px;
+    padding: 0;
+    height: 66px;
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg.png") 10 10 14 10 / 10px 10px 14px 10px;
+    background: none;
+}
+
+richlistitem[type="tabswitch"] > * {
+    margin: -4px 0;
+}
+
+richlistitem[type="tabswitch"] > image.item-icon {
+    background: url("images/favicon_bg.png") no-repeat bottom;
+	width: 36px;
+    max-width: 36px;
+	height: 50px;
+    max-height: 50px;
+    padding: 17px 10px;
+}
+
+richlistitem[type="tabswitch"] > vbox > description.item-title {
+    font-size: 24px;
+    color: #efefef;
+    text-shadow: 0 0 7px #000000;
+    margin: 0 5px;
+	cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+richlistitem[type="tabswitch"] > vbox > description.item-uri {
+    font-size: 22px;
+    color: #cccccc;
+    margin: 0 5px;
+	cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+richlistitem[type="tabswitch"]:first-child {
+    margin-top: 10px;
+}
+
+richlistitem[type="tabswitch"]:last-child {
+    margin-bottom: 5px;
+}
+
+richlistitem[type="tabswitch"]:not([selected=true]):hover {
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg_over.png") 10 10 14 10 / 10px 10px 14px 10px;
+}
+
+richlistitem[type="tabswitch"]:not([selected=true]):hover > vbox > description.item-uri {
+    color: #00aaff;
+}
+
+richlistitem[type="tabswitch"] > button.closeBtn {
+    width: 50px;
+	min-width: 50px;
+	background: url("../common/images/close.png") no-repeat;
+	-moz-border-image: none;
+}
+
+richlistitem[type="tabswitch"] > button.closeBtn > label {
+    display: none;
+}
+
+richlistitem[type="tabswitch"] > button.closeBtn:not([disabled=true]):hover {
+    background: url("../common/images/close_over.png") no-repeat;
+}
+
+richlistitem[type="tabswitch"] > button[disabled=true] {
+	opacity: 0;
+}
+
+richlistitem[type="tabswitch"][selected=true] {
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg_selected.png") 10 10 14 10 / 10px 10px 14px 10px;
+}
+
+richlistitem[type="tabswitch"][selected=true] > vbox > description.item-uri {
+    color: #bbdd33;
+}	
+
+/**
+ * "Close" bar on top of tab list
+ */
+#closeBar {
+    -moz-appearance: none;
+    -moz-box-align: center;
+    padding: 0 27px;
+    margin: 0;
+    height: 54px;
+	background: -moz-linear-gradient(#757575,#959595 5%,#393939 50%,#2f2f2f 51%,#222222 90%,#292929);    
+}
+
+/**
+ * Components of the bar that sit on top of the tab list
+ */
+#newTabButton {
+    list-style-image: url("../common/images/icon_plus.png");
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#newTabButton:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#closeTabsButton {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_red_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#closeTabsButton:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_red_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+
+/**
+ * URL entry label in middle of control bar
+ */
+#urlEntryLabel {
+    -moz-border-image: url("images/controlbar_field.png") 12 44 12 20 / 12px 44px 12px 20px;
+    -moz-box-align: center;
+    font-size: 24px;
+    color: #CCCCCC;
+	text-shadow: 2px 2px 3px #000000, 0 0 7px #000000;
+    height: 76px;
+	margin: 0 5px;
+    padding-left: 5px;
+    padding-top: 13px;
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+#urlEntryLabel:hover {
+	color: #b5dd16;
+	text-shadow: 2px 2px 3px #000000, 0 0 7px #b5dd16;
+    -moz-border-image: url("images/controlbar_field_over.png") 12 44 12 20 / 12px 44px 12px 20px; 
+}
+
+/**
+ * Buttons
+ */
+.controls-button {
+	width: 76px;
+    height: 76px;
+    background-repeat: no-repeat;
+    background-position: center; 
+}
+
+.controls-button[disabled=true] {
+	/*opacity: 0.4;*/
+}
+
+/**
+ * Top bar buttons
+ */
+#showTabsButton {
+	width: 46px;
+	height: 40px;
+    background-image: url("images/controlbar_tabs.png");
+}
+
+#topBar:hover > #titleBox > #showTabsButton {
+    background-image: url("images/controlbar_tabs_over.png");
+}
+
+#keyboardButton {
+    background-image: url("images/controlbar_keyboard.png");
+}
+
+#keyboardButton:hover {
+    background-image: url("images/controlbar_keyboard_over.png");
+}
+
+#zoomButton {
+    background-image: url("images/controlbar_zoom.png");
+}
+
+#zoomButton:hover {
+    background-image: url("images/controlbar_zoom_over.png");
+}
+
+#zoomButton[open] {
+    background-image: url("images/controlbar_zoom_on.png");
+}
+
+#zoomButton[open]:hover {
+    background-image: url("images/controlbar_zoom_on_over.png");
+}
+
+#toolsMenuButton {
+    background-image: url("images/controlbar_menu.png");
+}
+
+#toolsMenuButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_menu_over.png");
+}
+
+#toolsMenuButton[open] {
+    background-image: url("images/controlbar_menu_on.png");
+}
+
+#toolsMenuButton[open]:hover {
+    background-image: url("images/controlbar_menu_on_over.png");
+}
+
+/**
+ * Bottom bar buttons
+ */
+#backButton {
+    background-image: url("images/controlbar_back.png");
+}
+
+#backButton:not([disabled=true]):hover {
+	background-image: url("images/controlbar_back_over.png");
+}
+
+#backButton[disabled=true] {
+    background-image: url("images/controlbar_back_disabled.png");
+}
+
+#forwardButton {
+    background-image: url("images/controlbar_forward.png");
+}
+
+#forwardButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_forward_over.png");
+}
+
+#forwardButton[disabled=true] {
+    background-image: url("images/controlbar_forward_disabled.png");
+}
+
+#reloadButton {
+    background-image: url("images/controlbar_reload.png");
+}
+
+#reloadButton:not([disabled=true]):hover {
+	background-image: url("images/controlbar_reload_over.png");
+}
+
+#stopButton {
+    background-image: url("images/controlbar_stop.png");
+}
+
+#stopButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_stop_over.png");
+}
+
+#homeButton {
+    background-image: url("images/controlbar_home.png");
+}
+
+#homeButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_home_over.png");
+}
+
+#homeButton[open] {
+    background-image: url("images/controlbar_home_on.png");
+}
+
+#homeButton[open]:not([disabled=true]):hover {
+    background-image: url("images/controlbar_home_on_over.png");
+}
+
+#searchButton {
+    background-image: url("images/controlbar_search.png");
+}
+
+#searchButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_search_over.png");
+}
+
+#favoritesButton {
+    background-image: url("images/controlbar_bookmarks.png");
+}
+
+#favoritesButton:not([disabled=true]):hover {
+    background-image: url("images/controlbar_bookmarks_over.png");
+}
+
+/**
+ * Menu
+ */
+
+#tools-menu {
+    -moz-box-align: center;
+    -moz-box-pack: center;	
+}
+
+#menu-chrome {
+	-moz-border-image: url("../images/menu/menu_bg.png") 40 40 40 40 / 40px 40px 40px 40px;	
+}
+
+#menu-buttonGroup {
+	display: block;
+    min-width: 320px;
+    min-height: 200px;
+    max-width: 700px;
+    max-height: 470px;
+	margin: -10px -30px;
+	padding: 10px 30px;
+	text-align: center;  	
+}
+
+.menu-button {
+	-moz-appearance: none;
+	width: 300px;
+	height: 70px;
+	margin: 5px;
+	-moz-border-image: url("../images/menu/menu_button.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+.menu-button > .button-box {
+	margin: -6px 0;
+}
+
+.menu-button > .button-box > .button-text {
+    font-size: 30px;
+    font-weight: bold;
+	color: #EFEFEF;
+    text-shadow: 0 0 7px #000000;
+}
+
+.menu-button:hover {    
+    -moz-border-image: url("../images/menu/menu_button_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#menu-about {
+    list-style-image: url("../images/menu/menu_about.png");
+}
+
+#menu-settings {
+    list-style-image: url("../images/menu/menu_settings.png");
+}
+
+#menu-help {
+    list-style-image: url("../images/menu/menu_help.png");
+}
+
+#menu-downloads {
+    list-style-image: url("../images/menu/menu_downloads.png");
+}
+
+#menu-minimize {
+    list-style-image: url("../images/menu/menu_minimize.png");
+}
+
+#menu-exit {
+    list-style-image: url("../images/menu/menu_exit.png");
+}
+
+#menu-print {
+    list-style-image: url("../images/menu/menu_print.png");
+}
+
+#homepage-chooser-menu {
+    -moz-box-align: center;
+    -moz-box-pack: center;  
+}
+
+#homepage-chooser-buttonGroup {
+    display: block;
+    min-width: 320px;
+    min-height: 200px;
+    max-width: 700px; 
+    text-align: center;     
+    -moz-border-image: url("../images/menu/menu_bg.png") 40 40 40 40 / 40px 40px 40px 40px;
+	padding: 20px;
+}
+
+.horizontal-overscan-bump {
+    width: 64px;
+}   
+

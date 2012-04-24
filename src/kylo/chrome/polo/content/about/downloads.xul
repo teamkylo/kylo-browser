@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE page [
+    <!ENTITY % downloadsOverlayDTD SYSTEM "chrome://polo/locale/downloads.dtd">
+    %downloadsOverlayDTD;
+]>
+<page id="downloads-page" title="&downloads.pageTitle;" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript">
+    <![CDATA[
+var Cc = Components.classes;
+var Ci = Components.interfaces;
+var Cr = Components.results;
+var Cu = Components.utils;
+
+[
+    [
+        "chromeWindow", 
+        function () {   
+            var w = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShellTreeItem)
+                                .rootTreeItem
+                                .QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIDOMWindow); 
+        
+            return w;   
+        }
+    ],
+    [
+        "gChromePageHelper",
+        function () {
+            return chromeWindow.gChromePageHelper;
+        }
+    ],
+].forEach(function (service) {
+  let [name, getter] = service;
+  window.__defineGetter__(name, function () {
+    delete window[name];
+    window[name] = getter();
+    return window[name];
+  });
+});
+
+    ]]>
+    </script>
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    <hbox id="topBar">
+        <description class="about-title downloads-icon" value="&downloads.pageTitle;" />
+        <spacer flex="1" />
+        <button id="close-tab-btn" oncommand="gChromePageHelper.closePage(window)" label="Close" />
+    </hbox>    
+    <iframe class="about-content" src="chrome://mozapps/content/downloads/downloads.xul" flex="1" />
+</page>

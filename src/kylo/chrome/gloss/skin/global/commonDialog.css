@@ -1,0 +1,19 @@
+#filler {
+  -moz-margin-start: -8px;
+  -moz-margin-end: -10px;
+}
+
+grid, #silly-spacer {
+    /*background: black;*/ 
+    font-size: 22px;  
+    margin: 0 3px;
+}
+
+#silly-spacer {
+    height: 32px;
+}
+
+#iconContainer {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+}
