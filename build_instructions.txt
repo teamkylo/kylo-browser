@@ -1,0 +1,199 @@
+Building Kylo from Source
+==============================
+
+What You Will Need
+------------------------------
+
+Windows 7:
+    [REQUIRED]
+    * Python 2.7.3
+        http://www.python.org/download/releases/2.7.3/
+    
+    Our build script is written in Python. The standard process is to run the 
+    build script after each testable code change. This will sync your changes
+    from the SRC directory to the build/dist directories. 
+    
+    * Gecko SDK/XULRunner runtime 10.0.2
+        http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/10.0.2/
+        http://dev.kylo.tv/xulrunner
+    
+    In order to compile XPCOM components, you'll need the Gecko SDK libraries.
+    Currently, Kylo is supporting up to version 10.0.2. This is subject to
+    change.
+    
+    Kylo is built on top of the XULRunner runtime. We use a local copy of the
+    runtime as opposed to separate install. Currently, we run off a patched
+    version of the XULRunner runtime. Please see the *XULRunner* note below.
+    
+    Short story: Download the SDK from mozilla. Download the XULRunner runtime
+    from dev.kylo.tv, or build your own. 
+    
+    [OPTIONAL]
+    * Visual C++ Express 10.0
+        http://www.microsoft.com/visualstudio/en-us/products/2010-editions/visual-cpp-express
+    * Windows 7 SDK
+        http://www.microsoft.com/download/en/details.aspx?id=3138
+    * CMAKE 2.8.8
+        http://www.cmake.org/cmake/resources/software.html
+        
+    If you want to make code changes to the XPCOM components written in C++
+    (ie. MouseEventTool), you'll need to compile your changes against the Gecko
+    SDK. CMake files are provide if you choose to have the appropriate solution
+    files generated for you.
+    
+    * Resource Hacker 3.6.0
+        http://www.angusj.com/resourcehacker/
+        
+    If you use a custom XULRunner runtime build, or want to change versions, 
+    you'll probably want Resource Hacker. Rather than build a custom XULRunner 
+    for Kylo, we use Mozilla's recommended method of repurposing the 
+    xulrunner-stub.exe file provided in their official releases. This requires 
+    the ability to modify the executable - adding the icon asset, changing the 
+    name, and adjusting the attached descriptive data. The build script will run 
+    Resource Hacker for you to automate this process. For more information:
+    https://developer.mozilla.org/en/XULRunner_tips
+      
+    * NSIS 2.4.6
+        http://nsis.sourceforge.net/Download
+    
+    Have this on hand if you want to build an installer. The build script will
+    take care of this process as well.
+    
+
+Mac OS X:
+    TBA - Sorry, there's still a lot of work to be done here. Using the supplied
+    build script to compile for Mac is not currently supported. This should be
+    resolved shortly...
+
+
+*XULRunner*
+------------------------------
+
+Currently, Kylo requires a custom build of the XULRunner runtime. This is due to
+a bug in the "rapid release" versions (I think going back to v5.0). Without this
+custom release, Kylo will crash when loading Flash, Silverlight, or Quicktime
+content (possibly other plugins as well). It has to do with some IPC stuff - 
+when Mozilla started allowing plugins to run in separate threads to prevent
+crashing the whole browser when a plugin died. 
+
+The bug details are here:
+https://bugzilla.mozilla.org/show_bug.cgi?id=721817
+
+Until that patch gets accepted in their release branch, we'll be hosting the
+most recent supported XULRunner with our patch on our own servers. We'll also
+include the pre-Resource Hacker'ed version of the xulrunner-stub (see below).
+
+The XULRunner package will have installation instructions, but you should be
+able to unzip it on top of your Kylo source directory.
+
+*Gecko SDK*
+------------------------------
+
+**Note: The Gecko SDK is also called the XULRunner SDK, so you'll see places both
+on mozilla's servers and our directory structure where the Gecko SDK is 
+located under "xulrunner".
+
+Once you've downloaded the appropriate version of the Gecko SDK, you'll need to
+put it in a directory where the build process can find it.
+
+Assuming you've grabbed the Windows v10.0.2 release of the SDK, your directory 
+structure should look like this:
+
+[Kylo Source Package install location]
+    - src
+        - extern
+            - xulrunner
+                - versions
+                    - 10.0.2
+                        - sdk
+                            - win32 
+                                - bin
+                                - host
+                                - idl
+                                - include
+                                - lib
+                                - sdk
+
+Configure Your Build
+------------------------------
+
+XULRunner applications typically store their settings in a file called 
+application.ini that lives at the root. This is a standard config file format -
+name value pairs grouped by section, like so:
+
+[Section1]
+parameter1Name=parameter1Value
+parameter2Name=parameter2Value
+
+The build script uses a couple configuration files in the same format to
+generate the build. Any section/parameters in the build scripts that match 
+runtime settings will override those in the application.ini.
+
+The build configuration files are:
+    /hcrest.kylo/tools/build/[platform os]/[platform os].platform.conf
+    /hcrest.kylo/tools/conf/kylo.conf
+    
+    Simple documentation is provided within each config file.
+
+*.platform.conf:
+    This config file store the locations of various build tools.
+
+kylo.conf:
+    This is the master config file for the Kylo build. The file provided matches
+    settings for the production release of Kylo. If you want to change these
+    values it's best to create a copy of the file. You will be passing this 
+    config file to the build script on the command line, so you can name it
+    whatever you like. You can also provide more than one config file at a time.
+    
+In addition, the application.ini file is included in the list of config files. 
+
+The config files are read in the following order. Each subsequent file will
+override values of the previous.
+
+*.platform.conf <- application.ini <- kylo.conf [<- *.conf] 
+
+
+Run the Build
+------------------------------
+
+Windows 7
+
+From the command line:
+
+[path to Kylo source package]\tools\build\build_kylo.py --skip-compile 
+    --skip-app --skip-installer -v -R 1000 ..\conf\kylo.conf
+    
+This will use the pre-compiled XPCOM binaries and Kylo app executable and build 
+a "portable" version of Kylo in the build directory.
+
+Run build_kylo.py --help to see what all the options do.
+
+The standard process is to make your changes to the JS/XUL and then build with 
+the compile, installer, and app options turned OFF. This will recreate the 
+omni.jar package of JS/XUL with your included updates.
+
+Running build_kylo.py with only the configuration file provided will perform all
+build operations:
+
+1) Clean and create the bin, build, and dist directories
+2) Compile components selected in the [components] directive of the *.conf file
+3) Compile components in the extensions selected in the [extensions] directive
+4) Sync JS/XUL, components, extensions into the build directory
+5) Compress the JS/XUL into the omni.jar (omni.jar/omni.ja is a Mozilla 
+   construct - feel free to look this up in developer.mozilla.org)
+6) "Build" the Kylo executable (run reshacker to create Kylo.exe from 
+   xulrunner-stub.exe)
+7) Run NSIS, create the Kylo installer
+
+
+********************************************************************************
+A Quick Note on Version Numbers:
+------------------------------
+The -R/--revision option affects Kylo's version number. The revision number is
+the fourth number in the full version (ie. 1.0.1.76141). This has previously
+mapped to an internal revision number matching a Perforce changelist. For local
+builds, you can choose to provide a custom value or exclude the -R option.
+Without specifying a revision number, the version number will be only three
+parts (ie. 1.0.1). You will likely be asked to upgrade after running Kylo. You 
+can ignore this message for development purposes.   
+********************************************************************************

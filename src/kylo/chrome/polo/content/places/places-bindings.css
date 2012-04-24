@@ -1,0 +1,41 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+placesgriditem[type=link] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-link");
+}
+
+placesgriditem[type=bookmark] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-bookmark");
+}
+
+placesgriditem[type=spacer] {
+	-moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-spacer");	
+}
+
+placesgriditem[type=unknown] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-unknown");    
+}
+
+placesgriditem[type=folder] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-folder");    
+}
+
+placesgriditem[type=upfolder] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-upfolder");    
+}
+
+placesgriddynamicitem[type=dfolder] {
+    -moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-grid-dynamic-folder");    
+}
+
+places-snapshot {
+	-moz-binding: url("chrome://polo/content/places/places-bindings.xml#places-snapshot");
+}
+

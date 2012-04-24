@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/controls/controls.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/places/places-bindings.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+	<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd">
+	%brandDTD;
+	<!ENTITY % browserDTD SYSTEM "chrome://polo/locale/browser.dtd">
+	%browserDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<overlay
+	id="controlsOverlay"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+	<script type="application/x-javascript" src="controls.js"/>
+
+	<vbox id="controlsOverlay" hidden="false">
+	   <vbox id="controlsBar" flex="1">
+	        <hbox id="closeBar" hidden="true">
+	           <button id="newTabButton" label="&browser.newPageLabel;"/>
+	           <spacer flex="1"/>
+	           <button id="closeTabsButton" action="close" label="&browser.closeButtonLabel;"/>
+	        </hbox>	       
+			<vbox id="topBar" flex="1">
+				<hbox id="titleBox" flex="1" loading="false" tooltiptext="&browser.tablistTooltip;">
+					<image id="icon" class="titleIcon" onerror="this.src = Controls.ERRORED_FAVICON;"/>
+					<description id="titleLabel" class="titleLabel" crop="end" flex="1"/>
+	                <image id="showTabsButton" class="controls-button" selected="false"/>
+				</hbox> 
+				<vbox id="tabSwitcher" hidden="true">
+				    <!-- 
+		            <button id="newTabButton" label="&browser.newPageLabel;" align="start" pack="start"/>
+				     -->
+		            <richlistbox id="tab-listbox" rows="5"/>				
+				</vbox>
+			</vbox>
+			<hbox id="bottomBar"> 
+				<image id="backButton" class="controls-button" tooltiptext="&browser.backTooltip;" onclick="browser_.getCurrentBrowser().goBack();" />
+				<image id="forwardButton" class="controls-button" tooltiptext="&browser.forwardTooltip;" onclick="browser_.getCurrentBrowser().goForward();" />
+				<deck id="stopReloadDeck" selectedIndex="0">
+					<image id="reloadButton" class="controls-button" tooltiptext="&browser.reloadTooltip;" onclick="browser_.getCurrentBrowser().reload();" />
+					<image id="stopButton" class="controls-button" tooltiptext="&browser.stopTooltip;" onclick="browser_.getCurrentBrowser().stop();" />
+				</deck>
+				<image id="homeButton" class="controls-button" tooltiptext="&browser.homeTooltip;"/>
+				<description id="urlEntryLabel" flex="1" crop="end" tooltiptext="&browser.urlTooltip;"/>
+	            <image id="favoritesButton" class="controls-button" tooltiptext="&browser.bookmarkTooltip;"/>
+                <image id="keyboardButton" class="controls-button" tooltiptext="&browser.keyboardTooltip;"/>
+                <image id="zoomButton" class="controls-button" tooltiptext="&browser.panzoomTooltip;"/>
+                <image id="toolsMenuButton" class="controls-button" tooltiptext="&browser.menuTooltip;" />	            
+			</hbox>
+	   </vbox>
+	   <hbox id="controlsTrigger" flex="1" hidden="true" loading="false"/>
+	</vbox>
+    <panel id="tools-menu" onclick="gToolsMenu.handleMenuClick(event);">
+        <hbox>
+            <spacer flex="1"/>
+	        <vbox>
+	            <spacer flex="1"/>
+	            <vbox id="menu-chrome">
+	               <!-- 
+	               <hbox id="menu-header">
+	                   <label id="menu-title" flex="1" value="&browser.menuHeaderLabel;"/>
+	                   <button id="closeMenuButton" oncommand="controls_.closePanel('tools'); controls_.focusOut();"/>
+	               </hbox>
+	                -->
+			        <vbox id="menu-buttonGroup">
+				        <button id="menu-about" pack="start" class="button-clear menu-button" label="&browser.aboutButtonLabel;" href="about:"/>
+				        <button id="menu-settings" pack="start" class="button-clear menu-button" label="&browser.settingsButtonLabel;" href="about:settings" />
+				        <!-- <button id="menu-overscan" pack="start" class="button-clear menu-button" label="&browser.adjustScreenLabel;" oncommand="gLayoutManager.enterAdjustMode();" /> -->
+				        <button id="menu-help" pack="start" class="button-clear menu-button" label="&browser.helpButtonLabel;" href="about:help" />
+				        <button id="menu-downloads" pack="start" class="button-clear menu-button" label="&browser.downloadButtonLabel;" href="about:downloads" />
+						<button id="menu-print" pack="start" class="button-clear menu-button" label="&browser.print;" oncommand="controls_.handlePrint();" />
+				        <button id="menu-minimize" pack="start" class="button-clear menu-button" label="&browser.minimizeButtonLabel;" oncommand="controls_.handleMinimize();" />
+				        <button id="menu-exit" pack="start" class="button-clear menu-button" label="&browser.exitButtonLabel; &brandShortName;" oncommand="controls_.confirmClose();"/>
+			        </vbox>
+	            </vbox>
+	            <spacer flex="1"/>
+	        </vbox>
+            <spacer flex="1"/>
+        </hbox>
+    </panel>
+	
+    <panel id="homepage-chooser-menu">
+        <hbox flex="1">
+            <spacer flex="1"/>
+            <vbox>
+                <spacer flex="1"/>
+                <hbox id="homepage-chooser-buttonGroup"/>
+                <spacer flex="1"/>
+            </vbox>
+            <spacer flex="1"/>
+        </hbox>
+    </panel>	
+</overlay>

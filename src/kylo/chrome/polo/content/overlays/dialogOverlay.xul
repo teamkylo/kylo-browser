@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/overlays/dialogOverlay.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="dialog-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <hbox id="title-bar">
+        <description id="title-bar-title" mousethrough="always"/>
+        <spacer flex="1" />
+        <toolbarbutton id="title-bar-close" class="appearance-clear" oncommand="document.documentElement.cancelDialog();" />
+    </hbox>
+    <script type="text/javascript">
+        <![CDATA[
+      
+function WindowDraggingElement(elem, window) {
+  this._elem = elem;
+  this._window = window;
+  this._elem.addEventListener("mousedown", this, false);
+}
+
+WindowDraggingElement.prototype = {
+  mouseDownCheck: function(e) { return true; },
+  dragTags: ["box", "hbox", "vbox", "spacer", "label", "statusbarpanel", "stack",
+             "toolbaritem", "toolbarseparator", "toolbarspring", "toolbarspacer",
+             "radiogroup", "deck", "scrollbox"],
+  handleEvent: function(aEvent) {
+    switch (aEvent.type) {
+      case "mousedown":
+        if (aEvent.button != 0 || !this.mouseDownCheck.call(this._elem, aEvent))
+          return;
+
+        let target = aEvent.originalTarget, parent = aEvent.originalTarget;
+        while (parent != this._elem) {
+          let mousethrough = parent.getAttribute("mousethrough");
+          if (mousethrough == "always")
+            target = parent.parentNode;
+          else if (mousethrough == "never")
+            break;
+          parent = parent.parentNode;
+        }
+        while (target != this._elem) {
+          if (this.dragTags.indexOf(target.localName) == -1)
+            return;
+          target = target.parentNode;
+        }
+        this._deltaX = aEvent.screenX - this._window.screenX;
+        this._deltaY = aEvent.screenY - this._window.screenY;
+        this._draggingWindow = true;
+        this._window.addEventListener("mousemove", this, false);
+        this._window.addEventListener("mouseup", this, false);
+        break;
+      case "mousemove":
+        if (this._draggingWindow)
+          this._window.moveTo(aEvent.screenX - this._deltaX, aEvent.screenY - this._deltaY);
+        break;
+      case "mouseup":
+        this._draggingWindow = false;
+        this._window.removeEventListener("mousemove", this, false);
+        this._window.removeEventListener("mouseup", this, false);
+        break;
+    }
+  }
+}
+        
+window.addEventListener("load", function(event) {
+    var titleBox = document.getElementById("title-bar");
+    titleBox.firstChild.textContent = document.title;
+    document.documentElement.insertBefore(titleBox, document.documentElement.firstChild);
+    /**
+     * In Gecko 2.0+, WindowDraggingElement was modified so that on !MAC_OSX, a special
+     * mouse event is used instead of "mousedown" to handle window dragging. This is to
+     * fix issues with Windows Aero chrome. It seems to break our use case.
+     */
+    //Components.utils.import("resource://gre/modules/WindowDraggingUtils.jsm");
+    new WindowDraggingElement(titleBox, window);
+}, false);
+
+        ]]>
+    </script>
+    
+</overlay>

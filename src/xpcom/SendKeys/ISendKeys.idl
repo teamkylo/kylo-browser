@@ -1,0 +1,19 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ *  
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc.  All rights reserved.  Hillcrest Laboratories, and the Hillcrest logo are registered trademarks of Hillcrest Laboratories, Inc. 
+ * */
+
+#include "nsISupports.idl"
+
+[scriptable, uuid(FD066436-AEEF-4249-9BE6-02E7ABDF6750)]
+interface ISendKeys : nsISupports
+{
+	void key_up(in octet vk);
+	void key_down(in octet vk);
+
+	void char_up(in wchar key);
+	void char_down(in wchar key);
+};
+

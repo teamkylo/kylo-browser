@@ -1,0 +1,28 @@
+#errorPageContainer {
+  background-image: url("chrome://global/skin/images/netError/bg_certerror.png");
+}
+
+
+
+#technicalContent > h2, 
+#expertContent > h2 {
+  background : url("chrome://global/skin/images/netError/arrow_dn.png") left center no-repeat;
+  padding-left: 35px !important;
+}
+
+#technicalContent > h2:hover, 
+#expertContent > h2:hover {
+  background-image: url("chrome://global/skin/images/netError/arrow_dn_hover.png");
+}
+
+
+#technicalContent[collapsed] > h2,
+#expertContent[collapsed] > h2{
+  background-image: url("chrome://global/skin/images/netError/arrow_rt.png");
+}
+
+#technicalContent[collapsed] > h2:hover,
+#expertContent[collapsed] > h2:hover{
+  background-image: url("chrome://global/skin/images/netError/arrow_rt_hover.png");
+  border: 1px solid red;
+}

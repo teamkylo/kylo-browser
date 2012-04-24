@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<page id="downloads-page" onload="load();" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript" src="chrome://polo/content/utils/utils.js"/>
+    <script type="application/x-javascript">
+        <![CDATA[
+document.title = "Addon Manager";
+
+function load() {
+    var iframe = document.getElementById("extensions-view");
+	iframe.contentDocument.getElementById("header").hidden = true;
+	iframe.contentDocument.getElementById("category-discover").hidden = true;
+	iframe.contentWindow.loadView("addons://list/extension");
+	iframe.style.opacity = null;
+}		
+
+    
+[
+    [
+        "chromeWindow", 
+        function () {   
+            var w = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShellTreeItem)
+                                .rootTreeItem
+                                .QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIDOMWindow); 
+        
+            return w;   
+        }
+    ],
+    [
+        "gChromePageHelper",
+        function () {
+            return chromeWindow.gChromePageHelper;
+        }
+    ],
+].forEach(function (service) {
+  let [name, getter] = service;
+  window.__defineGetter__(name, function () {
+    delete window[name];
+    window[name] = getter();
+    return window[name];
+  });
+});
+
+    ]]>
+    </script>
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico"/>
+    </html:head>
+    
+    <hbox id="topBar">
+        <description class="about-title" value="Addon Manager"/>
+        <spacer flex="1"/>
+        <button id="close-tab-btn" oncommand="gChromePageHelper.closePage(window)" label="Close"/>
+    </hbox>
+    <vbox id="contentBox" flex="1">
+        <iframe id="extensions-view" class="about-content" style="opacity: 0" src="chrome://mozapps/content/extensions/extensions.xul" flex="1"/>
+    </vbox>
+</page>

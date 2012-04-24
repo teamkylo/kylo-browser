@@ -1,0 +1,17 @@
+dropmarker {
+  -moz-appearance: none;
+  width: 33px;
+  height: 33px;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  list-style-image: url("chrome://global/skin/arrow/arrow_down.png");
+  -moz-image-region: auto;
+}
+
+dropmarker:hover:active {
+
+}
+
+dropmarker[disabled="true"] {
+  opacity: 0.4;
+}

@@ -1,0 +1,97 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+groupbox > hbox > label {
+    width: 188px;
+    font-size: 34px;
+}
+
+tabbox {
+    margin-top: 10px;
+}
+
+tabpanels {
+	min-height: 500px;
+}
+
+.input-label-align > .prefbox > vbox,
+.label-align {
+	width: 330px;
+	max-width: 330px;
+}
+
+.input-fixed-width-small > .prefbox > vbox {
+    width: 180px;
+	max-width: 180px;
+} 
+
+.input-fixed-width-small [anonid="input"] {
+	width: 450px;
+	max-width: 450px;
+} 
+
+.fileFieldIcon {
+    width: 48px;
+    height: 48px;
+}
+
+menuitem {
+    font-size: 32px;
+}
+
+textbox {
+    -moz-border-image: url("../common/images/area_bg.png") 12 12 12 12 / 12px 12px 12px 12px;
+    font-size: 32px;
+}
+
+/**
+ *  Theme management
+ */
+#themeList {
+    -moz-appearance: none;
+    background: none;
+}
+
+.themeItem {
+    -moz-border-image: url("../common/images/listitem_bg.png") 15 15 21 15 / 15px 15px 21px 15px;
+    margin: 4px 4px 4px 0;
+    padding: 6px 12px 6px 6px;
+    min-height: 69px;   
+}
+
+.themeItem[active=true] {
+    -moz-border-image: url("../common/images/listitem_bg_selected.png") 15 15 21 15 / 15px 15px 21px 15px;
+}
+
+.themeItem .name {
+    text-shadow: 0 0 10px #000000;
+    font-size: 34px;
+}
+
+.themeItem .version {
+    text-shadow: 0 0 10px #000000;
+    font-size: 34px;
+}
+
+.themeItem .description {
+    font-size: 32px;
+    text-shadow: 0 0 10px #000000;    
+}
+
+.themeItem .control-container {
+    margin-left: 12px;
+}
+
+.themeItem button {
+    -moz-border-image: url("../../global/images/btn/button_embed_off.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+.themeItem button:not([disabled=true]):hover {
+    -moz-border-image: url("../../global/images/btn/button_embed_over.png") 23 23 23 23 / 23px 23px 23px 23px;
+}

@@ -1,0 +1,10 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+#
+# Copyright 2005-2012 Hillcrest Laboratories, Inc.  All rights reserved.  Hillcrest Laboratories, and the Hillcrest logo are registered trademarks of Hillcrest Laboratories, Inc.
+
+binary-component SendKeys.dylib abi=DARWIN_x86-gcc3
+binary-component SendKeys.dll abi=WINNT_x86-msvc
+interfaces ISendKeys.xpt
+contract @hcrest.com/sendKeys;1 {7FC711F9-B34D-43c8-8E6C-E9701E6BE1BC}

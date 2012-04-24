@@ -1,0 +1,52 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. 
+# 
+# Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+# Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+# trademarks of Hillcrest Laboratories, Inc.
+
+# Kylo API
+contract @hcrest.com/kylo-ext-api;1 {b91a2950-82c2-11df-8395-0800200c9a66} 
+category javascript-global-property Kylo @hcrest.com/kylo-ext-api;1
+component {b91a2950-82c2-11df-8395-0800200c9a66} kylo.js
+
+# Autocomplete-search
+contract @mozilla.org/autocomplete/search;1?name=xxsearch-autocomplete {ED696C78-AA6A-11DF-8ED3-3018E0D72085} 
+component {ED696C78-AA6A-11DF-8ED3-3018E0D72085} autocomplete_search.js
+
+
+# POLO Command Line Handler
+contract @hcrest.com/polo/final-clh;1 {d8d2dd60-2afb-11df-8a39-0800200c9a66}
+category command-line-handler x-default @hcrest.com/polo/final-clh;1
+component {d8d2dd60-2afb-11df-8a39-0800200c9a66} poloCommandLineHandler.js
+
+# Download Manager
+contract @mozilla.org/download-manager-ui;1 {a3a63df5-c019-11de-8a39-0800200c9a66} 
+component {a3a63df5-c019-11de-8a39-0800200c9a66} moz-downloadManagerUI.js
+
+# about:* pages
+
+contract @mozilla.org/network/protocol/about;1?what= {a3a63df9-c019-11de-8a39-0800200c9a66}
+component {a3a63df9-c019-11de-8a39-0800200c9a66} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=credits {fd359cd0-88ad-4d84-bd5b-f8cef41fc2b6}
+component {fd359cd0-88ad-4d84-bd5b-f8cef41fc2b6} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=settings {a3a63df7-c019-11de-8a39-0800200c9a66} 
+component {a3a63df7-c019-11de-8a39-0800200c9a66} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=addons {6d06a3d6-b5e1-4c27-bf04-a1c8c5dc9081} 
+component {6d06a3d6-b5e1-4c27-bf04-a1c8c5dc9081} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=certerror {02deaab0-fa48-11de-8a39-0800200c9a66} 
+component {02deaab0-fa48-11de-8a39-0800200c9a66} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=downloads {a3a63df0-c019-11de-8a39-0800200c9a66} 
+component {a3a63df0-c019-11de-8a39-0800200c9a66} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=help {a3a63df6-c019-11de-8a39-0800200c9a66} 
+component {a3a63df6-c019-11de-8a39-0800200c9a66} polo-about.js
+
+contract @mozilla.org/network/protocol/about;1?what=places {a6141445-07c3-411a-b25a-574bbd0d04ff} 
+component {a6141445-07c3-411a-b25a-574bbd0d04ff} polo-about.js

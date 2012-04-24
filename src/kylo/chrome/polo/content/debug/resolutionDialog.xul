@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<dialog id="resolutionBox" title="Screen Resolution Override"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        hidechrome="true"
+        buttonpack="end"
+        buttons="accept,cancel"
+        buttonlabelaccept="Accept"
+        buttonlabelcancel="Cancel"
+        buttonaccesskeyaccept="A"
+        buttonaccesskeycancel="C"
+        ondialogaccept="return accept();"
+        ondialogcancel="return cancel();"
+        persist="screenX screenY width height"
+        onload="load()"
+        >
+<hbox id="title-bar"/>
+<script type="text/javascript">
+    <![CDATA[
+    ]]>
+</script>
+<script type="text/javascript">
+<![CDATA[
+
+var custom, screenres;
+
+function changedEvent(evt) {
+    text.value = menupopup.childNodes.item(list.selectedIndex).getAttribute("label");
+}
+
+function load() {
+    custom = document.getElementById('custom');
+    screenres = document.getElementById('screenres');
+    
+    screenres.addEventListener("select", changedEvent, false);
+    custom.addEventListener("input", inputEvent, false);
+        
+    var curRes = window.arguments[0].curWidth + "x" + window.arguments[0].curHeight;
+    
+    custom.value = curRes;
+    screenres.selectedIndex = -1;
+    for (var i=0, j=screenres.itemCount, curItem; i<j; i++) {
+    	if (screenres.getItemAtIndex(i).value == curRes) {
+    		screenres.selectedIndex = i;
+    		break;
+    	}
+    }    
+}
+
+function inputEvent(evt) {
+	screenres.selectedIndex = -1;
+}
+
+function changedEvent(evt) {
+	if (screenres.selectedIndex > -1) {
+		custom.value = '';
+	}
+}
+
+function accept() {
+	window.arguments[0].newRes = custom.value || (screenres.selectedItem && screenres.selectedItem.value);
+
+	return true;
+}
+
+function cancel() {
+	window.arguments[0].newRes = null;
+	
+    return true;
+}
+
+]]>
+</script>
+
+<groupbox flex="1">
+    <radiogroup id="screenres">
+    	<radio label="720p" value="1280x720"/>
+    	<radio label="1080p" value="1920x1080"/>
+    	<radio label="1280 x 1024" value="1280x1024"/>
+    	<radio label="1360 x 768" value="1366x768"/>
+	</radiogroup>
+	<label value="Custom Value - (ie. 1280x720)"/>
+    <textbox id="custom"/>
+</groupbox>
+
+</dialog>

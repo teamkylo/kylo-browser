@@ -1,0 +1,27 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!-- Popups/alerts -->
+<!ENTITY alerts.mouseevttoolFailTitle "An error occured">
+<!ENTITY alerts.mouseevttoolFailText "Your OS does not meet the minimum requirements for Kylo.  Click OK to see what you need to use Kylo.">
+<!ENTITY alerts.screenResTitle "Screen Resolution">
+<!ENTITY alerts.screenResText "You may want to adjust your screen resolution.  Kylo is best viewed at 1280x720.">
+<!ENTITY alerts.exitTitle "Exit Kylo?">
+<!ENTITY alerts.exitText "Are you sure you want to exit Kylo?">
+<!ENTITY alerts.exitCheckbox "Do not show this message again.">
+<!ENTITY alerts.homePageTitle "Set Home Page">
+<!ENTITY alerts.homePageText "Are you sure you want to set this page as your home page?">
+<!ENTITY alerts.updateTitle "Software Update">
+<!ENTITY alerts.updateText "There is a Kylo update available, would you like to download it?">
+<!ENTITY alerts.updateCheckbox "Do not show this message again.">
+<!ENTITY alerts.installTitle "Software Update">
+<!ENTITY alerts.installText "Update ready to install.  Exiting Browser...">
+<!ENTITY alerts.popupText "Click close to return to a previous window">
+<!ENTITY alerts.keepButtonLabel "Keep">
+<!ENTITY alerts.closeButtonLabel "Close">

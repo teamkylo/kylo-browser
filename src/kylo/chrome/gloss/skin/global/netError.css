@@ -1,0 +1,119 @@
+@import url("chrome://polo/skin/common/common.css");
+
+html {
+  background: white url("chrome://global/skin/images/netError/errror-gradation-top.png") repeat-x top;
+}
+
+body {
+  margin: 0;
+  color: #1a1a1a;
+  font-family: sans-serif;
+  font-size: 22px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #01197d;
+  font-weight: bolder;
+}
+
+h2 {
+  font-size: 26px;
+}
+
+ul, ol {
+  margin: 0;
+  -moz-margin-start: 20px;
+  padding: 0;
+}
+
+ul > li, ol > li {
+  -moz-margin-start: 25px;
+}
+
+ul {
+  list-style: square;
+}
+
+#errorPageContainer {
+  background: url("chrome://global/skin/images/netError/bg_exclamation.png") no-repeat center top;
+  min-width: 619px;
+  min-height:  490px;
+  margin: 20px 200px;
+  padding: 30px 0 0 0;
+}
+
+#errorPageContainer.certerror {
+  background-image: url("chrome://global/skin/images/netError/bg_certerror.png");
+}
+
+
+#errorShortDesc > p {
+  overflow: auto;
+  white-space: pre-wrap;
+}
+
+#errorLongDesc {
+}
+
+#errorLongDesc > p {
+}
+
+#errorTryAgain {
+  margin-top: 20px;
+}
+
+#brand {
+  position: absolute;
+  right: 0;
+  bottom: -1.5em;
+  -moz-margin-end: 10px;
+  opacity: .4;
+}
+
+body[dir="rtl"] #brand {
+  right: auto;
+  left: 0;
+}
+
+#brand > p {
+  margin: 0;
+}
+
+#errorContainer {
+  display: none;
+}
+
+#securityOverrideDiv {
+  padding-top: 10px;
+}
+
+#securityOverrideContent {
+  background-color: InfoBackground;
+  color: InfoText;
+  padding: 10px;
+}
+
+
+
+
+/* Custom styling for 'blacklist' error class */
+:root.blacklist #errorTitle, :root.blacklist #errorLongContent,
+:root.blacklist #errorShortDesc, :root.blacklist #errorLongDesc,
+:root.blacklist a {
+  background-color: #722; /* Dark red */
+  color: white;
+}
+
+:root.blacklist #errorPageContainer {
+  background-image: url("chrome://global/skin/icons/blacklist_large.png");
+  background-color: #722;
+}
+
+:root.blacklist {
+  background: #333;
+}
+
+:root.blacklist #errorTryAgain {
+  display: none;
+}

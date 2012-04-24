@@ -1,0 +1,166 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+.kb-gutter {
+    max-width: 75px;
+}
+
+.kb-key-small,
+.kb-key-large,
+.kb-key-large-special, 
+.kb-key-stretch,
+.kb-key-dblwide {
+	font-size: 34px;
+    text-shadow: 0 0 10px #000000;
+    height: 96px;
+	-moz-border-image: url("images/kb_darkgrey.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-small { 
+    width: 96px;
+}
+
+.kb-key-large,
+.kb-key-large-special {
+    width: 144px;
+}
+
+.kb-key-dblwide {
+    width: 240px;
+}
+
+.kb-key-large-special {
+	-moz-border-image: url("images/kb_darkblue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-large-special:not([disabled=true]):hover {
+	-moz-border-image: url("images/kb_blue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-large-special:not([disabled=true]):active {
+    -moz-border-image: url("images/kb_lightblue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-num,
+.kb-char {
+    font-size: 36px;
+}
+
+.kb-input,
+#kb-space {
+	-moz-border-image: url("images/kb_grey.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-small:not([disabled=true]):hover,
+.kb-key-large:not([disabled=true]):hover,
+.kb-key-stretch:not([disabled=true]):hover,
+#kb-space:not([disabled=true]):hover {
+    -moz-border-image: url("images/kb_blue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-small:not([disabled=true]):active,
+.kb-key-large:not([disabled=true]):active,
+.kb-key-stretch:not([disabled=true]):active,
+#kb-space:not([disabled=true]):active {
+    -moz-border-image: url("images/kb_lightblue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-small[selected=true],
+.kb-key-stretch[selected=true], 
+.kb-key-large[selected=true] {
+    -moz-border-image: url("images/kb_darkblue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-key-small[selected=true]:hover ,
+.kb-key-stretch[selected=true]:hover , 
+.kb-key-large[selected=true]:hover {
+    -moz-border-image: url("images/kb_blue.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-accept {
+	-moz-border-image: url("images/kb_darkgreen.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-accept:not([disabled=true]):hover {
+    -moz-border-image: url("images/kb_green.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-accept:not([disabled=true]):active {
+    -moz-border-image: url("images/kb_lightgreen.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-cancel {
+    -moz-border-image: url("images/kb_darkred.png") 18 21 21 18 / 18px 21px 21px 18px;
+	margin: -14px -14px -14px -10px;
+}
+
+.kb-cancel:not([disabled=true]):hover {
+    -moz-border-image: url("images/kb_red.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+.kb-cancel:not([disabled=true]):active {
+    -moz-border-image: url("images/kb_lightred.png") 18 21 21 18 / 18px 21px 21px 18px;
+}
+
+#kb-movable {
+	min-width: 972px;
+	min-height: 393px;
+    background: url("images/kb_border.png") no-repeat top left;
+	padding: 5px 7px;
+}
+
+#kb-left-pad-group,
+#kb-action-pad-group1,
+#kb-action-pad-group2 {
+	-moz-border-image: url("images/large_text_field.png") 18 18 18 18 / 18px 18px 18px 18px;
+}
+
+#kb-bksp {
+    list-style-image: url("images/kb_icon-backspace.png");
+}
+
+#kb-shift {
+	list-style-image: url("images/kb_icon-shift.png");
+}
+
+#kb-shift[selected=true] {
+	/*list-style-image: url("images/kb_icon-shift_selected.png");*/
+}
+
+#kb-shift .toolbarbutton-icon {
+	padding-left: 15px;
+}
+
+#kb-tab-left {
+    list-style-image: url("images/kb_icon-tab_back.png");
+	margin: 0 -14px -14px -10px;
+}
+
+#kb-tab-right {
+    list-style-image: url("images/kb_icon-tab.png");
+	margin: -14px -14px 0 -10px;
+}
+
+#kb-enter {
+    list-style-image: url("images/kb_icon-enter.png");
+	margin: -14px -14px -14px -10px;
+}
+
+#kb-embed-url-top {
+    padding: 0 27px;
+    height: 81px;		
+}
+
+#kb-done {
+    -moz-border-image: url("../../global/images/btn/button_embed_red_off.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+#kb-done:not([disabled=true]):hover {
+    -moz-border-image: url("../../global/images/btn/button_embed_red_over.png") 23 23 23 23 / 23px 23px 23px 23px;
+}

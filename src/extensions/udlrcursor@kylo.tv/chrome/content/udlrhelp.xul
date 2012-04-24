@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!DOCTYPE page [
+<!ENTITY % udlrDTD SYSTEM "chrome://udlrcursor/locale/udlrcursor.dtd" >
+%udlrDTD;
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+]>
+
+<overlay id="udlr-cursor-help-page" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+    <tabpanel id="shortcutsTabPanel">
+        <hbox class="faq-item os-win32" hint="keyboard">
+            <image class="icon-keyboard" />
+            <vbox flex="1">
+                <description>&help.win32.shortcutUDLR;</description>
+            </vbox>
+        </hbox>
+
+        <hbox class="faq-item os-osx" hint="keyboard">
+            <image class="icon-keyboard" />
+            <vbox flex="1">
+                <description>&help.osx.shortcutUDLR;</description>
+            </vbox>
+        </hbox>
+   </tabpanel>
+</overlay>
+
+

@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+
+<!DOCTYPE page [
+<!ENTITY % aboutDTD SYSTEM "chrome://polo/locale/about.dtd" >
+%aboutDTD;
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<page id="about-page" title="&about.aboutPageTitle;" onload="onload();"  onunload="onunload();" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <script type="application/x-javascript" src="chrome://polo/content/about/about.js"/>
+    <script type="application/x-javascript" src="chrome://polo/content/utils/utils.js"/>
+    <script type="application/x-javascript">
+    <![CDATA[
+	
+[
+    [
+        "chromeWindow", 
+        function () {   
+            var w = window.QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIWebNavigation)
+                                .QueryInterface(Ci.nsIDocShellTreeItem)
+                                .rootTreeItem
+                                .QueryInterface(Ci.nsIInterfaceRequestor)
+                                .getInterface(Ci.nsIDOMWindow); 
+        
+            return w;   
+        }
+    ],
+    [
+        "gChromePageHelper",
+        function () {
+            return chromeWindow.gChromePageHelper;
+        }
+    ],
+].forEach(function (service) {
+  let [name, getter] = service;
+  window.__defineGetter__(name, function () {
+    delete window[name];
+    window[name] = getter();
+    return window[name];
+  });
+});
+
+    ]]>
+    </script>
+    
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="strings" src="chrome://polo/locale/about.properties"/>
+	</stringbundleset>
+
+
+    <hbox id="topBar">
+        <description class="about-title" value="&about.aboutPageTitle;" />
+        <spacer flex="1" />
+        <button id="close-tab-btn" oncommand="gChromePageHelper.closePage(window)" label="&about.closeButtonLabel;" />
+    </hbox>
+    <hbox id="contentBox" flex="1">
+        <vbox id="contentItems">
+            <html:div id="insertionPoint" />
+            <html:div id="defaultText" hidden="true">
+                <html:div>
+                    <html:h1 id="polo">Kylo</html:h1>
+                    <html:h3 id="version">Version: 0.8.1</html:h3>
+                    <html:p>&#169;2011 Hillcrest Laboratories, Inc.  Kylo and Kylo logos are trademarks of Hillcrest Laboratories, Inc.  All rights reserved. Patent pending.</html:p>
+                    <html:p>Portions &#169;1998-2011 Mozilla Foundation Contributors.  All rights reserved.</html:p>
+                </html:div>
+            </html:div>
+        </vbox>
+        <spacer flex="1"/>
+        <deck id="theDeck" class="callout" selectedIndex="0">
+            <vbox id="checkingUpdateBox">
+                <description id="noUpdate" class="updateHeader" value="&about.checkingLabel;"/>
+                <progressmeter id="checkingMeter" class="progress-meter" mode="undetermined"/>
+            </vbox>                 	
+            <vbox id="up-to-date">
+                <description id="noUpdate" value="&about.haveLatestVeresionLabel;"/>
+                <hbox>
+                    <spacer flex="1"/>
+                </hbox>
+            </vbox>
+            <vbox id="update-available">
+                <description id="update" class="updateHeader" value="&about.updateAvailableLabel;"/>
+                <description id="latestVersion" value=""/>
+                <hbox id="downloadBox">
+                    <spacer flex="1"/>
+                    <vbox>
+                        <button id="updateButton" oncommand="doUpdate()"/>
+                        <progressmeter id="downloadMeter" class="progress-meter" mode="undetermined" hidden="true"/> 
+                    </vbox>
+                    <spacer flex="1"/>
+                </hbox>
+            </vbox>
+			<vbox id="update-check-failed">
+				<description>
+					&about.updateErrorLabel; <html:br/> &about.tryAgainLabel;
+    			</description>
+				<hbox>
+    				<button label="&about.checkAgainButtonLabel;" oncommand="doCheck()"/>
+                    <spacer flex="1"/>
+				</hbox>
+			</vbox>
+        </deck>
+    </hbox>
+    <hbox id="poweredBy">
+     <image id="mozilla" src="chrome://polo/skin/images/powered-by-black-white.png"/>
+     <spacer flex="1"/>
+    </hbox>
+</page>

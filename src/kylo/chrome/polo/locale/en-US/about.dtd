@@ -1,0 +1,24 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!-- About page -->
+<!ENTITY about.aboutPageTitle "About">
+<!ENTITY about.betaLabel "beta">
+<!ENTITY about.versionLabel "Version">
+<!ENTITY about.latestVersionLabel "Latest Version: ">
+<!ENTITY about.hcCopyright "&#169;2011 Hillcrest Laboratories, Inc.  Kylo and Kylo logos are trademarks of Hillcrest Laboratories, Inc.  All rights reserved. Patent pending.">
+<!ENTITY about.mozCopyright "Portions &#169;1998-2011 Mozilla Foundation Contributors.  All rights reserved.">
+<!ENTITY about.checkingLabel "Checking latest version">
+<!ENTITY about.haveLatestVeresionLabel "You have the latest version">
+<!ENTITY about.updateAvailableLabel "An update is available">
+<!ENTITY about.updateErrorLabel "&brandShortName; could not reach the update server.">
+<!ENTITY about.tryAgainLabel " Please try again later.">
+<!ENTITY about.checkAgainButtonLabel "Check Again">
+<!ENTITY about.closeButtonLabel "Close">
+<!ENTITY about.brandShortName "Kylo">

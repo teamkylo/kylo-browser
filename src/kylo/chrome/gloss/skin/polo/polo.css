@@ -1,0 +1,296 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+window,
+html,
+page,
+panel {
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+panel {
+	border: none;
+	background: none;
+}
+
+#anchor-top,
+#overscan-top, 
+#overscan-bottom, 
+#overscan-left, 
+#overscan-right {
+	background: black;
+}
+
+#overscan-top[active=true], 
+#overscan-bottom[active=true], 
+#overscan-left[active=true], 
+#overscan-right[active=true] {
+	background: #a6a6a6;
+}
+
+#overscan-adjust {
+    background: #cbcac6;
+    border: 10px solid #efefef;
+}
+
+#overscan-adjust[highlight~=bottom] {
+    border-bottom-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=left] {
+    border-left-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=right] {
+    border-right-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=top] {
+    border-top-color: #1152f4;
+}
+
+#overscan-textrow {
+    color: #3b3b3b;
+    font-size: 38px;
+    padding: 22px 25px;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+}
+
+#overscan-arrow-box-outer{
+    -moz-box-align: center;
+    -moz-box-pack: center;
+}
+
+#overscan-arrow-box-mid {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+}
+
+
+#overscan-arrow-box-inner {
+    background: black;
+    border: 10px solid #efefef;
+    width: 628px;
+    height: 328px;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    margin: 13px 15px;
+    padding: 18px;
+
+}
+
+#overscan-arrow-box-inner >hbox {
+    width: 628px;
+}
+
+
+
+/* TODO: remove this hack; this is intended to blend in to the background and be invisible */
+#overscan-counter {
+	width: 100px;
+    color: black;
+}
+
+
+#overscan-buttons {
+    -moz-box-align: center;
+    margin-left: 30px;
+}
+
+.overscan-arrow {
+    -moz-appearance: none;
+    -moz-border-top-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-user-select: -moz-none;
+    -moz-border-image: none;
+    -moz-margin-start: 0px;
+    min-width: inherit;    
+    height: 88px;
+    width: 103px;
+}    
+    
+.overscan-arrow:hover {
+    -moz-border-image: none;
+}
+
+.overscan-arrow:focus > .button-box {
+    border: none;
+}
+
+#overscan-arrow-left-more, #overscan-arrow-left-less,
+#overscan-arrow-right-more, #overscan-arrow-right-less {
+    height: 103px;
+    width: 88px;
+}
+
+#overscan-arrow-bottom-less {
+    background: url("overscan/bottom_less.png") no-repeat;
+}
+
+#overscan-arrow-bottom-less:hover {
+    background: url("overscan/bottom_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-bottom-more {
+    background: url("overscan/bottom_more.png") no-repeat;
+}
+
+#overscan-arrow-bottom-more:hover {
+    background: url("overscan/bottom_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-left-less {
+    background: url("overscan/left_less.png") no-repeat;
+}
+
+#overscan-arrow-left-less:hover {
+    background: url("overscan/left_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-left-more {
+    background: url("overscan/left_more.png") no-repeat;
+}
+
+#overscan-arrow-left-more:hover {
+    background: url("overscan/left_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-right-less {
+    background: url("overscan/right_less.png") no-repeat;
+}
+
+#overscan-arrow-right-less:hover {
+    background: url("overscan/right_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-right-more {
+    background: url("overscan/right_more.png") no-repeat;
+}
+
+#overscan-arrow-right-more:hover {
+    background: url("overscan/right_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-top-less {
+    background: url("overscan/top_less.png") no-repeat;
+}
+
+#overscan-arrow-top-less:hover {
+    background: url("overscan/top_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-top-more {
+    background: url("overscan/top_more.png") no-repeat;
+}
+
+#overscan-arrow-top-more:hover {
+    background: url("overscan/top_more_hover.png") no-repeat;
+}
+
+#zoomVeil:not([os="x11"]) {
+	background: url("images/zoom/pan-zoom_veil.png") repeat;
+	cursor: url("./zoom_cursor.png"), move !important;
+}
+
+
+#panLeft {
+    display: none;
+}
+
+#panRight {
+    display: none;
+}
+
+#zoomSpacerRight {
+	display: none;
+}
+
+#zoomWidget {
+	-moz-box-align: center;
+}
+
+.zoomButton {
+	-moz-appearance: none;
+	-moz-border-image: none;	
+    width: 100px;
+    height: 100px;	
+	min-width: 100px;
+	min-height: 100px;    
+    padding: 0;    
+	margin: 0 50px 0 0;    
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+#zoomIn {
+	margin-bottom: 20px;
+    background: url("images/zoom/zoom_in.png") no-repeat;
+}
+
+#zoomIn:not([disabled=true]):hover {
+    background: url("images/zoom/zoom_in_over.png") no-repeat;
+}
+
+#zoomIn[disabled=true] {
+    background: url("images/zoom/zoom_in_disabled.png") no-repeat;
+	opacity: 1;
+}
+
+#zoomReset {
+    background: url("images/zoom/zoom_reset.png") no-repeat;	
+}
+
+#zoomReset:not([disabled=true]):hover {
+    background: url("images/zoom/zoom_reset_over.png") no-repeat;
+}
+
+#zoomReset[disabled=true] {
+    background: url("images/zoom/zoom_reset_disabled.png") no-repeat;
+	opacity: 1;
+}
+
+#zoomOut {
+	margin-bottom: 20px;
+    background: url("images/zoom/zoom_out.png") no-repeat;	
+}
+
+#zoomOut:not([disabled=true]):hover {
+    background: url("images/zoom/zoom_out_over.png") no-repeat;
+}
+
+#zoomOut[disabled=true] {
+    background: url("images/zoom/zoom_out_disabled.png") no-repeat;
+	opacity: 1;
+}
+
+#overscan-top:not([active=true]), .veiltrigger {
+	opacity: 1;
+}
+
+#browserDeck {
+    background-color: #000000;
+}
+
+#help-overlay {
+    border-radius: 5px;
+    background: rgba(24, 120, 178, 0.20);
+    border: 3px solid #1878b2;
+    padding: 5px;
+}
+
+/* --- special classes to hold dimension values. Allows themes to override programmatic layout in JS --- */
+/* Snapshots (thumbnails) */
+span.page-preview-dimensions {
+    width: 160px;
+    height: 90px;
+    
+    display: none;
+}

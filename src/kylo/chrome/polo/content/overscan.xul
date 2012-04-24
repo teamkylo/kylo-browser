@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE overlay [
+<!ENTITY % adjustDTD SYSTEM "chrome://polo/locale/adjustScreen.dtd" >
+%adjustDTD;
+]>
+<overlay id="overscan-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <vbox id="overscan-adjust">
+        <stack  id="overscan-stack" flex="1">
+            <vbox id="overscan-arrow-box-outer" flex="1">
+                <button id="overscan-arrow-top-less" type="repeat" class="overscan-arrow" />
+                <hbox id="overscan-arrow-box-mid">
+                    <button id="overscan-arrow-left-less" type="repeat" class="overscan-arrow" />
+                    <vbox id="overscan-arrow-box-inner">
+                        <button id="overscan-arrow-top-more" type="repeat" class="overscan-arrow" />
+                        <spacer flex="1" />
+                        <hbox>
+                            <button id="overscan-arrow-left-more" type="repeat" class="overscan-arrow" />
+                            <spacer flex="1" />
+                            <description id="overscan-counter" crop="end"/>
+                            <button id="overscan-arrow-right-more" type="repeat" class="overscan-arrow" />
+                        </hbox>
+                        <spacer flex="1" />
+                        <button id="overscan-arrow-bottom-more" type="repeat" class="overscan-arrow" />
+                    </vbox>
+                    <button id="overscan-arrow-right-less" type="repeat" class="overscan-arrow" />
+                </hbox>
+                <button id="overscan-arrow-bottom-less" type="repeat" class="overscan-arrow" />
+            </vbox>
+            <vbox flex="1" mousethrough="always">
+                <hbox id="overscan-textrow">
+                    <description flex="1" value="&adjustScreen.adjustScreenLabel;" crop="end"/>
+                    <button id="overscan-reset" label="&adjustScreen.restoreButtonLabel;" />
+                    <button id="overscan-exit-mode" label="&adjustScreen.acceptButtonLabel;" />
+                    <button id="overscan-cancel" label="&adjustScreen.cancelButtonLabel;" />
+                </hbox>
+                <spacer flex="1" />
+            </vbox>
+        </stack>
+    </vbox>
+</overlay>

@@ -1,0 +1,144 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+page {
+    -moz-appearance: none;
+    background-color: #000000;
+    background-image: url('images/about_bg.jpg');
+    font-size: 22px;
+    color: #efefef;
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+description {
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+progressmeter[mode=undetermined][os=mac] {
+	-moz-appearance: progressbar;	
+}
+
+#topBar {
+    -moz-box-align: center;
+    background: url('images/top_bar.png') repeat-x top;
+    padding: 0px 30px;
+	height: 60px;
+}
+
+#topBar > button {
+    margin-bottom: 5px;    
+}
+
+#close-tab-btn {
+	-moz-border-image: url("chrome://global/skin/images/btn/button_red_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#close-tab-btn:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_red_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+.callout {
+	-moz-border-image: url("../images/menu/menu_bg.png") 40 40 40 40 / 40px 40px 40px 40px;
+}
+
+.about-title {
+    font-size: 30px;
+	font-weight: bold;
+    color: #dedede;
+	height: 60px;
+    text-shadow: 2px 2px 3px #000000, 0 0 7px #000000;
+    padding: 10px 0px 0px 60px;	
+    background: url("../images/menu/menu_about.png") no-repeat;
+}
+
+.settings-icon {
+	background: url("../images/menu/menu_settings.png") no-repeat;
+}
+
+.help-icon {
+	background: url("../images/menu/menu_help.png") no-repeat;
+}
+
+.downloads-icon {
+    background: url("../images/menu/menu_downloads.png") no-repeat;
+}
+
+.bookmarks-icon {
+    background: url("../images/menu/menu_bookmarks.png") no-repeat;
+}
+
+#version {
+	font-size: 22px;
+	color: #b6b6b6;
+}
+
+.body-text {
+	font-size: 22px;
+	color: #d2d2d2;
+	padding-bottom: 25px;
+	padding-top: 15px;
+}
+
+#contentBox {
+	padding: 0px 25px 0px 25px;
+}
+
+#poweredBy {
+	 padding: 20px 0 0 25px;
+	 background: -moz-linear-gradient(90deg, rgba(0,0,0,255), rgba(0,0,0,255) 85px, rgba(0,0,0,0));
+	 height: 105px;
+}
+
+#contentItems {
+	padding-top: 15px;
+	width: 500px;
+}
+
+#theDeck {
+	width: 400px;
+	padding-top: 100px;
+}
+
+#polo {
+	font-size: 60px;
+	color: #efefef;
+	margin-bottom: 5px;
+}
+
+#beta {
+	font-size: 33px;
+}
+
+#update {
+	font-size: 36px;
+}
+
+#noUpdate {
+	font-size: 30px;
+}
+
+.updateHeader {
+	color: #efefef;
+	text-shadow: 2px 2px 3px #000000, 0 0 7px #000000;
+	text-align: center;
+}
+
+#downloadBox {
+	padding-top: 25px;
+}
+
+#latestVersion, #currentVersion {
+	font-size: 22px;
+	color: #efefef;
+	text-align: center;
+}
+
+tabpanel {
+    overflow-y: scroll;
+} 

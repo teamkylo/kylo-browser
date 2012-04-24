@@ -1,0 +1,258 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+page {
+    -moz-appearance: none;
+	background: url('images/settings_bg.jpg') repeat top left;
+}
+
+groupbox > hbox {
+    -moz-box-align: center;
+}
+
+groupbox > hbox > label {
+    width: 125px;
+    font-size: 24px;
+}
+
+tabbox {
+    margin-top: 20px;
+	/*max-height: 335px;*/
+}
+
+#tabCap {
+	-moz-border-image: url("chrome://global/skin/images/tabs/tabs_v_end.png") 0 28 22 0 / 0 28px 22px 0;
+}
+
+tabpanel {
+    overflow-y: auto;
+} 
+
+tabpanels {
+    padding-top: 10px;
+    padding-right: 5px;
+	min-height: 337px;
+}
+
+.pref-container > * {
+    margin-right: 5px;
+    border-bottom: 2px solid;    
+    -moz-border-bottom-colors: #222327 #1e1f23;
+    padding: 12px 0;
+}
+
+.pref-container > *:first-child {
+    padding-top: 0;
+}
+
+.pref-container > *:last-child {
+    margin-top: 0;
+    border-bottom: none;
+    -moz-border-bottom-colors: none;
+}
+
+.text-size-example {
+	margin: 10px 10px 10px 40px;
+	width: 400px;
+	max-width: 400px;
+}
+
+.text-size-example-content {
+	border: 2px solid;
+    -moz-border-top-colors: #6b6b6b #5b5b5b;
+    -moz-border-left-colors: #6b6b6b #5b5b5b;
+    -moz-border-right-colors: #5b5b5b #6b6b6b;
+    -moz-border-bottom-colors: #5b5b5b #6b6b6b;
+    background: rgba(56, 56, 56, 0.98);
+	font-size: 12px;
+	padding: 5px;
+}
+
+.setting_header {
+    font-weight: bolder;
+}
+
+.setting_subitem {
+	margin-left: 60px;
+}
+
+.input-label-align > .prefbox > vbox,
+.label-align {
+	width: 220px;
+	max-width: 220px;
+	margin: 0;
+}
+
+.label-align-left {
+	margin-left: 0;
+}
+
+.input-fixed-width-small > .prefbox > vbox {
+    width: 120px;
+	max-width: 120px;
+} 
+
+.input-fixed-width-small [anonid="input"] {
+	width: 300px;
+	max-width: 300px;
+} 
+
+#hp_box {
+	margin: 0;
+}
+
+#hp_label {
+	border: 3px solid #494949;
+	background-color: black;
+	margin: 4px 8px;
+	-moz-box-align: center;	
+}
+
+#hp_label > image {
+	margin: 4px 4px 4px 10px;
+}
+
+#hp_buttons {
+	-moz-box-align: center;
+}
+
+#hp_buttons > button:first-child {
+	margin-left: 0;
+}
+
+#hp_buttons > button:last-child {
+    margin-right: 0;
+}
+
+settings:disabled setting,
+setting:disabled,
+settings[disabled=true] setting,
+setting[disabled=true] {
+	opacity: 0.4;
+}
+
+#screen-change-message {
+	background: rgba(255, 255, 255, 0.2);
+    border: 2px solid;
+    -moz-border-top-colors: #6b6b6b #5b5b5b;
+    -moz-border-left-colors: #6b6b6b #5b5b5b;
+    -moz-border-right-colors: #5b5b5b #6b6b6b;
+    -moz-border-bottom-colors: #5b5b5b #6b6b6b;
+}
+
+
+.fileFieldIcon {
+    width: 32px;
+    height: 32px;
+}
+
+menuitem {
+    font-size: 22px;
+}
+
+.settings-title {
+    display: none;
+}
+
+#browseFolderButton,
+#restoreButton, 
+#clearDataButton {
+	min-width: 225px;
+}
+
+textbox {
+	-moz-appearance: none;
+    background: none !important;
+    border: none;
+    -moz-border-image: url("chrome://polo/skin/common/images/area_bg.png") 8 8 8 8 / 8px 8px 8px 8px;
+    color: #efefef;
+    font-size: 22px;
+}
+
+filefield {
+	-moz-appearance: none;
+}
+
+.fileFieldContentBox {
+	background: none !important;
+}
+
+#proxy_host label {
+	padding-top: 10px;
+}
+
+#proxy_host textbox {
+    height: 40px;
+}
+
+#proxy_port label {
+    padding-top: 10px;
+}
+
+#proxy_port textbox {
+    height: 40px;
+}
+
+
+/**
+ *  Theme management
+ */
+#themeList {
+    -moz-appearance: none;
+    background: none;
+}
+
+.themeItem {
+    -moz-appearance: none;
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg.png") 10 10 14 10 / 10px 10px 14px 10px;
+    background: none;
+    margin: 3px 3px 3px 0;
+    padding: 4px 8px 4px 4px;
+    min-height: 46px;    
+}
+
+.themeItem[active=true] {
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg_selected.png") 10 10 14 10 / 10px 10px 14px 10px;
+}
+
+.themeItem .name {
+    color: #EFEFEF;
+    text-shadow: 0 0 7px #000000;
+    font-size: 24px;
+}
+
+.themeItem .version {
+    color: #EFEFEF;
+    text-shadow: 0 0 7px #000000;
+    font-size: 24px;
+    display: none;
+}
+
+.themeItem .description {
+    font-size: 22px;
+    color: #b4b4b4;
+    text-shadow: 0 0 7px #000000;    
+}
+
+.themeItem[active=true] .description {
+    color: #bbdd33;
+}
+
+.themeItem .control-container {
+    margin-left: 8px;
+}
+
+.themeItem button {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+.themeItem button:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+

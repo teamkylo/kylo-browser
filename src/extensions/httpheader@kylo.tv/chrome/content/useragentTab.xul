@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<?xml-stylesheet href="chrome://httpheaderext/skin/userAgentTab.css" type="text/css"?>
+
+<!DOCTYPE page [
+<!ENTITY % useragentDTD SYSTEM "chrome://httpheaderext/locale/useragentTab.dtd" >
+%useragentDTD;
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+]>
+
+<overlay id="http-headers-settings-page" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    
+    <script type="application/x-javascript" src="useragentTab.js"/>
+	
+    <stringbundleset id="stringbundleset">
+        <stringbundle id="uastrings" src="chrome://httpheaderext/locale/useragentTab.properties"/>
+    </stringbundleset>	
+
+        <tabpanel id="compatibilityTabPanel">
+            <settings>
+	            <description class="setting_header" value="&useragent.useragentTitle;"/>
+	            <hbox class="setting_subitem">
+	                <grid id="user-agent-settings" flex="1">
+	                    <columns>
+	                        <column/>
+	                        <column flex="1"/>
+	                    </columns>
+	                    <rows>
+	                        <row>
+	                            <label for="user-agent-list" value="&useragent.agentLabel;"/>
+	                            <menulist id="user-agent-list" onselect="UserAgentTab.uaSelected(event);">
+	                                <menupopup id="user-agent-popup"/>
+	                            </menulist>
+	                        </row>
+	                        <row>
+	                            <label for="user-agent-textbox" value="&useragent.domainLabel;"/>
+	                            <hbox>
+	                               <textbox id="user-agent-textbox" flex="1" oninput="UserAgentTab.textBoxChanged()"/>
+	                               <button id="user-agent-choose-open-tab" label="&useragent.openPageLabel;" oncommand="UserAgentTab.chooseOpenSite();"/>
+	                            </hbox>
+	                        </row>
+	                        <row>
+	                            <spacer/>
+                                <button id="user-agent-add" label="&useragent.addLabel;" oncommand="UserAgentTab.addSite();"/>                   
+	                        </row>
+	                    </rows>
+	                </grid>
+	            </hbox>
+	            <hbox class="setting_subitem" flex="1">
+	                <richlistbox id="user-agent-listbox" flex="1" oncommand="UserAgentTab.oncommand(event);" onselect="UserAgentTab.ruleSelected(event);"/>
+	            </hbox>
+            </settings>
+        </tabpanel>
+</overlay>

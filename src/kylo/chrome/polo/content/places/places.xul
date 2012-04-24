@@ -1,0 +1,105 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="places-bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/aboutPage.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/places/places.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/places/placestree.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/tabchooser.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE page [
+    <!ENTITY % placesDTD SYSTEM "chrome://polo/locale/places/places.dtd">
+        %placesDTD;
+    <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd">
+        %brandDTD;
+    ]>
+<page id="places-page" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" onload="places_onload();" onunload="places_onunload();">
+    
+    <script type="application/x-javascript" src="chrome://polo/content/utils/utils.js"/>
+    <script type="application/x-javascript" src="places.js"/>
+    
+    <hbox id="topBar">
+        <description class="about-title bookmarks-icon" value="&places.pageTitle;"/>
+        <spacer flex="1"/>
+        <button id="places-close-button" label="&places.closeButtonLabel;" oncommand="gChromePageHelper.closePage(window.top);"/>
+    </hbox>
+    
+    <vbox id="places-box" flex="1">
+        <hbox id="places-toolbar">
+            <description id="places-current-action-title" flex="1"/>
+            <description id="places-fldr-location" crop="center" flex="1"/>
+            <hbox id="places-toolbar-buttonset">
+                <button id="places-add-bookmark-btn" label="&places.addBkmrkBtnLabel;" oncommand="gBookmarkPage.showAddBookmark();"/>
+				<button id="places-add-folder-btn" label="&places.addFldrBtnLabel;" oncommand="gBookmarkPage.showAddFolder();"/>
+                <button id="places-delete-bookmark-button" label="&places.deleteBkmrkButtonLabel;" oncommand="gBookmarkPage.deleteSelection();"/>
+				<button id="places-delete-folder-button" label="&places.deleteFldrButtonLabel;" oncommand="gBookmarkPage.deleteSelection();"/>
+                <button id="places-save-bookmark-button" label="&places.saveBkmrkButtonLabel;" oncommand="gBookmarkPage.saveButtonPressed();"/>
+				<button id="places-save-folder-button" label="&places.saveFldrButtonLabel;" oncommand="gBookmarkPage.saveButtonPressed();"/>
+                <button id="places-cancel-button" label="&places.cancelButtonLabel;" oncommand="gBookmarkPage.cancelButtonPressed();"/>
+                <button id="places-select-btn" label="&places.editButtonLabel;" oncommand="gBookmarkPage.startSelect();"/>
+            </hbox>
+        </hbox>
+        <deck id="places-grid-container" flex="1">
+            <vbox id="places-empty-message">
+                <description>
+                    &places.noBookmarks;
+                </description>
+            </vbox>
+            
+            <grid id="places-grid" flex="1"/>
+            
+            <hbox id="places-edit-ui">
+                <vbox id="places-open-pages-list"/>
+                <spacer flex="1"/>
+                <grid flex="1">
+                    <columns hidden="true">
+                        <column/>
+                        <column flex="1"/>
+                    </columns>
+                    <rows id="places-edit-rows">
+                        <row>
+                            <spacer/>
+                            <hbox>
+                                <spacer flex="1"/>
+                            </hbox>
+                        </row>
+                        <row>
+                            <label control="places-edit-name" value="&places.bookmarkNameLabel;"/>
+                            <textbox id="places-edit-name" onfocus="gBookmarkPage.editNameFocussed()"/>
+                        </row>
+                        <row id="places-edit-uri-row">
+                            <label control="places-edit-uri" value="&places.bookmarkUriLabel;"/>
+                            <textbox id="places-edit-uri"/>
+                        </row>
+                        <row id="places-edit-tree-container" flex="1">
+                            <label control="places-fldr-tree">&places.folderLabel;</label>
+                            <tree id="places-fldr-tree" seltype="single" hidecolumnpicker="true" treelines="false">
+                            	<treecols>
+                            		<treecol id="folder-col" flex="1" primary="true" hideheader="true"/>
+								</treecols>
+								<treechildren id="places-fldr-tree-root"/>
+                            </tree>
+                        </row>
+                    </rows>
+                </grid>
+                <spacer flex="1"/>
+            </hbox>
+        </deck>
+    </vbox>
+    
+    <tooltip id="places-bookmark-item-tooltip" orient="vertical" onpopupshowing="Tooltip.fill(document.tooltipNode);">
+        <label id="places-bookmark-item-tooltip-title"/>
+        <label id="places-bookmark-item-tooltip-url" crop="center"/>
+    </tooltip>
+    
+    <stringbundleset id="places-stringbundleset">
+        <stringbundle id="places-stringbundle-main" src="chrome://polo/locale/places/places.properties"/>
+    </stringbundleset>
+</page>

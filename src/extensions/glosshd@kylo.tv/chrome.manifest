@@ -1,0 +1,50 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. 
+# 
+# Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+# Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+# trademarks of Hillcrest Laboratories, Inc.
+
+skin    gloss_1080  classic/hd  chrome/gloss_1080/skin/
+
+# Main Chrome
+style   chrome://polo/content/polo.xul                      chrome://gloss_1080/skin/polo/polo.css
+
+style   chrome://polo/content/controls/controls.xul         chrome://gloss_1080/skin/polo/controls/controls.css
+
+style   chrome://polo/content/keyboard/keyboard.xul         chrome://gloss_1080/skin/polo/keyboard/keyboard.css
+style   chrome://polo/content/keyboard/keyboard.xul         chrome://gloss_1080/skin/polo/keyboard/autocomplete.css
+
+
+# Places
+style   chrome://polo/content/places/places.xul             chrome://gloss_1080/skin/polo/common/aboutPage.css
+style   chrome://polo/content/places/places.xul             chrome://gloss_1080/skin/polo/places/places.css
+style   chrome://polo/content/places/places.xul             chrome://gloss_1080/skin/polo/common/tabchooser.css
+
+style   chrome://polo/content/places/add.xul                chrome://gloss_1080/skin/global/globalUI.css
+style   chrome://polo/content/places/add.xul                chrome://gloss_1080/skin/polo/places/places.css
+
+
+# Popups
+style   chrome://polo/content/overlays/dialogOverlay.xul    chrome://gloss_1080/skin/polo/overlays/dialogOverlay.css
+
+
+# About pages
+style   about:                                              chrome://gloss_1080/skin/polo/common/aboutPage.css
+
+style   about:credits                                       chrome://gloss_1080/skin/polo/common/aboutPage.css
+style   about:credits                                       chrome://gloss_1080/skin/polo/common/credits.css
+
+style   about:addons                                        chrome://gloss_1080/skin/polo/common/aboutPage.css
+
+style   about:downloads                                     chrome://gloss_1080/skin/polo/common/aboutPage.css
+style   chrome://mozapps/content/downloads/downloads.xul    chrome://gloss_1080/skin/mozapps/downloads/downloads.css
+
+style   about:help                                          chrome://gloss_1080/skin/polo/common/aboutPage.css
+style   about:help                                          chrome://gloss_1080/skin/polo/common/helpPage.css
+
+style   chrome://polo/content/about/settings.xul            chrome://gloss_1080/skin/polo/common/aboutPage.css
+style   chrome://polo/content/about/settings.xul            chrome://gloss_1080/skin/polo/common/settings.css
+style   chrome://polo/content/about/settings.xul            chrome://gloss_1080/skin/polo/common/tabchooser.css
+
