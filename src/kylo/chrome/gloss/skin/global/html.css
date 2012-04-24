@@ -1,0 +1,29 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+/**
+ * 
+ * Agent style sheet inserted into every content page 
+ * 
+ */
+
+
+@namespace html url(http://www.w3.org/1999/xhtml);
+@namespace xul url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+html|* {
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+@-moz-document url("about:blank") {
+    * {
+        background: url('images/pointer_bg.png') repeat-x #000000;
+    }
+}
+

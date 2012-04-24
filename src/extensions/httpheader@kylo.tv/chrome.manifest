@@ -1,0 +1,20 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. 
+# 
+# Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+# Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+# trademarks of Hillcrest Laboratories, Inc.
+
+content     httpheaderext               chrome/content/
+skin        httpheaderext   classic/1.0 chrome/skin/
+locale      httpheaderext   en-US       chrome/locale/en-US/
+resource    httpheaderext               chrome/modules/
+
+overlay     chrome://polo/content/about/settings.xul    chrome://httpheaderext/content/useragentTab.xul
+
+component {b211f230-3d9b-11df-9879-0800200c9a66} components/httpHeaderExtComponent.js
+contract @hcrest.com/http-header-ext;1 {b211f230-3d9b-11df-9879-0800200c9a66} 
+category profile-after-change HttpHeaderExt @hcrest.com/http-header-ext;1
+
+

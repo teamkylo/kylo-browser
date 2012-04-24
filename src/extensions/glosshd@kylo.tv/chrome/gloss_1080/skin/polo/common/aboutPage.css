@@ -1,0 +1,101 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+/** import styles from globalUI **/
+@import url("chrome://gloss_1080/skin/global/globalUI.css");
+
+page {
+    font-size: 32px;
+}
+
+#topBar {
+    background: url('images/top_bar.png') repeat-x top;
+	height: 90px;
+}
+
+#topBar > button {
+    margin-bottom: 7px;    
+}
+
+#close-tab-btn {
+	-moz-border-image: url("../../global/images/btn/button_red_off.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+#close-tab-btn:not([disabled=true]):hover {
+    -moz-border-image: url("../../global/images/btn/button_red_over.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+.callout {
+	-moz-border-image: url("../images/menu/menu_bg.png") 60 60 60 60 / 60px 60px 60px 60px;
+}
+
+.about-title {
+    font-size: 40px;
+	height: 90px;
+    text-shadow: 3px 3px 4px #000000, 0 0 10px #000000;
+    padding: 18px 0px 0px 90px;	
+    background: url("../images/menu/menu_about.png") no-repeat;
+}
+
+.settings-icon {
+	background: url("../images/menu/menu_settings.png") no-repeat;
+}
+
+.help-icon {
+	background: url("../images/menu/menu_help.png") no-repeat;
+}
+
+.downloads-icon {
+    background: url("../images/menu/menu_downloads.png") no-repeat;
+}
+
+.bookmarks-icon {
+    background: url("../images/menu/menu_bookmarks.png") no-repeat;
+}
+
+#version {
+	font-size: 32px;
+}
+
+.body-text {
+	font-size: 32px;
+}
+
+#contentItems {
+	max-width: 750px;
+}
+
+#theDeck {
+	max-width: 600px;
+	padding-top: 150px;
+}
+
+#polo {
+	font-size: 72px;
+}
+
+#beta {
+	font-size: 36px;
+}
+
+#update {
+	font-size: 46px;
+}
+
+#noUpdate {
+	font-size: 40px;
+}
+
+.updateHeader {
+	text-shadow: 3px 3px 4px #000000, 0 0 10px #000000;
+}
+
+#latestVersion, #currentVersion {
+	font-size: 32px;
+}

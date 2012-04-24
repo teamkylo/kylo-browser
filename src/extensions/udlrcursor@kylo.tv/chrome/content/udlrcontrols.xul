@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!DOCTYPE page [
+<!ENTITY % udlrDTD SYSTEM "chrome://udlrcursor/locale/udlrcursor.dtd" >
+%udlrDTD;
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+%brandDTD;
+]>
+
+<overlay id="udlr-cursor-controls-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <script type="application/x-javascript" src="udlrcontrols.js"/>
+    
+    <commandset id="mainCommandSet">
+        <command id="udlr_activate_cmd" oncommand="UDLR.setEnabled(!UDLR.isEnabled());"/>
+    </commandset>
+
+    <keyset id="mainKeyset">
+        <key id="udlr_activate_key" modifiers="accel" keycode="U" command="udlr_activate_cmd" label="&UDLR.activate;"/>
+    </keyset>
+    
+</overlay>
+  

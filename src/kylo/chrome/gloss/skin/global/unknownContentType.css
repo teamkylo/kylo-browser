@@ -1,0 +1,166 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+#container {
+    margin: 15px 20px 10px;
+}
+
+textbox.plain {
+    color: #efefef;
+}
+
+/* TODO move to common.css? */
+groupbox {
+    -moz-appearance: none;
+    border: none;
+}
+
+caption {
+    background: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#contentTypeImage {
+	width: 32px;
+}
+
+#unknownContentType {
+	font-size: 22px;
+}
+
+/* ======== */
+
+
+
+/* :::::::::: menulist :::::::::: */
+
+menulist {
+  -moz-appearance: none;
+  margin: 2px 4px;
+  border: 5px solid;
+  padding: 0;
+  -moz-border-top-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  -moz-border-right-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  -moz-border-bottom-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  -moz-border-left-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  background-color: #8e8e8e;
+}
+
+menulist[open="true"] {
+  -moz-border-bottom-colors: none;
+  padding-bottom: 5px;
+  border-width: 5px 5px 0px 5px;
+}
+
+.menulist-label-box {
+    margin: 0;
+    -moz-margin-start: 0;
+    -moz-margin-end: 0;
+}
+
+menulist[open="true"] .menulist-label-box {
+    border-bottom: 2px solid #d6d3ce;
+}
+
+menupopup {
+  border: 5px solid;
+  border-width: 0px 5px 5px 5px;
+  -moz-border-top-colors: none;
+  -moz-border-right-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  -moz-border-bottom-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  -moz-border-left-colors: #86837e #86837e #86837e #403a3a #403a3a;
+  padding: 0px;
+  min-width: 1px;
+  background: none;
+  background-color: #8e8e8e;
+}
+
+
+
+menuitem {
+  -moz-appearance: none;
+  -moz-box-align: center;
+  color: black;
+  background: none;
+  font: inherit;
+  list-style-image: none;
+  -moz-image-region: inherit;
+  -moz-border-top-colors: transparent transparent transparent transparent transparent;
+  -moz-border-left-colors: transparent transparent transparent transparent transparent;
+  -moz-border-right-colors: transparent transparent transparent transparent transparent;
+  -moz-border-bottom-colors: transparent transparent transparent transparent transparent;
+}
+
+menupopup > menuitem[_moz-menuactive="true"] {
+  background: url("chrome://polo/skin/common/images/tab-bg-selected.png") repeat-y top;
+  color: white;
+    -moz-border-top-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-left-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-right-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+    -moz-border-bottom-colors: #5b5b5b #5b5b5b #5b5b5b #6b6b6b #6b6b6b;
+}
+
+.menulist-menupopup > menuitem,
+menulist > menupopup > menuitem {
+  -moz-appearance: none;
+  padding-top: 1px;
+  -moz-padding-end: 30px;
+  -moz-padding-start: 5px;
+  padding-bottom: 1px;
+  max-width: none;
+  font: inherit;
+  border: 5px solid;
+}
+
+
+menulist > menupopup > menuitem[_moz-menuactive="true"][disabled="true"],
+menulist > menupopup > menuitem[disabled="true"]:not([_moz-menuactive="true"]):-moz-system-metric(windows-classic) {
+}
+
+
+
+dropmarker {
+  -moz-appearance: none;
+  width: 39px;
+  height: 34px;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  -moz-border-top-colors: none !important;
+  -moz-border-right-colors: none !important;
+  -moz-border-bottom-colors: none !important;
+  -moz-border-left-colors: none !important;
+  padding-top: 0;
+  padding-bottom: 0px;
+  -moz-padding-start: 0px;
+  -moz-padding-end: 0px;  
+  list-style-image: none;
+  -moz-image-region: inherit;
+  background: url("images/dropmarker.png");
+}
+
+dropmarker:hover:active {
+  -moz-border-top-colors: none !important;
+  -moz-border-right-colors: none !important;
+  -moz-border-bottom-colors: none !important;
+  -moz-border-left-colors: none !important;
+  padding-top: 0;
+  padding-bottom: 0px;
+  -moz-padding-start: 0px;
+  -moz-padding-end: 0px;
+}
+
+dropmarker[disabled="true"] {
+  list-style-image: none;
+  -moz-border-top-colors: none !important;
+  -moz-border-right-colors: none !important;
+  -moz-border-bottom-colors: none !important;
+  -moz-border-left-colors: none !important;
+  padding: 0 !important;
+}
+
+#rememberChoice {
+    margin-top: 25px;
+}
+
+

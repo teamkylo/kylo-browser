@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- \\ Copyright 2009-2010 Hillcrest Laboratories, Inc.  All rights reserved.  Hillcrest Laboratories, and the Hillcrest logo are registered trademarks of Hillcrest Laboratories, Inc. -->
+<!DOCTYPE page [
+    <!ENTITY % settingsDTD SYSTEM "chrome://polo/locale/settings.dtd">
+    %settingsDTD;
+    <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+    %brandDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<page id="settings-page" title="&settings.settingsPageTitle;" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    <iframe src="chrome://polo/content/about/settings.xul" flex="1" />
+</page>

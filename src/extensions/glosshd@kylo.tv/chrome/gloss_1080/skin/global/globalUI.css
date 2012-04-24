@@ -1,0 +1,100 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+/***
+ * This stylesheet overrides styles in several different CSS files under /global
+ * 
+ * This is not meant to be an override of global.css
+ */
+
+
+/** button.css **/
+button {
+    min-height: 75px;
+    min-width: 300px;
+    -moz-border-image: url("images/btn/button_off.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+button:not([disabled=true]):hover {
+    -moz-border-image: url("images/btn/button_over.png") 23 23 23 23 / 23px 23px 23px 23px;
+}
+
+.button-box {
+  margin: -10px;
+}
+
+.button-text {
+  font-size: 32px;
+  text-shadow: #000000 0 0 7px, #333333 0 0 10px;
+  padding: 0 15px;
+}
+
+
+/** checkbox.css **/
+checkbox {
+    margin: 4px 4px;
+}
+
+.checkbox-label-box {
+  font-size: 32px;
+  text-shadow: #000000 0px 0px 10px;
+}
+
+.checkbox-icon {
+  -moz-margin-end: 3px;
+}
+
+
+/** commonDialog.css **/
+grid, #silly-spacer {
+    font-size: 32px;  
+    margin: 0 5px;
+}
+
+#silly-spacer {
+    height: 38px;
+}
+
+
+/** notification.css **/
+notification {
+    height: 99px;
+    font-size: 32px; 
+    text-shadow: 0 0 10px #000000;     
+}
+
+notification[type="info"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/information-64.png");
+}
+
+notification[type="warning"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/warning-64.png");
+}
+
+notification[type="critical"] .messageImage {
+  list-style-image: url("chrome://global/skin/icons/error-64.png");
+}
+
+
+/** popup.css **/
+tooltip {
+    margin-top: 21px;
+    max-width: 40em;  
+    font-size: 32px;
+    padding: 6px;
+    text-shadow: 0 0 10px #000000, 3px 3px 4px #000000;
+    border-radius: 15px;
+    border-width: 7px;    
+}
+
+
+/** tabbox.css **/
+.tab-text {
+    font-size: 34px;
+}

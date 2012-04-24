@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE page [
+    <!ENTITY % placesDTD SYSTEM "chrome://polo/locale/places/places.dtd">
+    %placesDTD;
+    <!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd" >
+    %brandDTD;
+]>
+<page id="places-page" title="&places.pageTitle;" orient="vertical" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+    <html:head>
+        <html:link rel="icon" href="chrome://polo/skin/hcrestlabs.ico" />
+    </html:head>
+    <iframe id="iframe" src="chrome://polo/content/places/places.xul" flex="1" />
+	
+    <script type="application/x-javascript">
+        <![CDATA[
+var _window;
+window.setTimeout(function () {
+	_window = document.getElementById("iframe").contentWindow;		
+}, 500);
+		]]>
+	</script>
+</page>

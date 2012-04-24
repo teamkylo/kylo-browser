@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE overlay PUBLIC "-//MOZILLA//DTD XUL V1.0//EN" "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+<overlay id="app-picker-overlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    <dialog id="app-picker" hidechrome="true" buttonpack="end">
+        <hbox id="title-bar"/>
+        <script type="text/javascript">
+            <![CDATA[
+            ]]>
+        </script>
+    </dialog>
+</overlay>

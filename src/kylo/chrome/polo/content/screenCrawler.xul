@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   -->  
+<window     
+    id="screen-crawler" 
+	title="Kylo"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    onload="crawler_onload();"
+	onunload="crawler_unload();"
+	width="1"
+	height="1"
+	windowtype="screen-crawler"
+	hidechrome="true"
+    sizemode="normal"
+    style="opacity:0;"
+    >
+    
+    <script type="application/x-javascript" src="./utils/utils.js"/>
+    
+    <script>
+var crawler_;
+
+function crawler_onload() {
+    crawler_ = new Crawler(window.arguments[0].wrappedJSObject);
+}
+
+function crawler_unload() {
+}
+
+function Crawler(manager) {
+    this.manager_ = manager;
+    window.setTimeout(this.notifyParent.bind(this), 0);
+}
+
+Crawler.prototype.notifyParent = function () {
+    this.manager_.crawlerLoaded(this);
+}
+
+Crawler.prototype.getCurrentScreen = function () {
+    return window.screen;
+}
+
+Crawler.prototype.getSize = function () {
+    return [window.outerWidth, window.outerHeight];
+}
+
+Crawler.prototype.reposition = function (top, left, cb) {
+    window.screenX = left;
+    window.screenY = top;
+    window.setTimeout(cb, 0);
+}
+
+    </script>
+    
+    <spacer flex="1"/>
+</window>

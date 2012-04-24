@@ -1,0 +1,38 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+div {
+    font-size: 32px;    
+}
+
+#credits {
+    border-radius: 15px;
+}
+
+h1 {
+    font-size: 72px;
+}
+
+h2 {
+    font-size: 36px;
+    margin: 30px 0 15px 0;
+}
+
+h3 {
+    font-size: 34px;
+    margin: 30px 0 15px 0;     
+}
+
+li {
+    font-size: 32px;
+}
+
+p.credits {
+    font-size: 30px;    
+}

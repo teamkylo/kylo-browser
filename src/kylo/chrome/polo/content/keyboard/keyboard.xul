@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/keyboard/keyboard.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/keyboard/autocomplete.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/keyboard/autocomplete-bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/places/places-bindings.css" type="text/css"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE page [
+<!ENTITY % keyboardDTD SYSTEM "chrome://polo/locale/keyboard.dtd" >
+%keyboardDTD;
+]>
+<overlay
+    id="keyboard-overlays"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+    <script type="application/x-javascript" src="keyStrokeGeneratorWin32.js"/>    
+    <script type="application/x-javascript" src="keyboard.js"/>
+    
+    <vbox id="kb-embed" >
+        <spacer flex="1" />    
+        <vbox id="kb-left-pad">
+            <vbox id="kb-left-pad-group">
+	            <toolbarbutton id="kb-tab-right" class='kb-key-stretch kb-key-dblwide kb-actions' action="tab" dir="reverse" label="&keyboard.tabButtonLabel;"/>
+	            <toolbarbutton id="kb-tab-left" class='kb-key-stretch kb-key-dblwide kb-actions' action="shift_tab" label="&keyboard.tabButtonLabel;"/>
+            </vbox>
+            <spacer flex="1"/>
+        </vbox>
+        <spacer flex="4" class="kb-gutter" />
+        <vbox id="kb-movable">      
+            <hbox>
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+            </hbox>
+            <hbox>
+                <spacer flex="1"/>
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <spacer flex="1"/>
+            </hbox>
+            <hbox>
+                <toolbarbutton id="kb-shift" class='kb-key-large kb-control'/>
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <toolbarbutton class='kb-key-small kb-char kb-input' />
+                <button type="repeat" id="kb-bksp" class='kb-key-large kb-fixed-input-repeat' keyseq="BKSP"/>
+            </hbox>
+            <hbox>
+                <toolbarbutton id="kb-punct" class='kb-key-large kb-control' label="12#?" />
+                <toolbarbutton id="kb-intl" class='kb-key-large kb-control' label="àéï" hidden="true" />
+                <toolbarbutton id="kb-abc" class='kb-key-large kb-control' label="abc" hidden="true" />
+                <toolbarbutton class='kb-key-small kb-char kb-fixed-input' label=":" keyseq=":" />
+                <toolbarbutton class='kb-key-small kb-char kb-fixed-input' label="@" keyseq="@" />
+                <toolbarbutton id="kb-space" class='kb-key-stretch kb-fixed-input' label=" " keyseq="SPACE" flex="1"/>
+                <toolbarbutton class='kb-key-small kb-char kb-fixed-input' label="." keyseq="." />
+                <toolbarbutton class='kb-key-small kb-char kb-fixed-input' label="/" keyseq="/" />
+                <toolbarbutton id="kb-.com" class='kb-key-large kb-control' label=".com" />
+            </hbox>
+        </vbox>
+        <spacer flex="4" class="kb-gutter" />
+        <vbox id="kb-action-pad">
+            <vbox id="kb-action-pad-group1">
+	            <toolbarbutton id="kb-enter" class='kb-key-stretch kb-key-dblwide kb-fixed-input' keyseq="ENTER" dir="reverse" label="&keyboard.enterButtonLabel;"/>
+            </vbox>
+            <spacer flex="1"/>
+            <vbox id="kb-action-pad-group2">
+                <toolbarbutton id="kb-cancel" action="submit" class='kb-key-stretch kb-key-dblwide kb-actions kb-cancel' label="&keyboard.cancelButtonLabel;"/>
+            </vbox>
+        </vbox>        
+        <spacer flex="1" />
+    </vbox>
+
+	<vbox id="kb-embed-url" >
+	    <hbox id="kb-embed-url-top" action="close">
+	       <spacer flex="1"/>
+	       <button id="kb-done" label="&keyboard.closeButtonLabel;"/>
+	    </hbox>
+        <vbox id="plugin-results-box" pack="center" flex="1" />
+		<hbox id="kb-url">
+			<vbox id="kb-lhs">
+				<hbox id="kb-urlInputRow">
+					<textbox id="kb-urlInput" 
+						flex="1"
+						class="kb-textarea"
+						type="autocomplete" 
+						autocompletesearch="xxsearch-autocomplete history" 
+						autocompletepopup="popup_autocomplete"
+						enablehistory="false"
+						completeselectedindex="true"
+						minresultsforpopup="0"
+						ontextentered="gKeyboardOverlay.submit();"                         
+						alignelement="kb-overlay-container"
+						clickSelectsAll="true"
+						/>			
+				     <toolbarbutton action="submit" class='kb-key-dblwide kb-actions kb-accept' label="&keyboard.goButtonLabel;"/>
+				</hbox>
+				<hbox id="kb-keyboardRow">
+					<vbox id="kb-keyboard-container"/>
+				</hbox>
+			</vbox>
+			<vbox id="kb-rhs" flex="1">
+				<vbox id="popup_autocomplete" flex="1"/>
+			</vbox>
+		</hbox>
+	</vbox>
+</overlay>

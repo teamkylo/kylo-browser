@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<bindings xmlns="http://www.mozilla.org/xbl" xmlns:xbl="http://www.mozilla.org/xbl" xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    
+    <binding id="places-grid-base" extends="chrome://global/content/bindings/general.xml#basecontrol">
+        <resources>
+            <stylesheet src="chrome://polo/skin/places/placesitem.css"/>
+        </resources>
+        <implementation>
+            <property name="selected"
+                onget="return this.getAttribute('selected') == 'true';"
+                onset="val ? this.setAttribute('selected', val) : this.removeAttribute('selected'); return val;"/>
+            
+            <property name="type"
+                onget="return this.getAttribute('type');"
+                onset="this.setAttribute('type', val)"/>
+				
+            <property name="title"
+                onget="return this.getAttribute('title');"
+                onset="this.setAttribute('title', val);"/>
+				
+            <property name="src"
+                onget="return this.getAttribute('src');"
+                onset="this.setAttribute('src', val)"/>	
+				
+            <property name="url"
+                onget="return this.getAttribute('url');"
+                onset="this.setAttribute('url', val)"/> 											
+            
+            <method name="_init">
+                <body>
+                    <![CDATA[
+					   // kick xbl in the nuts.
+					   this.setAttribute('title', this.getAttribute("title"))
+					   this.setAttribute("type", this.type);
+                    ]]>
+                </body>
+            </method>
+        </implementation>
+    </binding>
+    
+    <binding id="places-grid-bookmark" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content>
+            <xul:stack class="places-grid-item-container">
+                <xul:image anonid="preview" class="places-grid-item-preview" src="chrome://polo/skin/places/images/default.png" xbl:inherits="src" validate="always"/>
+                <xul:vbox anonid="titleBox" class="places-grid-item-titleBox">
+                	<xul:spacer flex="1"/>
+                    <xul:description anonid="title" class="places-grid-item-title" crop="end" xbl:inherits="value=title"/>
+                </xul:vbox>
+            </xul:stack>
+        </content>
+        <implementation>
+            <constructor>
+                <![CDATA[
+				    this._init();
+			     ]]>
+            </constructor>
+        </implementation>
+    </binding>
+	
+    <binding id="places-grid-link" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content>
+            <xul:stack class="places-grid-item-container">
+                <xul:image anonid="preview" class="places-grid-item-preview" xbl:inherits="src" validate="always"/>
+                <xul:vbox anonid="titleBox" class="places-grid-item-titleBox">
+                    <xul:spacer flex="1"/>
+                    <xul:description anonid="title" class="places-grid-item-title" crop="end" xbl:inherits="value=title"/>
+                </xul:vbox>
+            </xul:stack>
+        </content>
+        <implementation>
+            <constructor>
+                <![CDATA[
+                    this._init();
+                 ]]>
+            </constructor>
+        </implementation>
+    </binding>	
+    
+    <binding id="places-grid-folder" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content>
+            <xul:stack class="places-grid-folder-container">
+                <xul:vbox anonid="titleBox" class="places-grid-folder-titleBox">
+                	<xul:spacer flex="1"/>
+                    <xul:description anonid="title" class="places-grid-folder-title" crop="end" xbl:inherits="value=title"/>
+                </xul:vbox>
+            </xul:stack>
+        </content>
+        <implementation>
+            <constructor>
+                this._init();
+            </constructor>
+        </implementation>
+    </binding>
+	
+    <binding id="places-grid-upfolder" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content>
+            <xul:stack class="places-grid-upfolder-container">
+                <xul:vbox anonid="titleBox" class="places-grid-folder-titleBox">
+                    <xul:spacer flex="1"/>
+                    <xul:description anonid="title" class="places-grid-folder-title" crop="end" xbl:inherits="value=title"/>
+                </xul:vbox>
+            </xul:stack>
+        </content>
+        <implementation>
+            <constructor>
+                this._init();
+            </constructor>
+        </implementation>
+    </binding>
+    
+    <binding id="places-grid-dynamic-folder" extends="chrome://polo/content/places/places-bindings.xml#places-grid-folder">
+        <content>
+            <xul:vbox class="places-grid-item-container">
+                <xul:image anonid="preview" src="chrome://polo/skin/places/images/dfolder.png" xbl:inherits="src" validate="always"/>
+                <xul:description anonid="title" crop="end" xbl:inherits="value=title">
+                    <children/>
+                </xul:description>
+            </xul:vbox>
+        </content>
+        <implementation>
+            <constructor>
+                this._init();
+            </constructor>
+        </implementation>
+    </binding>
+    
+    
+    <binding id="places-grid-spacer" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content disabled="true">
+            <xul:vbox class="places-grid-item-container">
+                <xul:image anonid="preview" src="chrome://polo/skin/places/images/blank.png"/>
+            </xul:vbox>
+        </content>
+    </binding>
+    
+    <binding id="places-grid-unknown" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content>
+            <xul:vbox class="places-grid-item-container">
+                <xul:image anonid="preview" src="chrome://polo/skin/places/images/unknown.png"/>
+            </xul:vbox>
+        </content>
+    </binding>
+	
+    <binding id="places-snapshot" extends="chrome://polo/content/places/places-bindings.xml#places-grid-base">
+        <content> 
+            <xul:stack class="places-grid-item-container">
+                <xul:image anonid="preview" class="places-grid-item-preview" xbl:inherits="src" validate="always"/>
+                <xul:vbox anonid="titleBox" class="places-grid-item-titleBox">
+                    <xul:spacer flex="1"/>
+                    <xul:description anonid="title" class="places-grid-item-title" crop="end" xbl:inherits="value=title"/>
+                </xul:vbox>
+            </xul:stack>
+        </content>
+        <implementation>
+            <constructor>
+                <![CDATA[
+                    this._init();
+                 ]]>
+            </constructor>
+        </implementation>
+    </binding>	
+	
+</bindings>

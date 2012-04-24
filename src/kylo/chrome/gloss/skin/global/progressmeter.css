@@ -1,0 +1,84 @@
+/* ***** BEGIN LICENSE BLOCK *****
+ * Version: MPL 1.1/GPL 2.0/LGPL 2.1
+ *
+ * The contents of this file are subject to the Mozilla Public License Version
+ * 1.1 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ * http://www.mozilla.org/MPL/
+ *
+ * Software distributed under the License is distributed on an "AS IS" basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+ * for the specific language governing rights and limitations under the
+ * License.
+ *
+ * The Original Code is mozilla.org code.
+ *
+ * The Initial Developer of the Original Code is
+ * Netscape Communications Corporation.
+ * Portions created by the Initial Developer are Copyright (C) 1998
+ * the Initial Developer. All Rights Reserved.
+ *
+ * Contributor(s):
+ *   Joe Hewitt <hewitt@netscape.com>
+ *
+ * Alternatively, the contents of this file may be used under the terms of
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
+ * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+ * in which case the provisions of the GPL or the LGPL are applicable instead
+ * of those above. If you wish to allow use of your version of this file only
+ * under the terms of either the GPL or the LGPL, and not to allow others to
+ * use your version of this file under the terms of the MPL, indicate your
+ * decision by deleting the provisions above and replace them with the notice
+ * and other provisions required by the GPL or the LGPL. If you do not delete
+ * the provisions above, a recipient may use your version of this file under
+ * the terms of any one of the MPL, the GPL or the LGPL.
+ *
+ * ***** END LICENSE BLOCK ***** */
+
+/* ===== progressmeter.css ==============================================
+  == Styles used by the XUL progressmeter element.
+  ======================================================================= */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ::::: progressmeter ::::: */
+
+progressmeter {
+    -moz-appearance: none;
+    background: none;
+	-moz-border-image: url("images/progress/progress_trench.png") 0 5 0 5 / 0px 5px 0px 5px;
+    padding: 0px;
+    margin: 3px 0 0 0;	
+    min-width: 130px;
+    min-height: 30px;
+}
+
+.progress-bar {
+    -moz-appearance: none;
+	padding: 0;
+	-moz-border-image: url("images/progress/progress_fill.png") 9 6 / 9px 6px;
+    min-height: 30px;
+    min-width: 0px;
+}
+
+progressmeter[mode=undetermined] .progress-bar {
+	min-width: 30px;
+}
+
+.progress-remainder {
+	 
+}
+
+
+/* ::::: statusbar progressmeter ::::: */
+
+.progressmeter-statusbar {
+  margin: 0;
+  border: 0px;
+  -moz-border-top-colors: ThreeDHighlight -moz-Dialog;
+  -moz-border-right-colors: ThreeDShadow -moz-Dialog;
+  -moz-border-bottom-colors: ThreeDShadow -moz-Dialog;
+  -moz-border-left-colors: ThreeDHighlight -moz-Dialog;
+  min-width: 96px;
+}
+

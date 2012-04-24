@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/bindings/polo-bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/content/bindings/moz-settings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/common/common.css" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/polo.css" type="text/css"?>
+
+<?xul-overlay href="chrome://polo/content/keyboard/keyboard.xul"?>
+<?xul-overlay href="chrome://polo/content/controls/controls.xul"?>
+<?xul-overlay href="chrome://polo/content/overscan.xul"?>
+
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+<!DOCTYPE window [
+	<!ENTITY % browserDTD SYSTEM "chrome://polo/locale/browser.dtd">
+	%browserDTD;
+]>
+<window     
+    id="polo-main" 
+	title="Kylo"
+	orient="vertical"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns:html="http://www.w3.org/1999/xhtml"
+    onload="app_onload();"
+	onunload="app_unload();"
+	width="1280"
+	height="720"
+	windowtype="poloContent"
+	hidechrome="true"
+    sizemode="maximized"
+	persist="width height screenX screenY"
+	class="poloWindow"
+    >
+    <script type="application/x-javascript" src="./globals.js"/>
+    <script type="application/x-javascript" src="./browser.js"/>
+    <script type="application/x-javascript" src="./layoutManager.js"/>
+    <script type="application/x-javascript" src="./utils/utils.js"/>
+    <script type="application/x-javascript" src="./plugins/moz-pluginInstaller.js"/>
+    <script type="application/x-javascript" src="./utils/swUpdate.js"/>
+    <script type="application/x-javascript" src="./debug/debug.js"/>
+    <script type="application/x-javascript" src="pagePreview/pagePreview.js"/>
+	<script type="application/x-javascript" src="places/placesManager.js"/>
+	<script type="application/x-javascript" src="chrome://polo/content/polo.js"/>
+	<script type="application/x-javascript" src="chrome://global/content/printUtils.js"/>
+
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="strings" src="chrome://polo/locale/browser.properties"/>
+		<stringbundle id="alertStrings" src="chrome://polo/locale/alerts.properties"/>
+	</stringbundleset>
+
+    <spacer id="overscan-top"/>
+    <hbox flex="1">
+        <spacer id="overscan-left"/>
+        <deck id="overscanDeck" flex="1">
+	        <vbox id="content-box" flex="1000">
+	            <spacer id="anchor-top" height="1px"/>
+	            
+	            <deck flex="1" id="browserDeck"/>
+	            <hbox id="kb-embed" hidden="true"/>
+				<vbox id="kb-embed-url" hidden="true"/>
+	        	<vbox id="controlsOverlay"/>    
+	            
+	            <spacer id="anchor-bottom"/>
+	        </vbox>
+	    	<vbox id="overscan-adjust" flex="1000"/>
+            <hbox id="preview-browsers" />
+	    </deck>
+        <spacer id="overscan-right"/>
+    </hbox>
+    <spacer id="overscan-bottom"/>
+	
+	<panel id="panZoomPanel" noautohide="true">
+		<hbox id="zoomVeil" flex="1">
+		    <spacer id="zoomSpacerLeft" flex="1"/>
+		    <hbox id="zoomWidget">
+				<button id="panLeft" tooltiptext="&browser.panLeft;"/>
+				<vbox id="zoomButtons">
+					<button id="zoomIn" class="zoomButton" tooltiptext="&browser.zoomIn;"/>
+					<button id="zoomOut" class="zoomButton" tooltiptext="&browser.zoomOut;"/>
+					<button id="zoomReset" class="zoomButton" tooltiptext="&browser.zoomReset;"/>
+				</vbox>
+				<button id="panRight" tooltiptext="&browser.panRight;"/>
+		    </hbox>
+		    <spacer id="zoomSpacerRight" flex="1"/>
+		</hbox>
+	</panel>
+	
+    <panel id="tools-menu" noautohide="true"/>
+    <panel id="homepage-chooser-menu" noautohide="true"/>
+    
+    <tooltip id="html-tooltip" onpopupshowing="return HTMLTooltip.fill(document.tooltipNode, event);"/>    
+    <tooltip id="xul-tooltip" default="true" onpopupshowing="return HTMLTooltip.adjustPosition(this, event);"/>
+    
+    <panel id="help-overlay" noautohide="true" class="appearance-clear"/>
+    
+    
+    <!-- keyboard shortcuts -->
+    <commandset id="mainCommandSet"/>    
+    <keyset id="mainKeyset"/>    
+</window>

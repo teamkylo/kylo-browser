@@ -1,0 +1,60 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   - You can obtain one at http://mozilla.org/MPL/2.0/.  
+   -
+   - Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+   - Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+   - trademarks of Hillcrest Laboratories, Inc.
+   --> 
+   
+<!-- Browser Chrome labels -->
+
+<!-- Toolips -->
+<!ENTITY browser.tablistTooltip "Open New Page / See Page List">
+<!ENTITY browser.keyboardTooltip  "Use Keyboard">
+<!ENTITY browser.panzoomTooltip "Zoom Page">
+<!ENTITY browser.menuTooltip "More Options...">
+<!ENTITY browser.backTooltip "Go Back">
+<!ENTITY browser.forwardTooltip "Go Forward">
+<!ENTITY browser.reloadTooltip "Reload Page">
+<!ENTITY browser.stopTooltip "Stop Loading">
+<!ENTITY browser.homeTooltip "Go Home">
+<!ENTITY browser.urlTooltip "Open New Website">
+<!ENTITY browser.bookmarkTooltip "Manage Bookmarks">
+<!ENTITY browser.searchTooltip "Search the web">
+
+<!-- Buttons -->
+<!ENTITY browser.trophyButtonLabel "Kylo">
+<!ENTITY browser.newPageLabel "Open New Page">
+<!ENTITY browser.closePageButtonLabel "Close Page">
+<!ENTITY browser.closeButtonLabel "Close">
+
+<!-- Menu -->
+<!ENTITY browser.menuHeaderLabel "Main Menu">
+
+<!-- Menu Buttons -->
+<!ENTITY browser.aboutButtonLabel "About">
+<!ENTITY browser.settingsButtonLabel "Settings">
+<!ENTITY browser.adjustScreenLabel "Adjust Screen">
+<!ENTITY browser.helpButtonLabel "Help">
+<!ENTITY browser.downloadButtonLabel "Downloads">
+<!ENTITY browser.minimizeButtonLabel "Minimize">
+<!ENTITY browser.print "Print">
+<!ENTITY browser.exitButtonLabel "Exit ">
+
+<!-- Search -->
+<!ENTITY browser.searchButtonLabel "Search:">
+<!ENTITY browser.searchDefaultLabel "Enter search terms and select provider">
+
+<!-- Pan/Zoom -->
+<!ENTITY browser.zoomIn "Zoom In">
+<!ENTITY browser.zoomOut "Zoom Out">
+<!ENTITY browser.zoomReset "Reset Zoom">
+<!ENTITY browser.panLeft "Pan Left">
+<!ENTITY browser.panRight "Pan Right">
+
+<!-- Bookmarks -->
+<!ENTITY bookmarks.makeButtonLabel "Make Bookmark">
+<!ENTITY bookmarks.newPageButtonLabel "New Page">
+<!ENTITY bookmarks.removeButtonLabel "Remove">
+
