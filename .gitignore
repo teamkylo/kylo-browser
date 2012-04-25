@@ -7,8 +7,3 @@ xpidl_debug
 ./build
 src/extern/xulrunner/versions
 src/xpcom/*/build
-src/xpcom/*/bin
-src/xpcom/*/*.xpt
-src/xpcom/*/*.dll
-src/xpcom/*/*.so
-src/xpcom/*/*.dylib
