@@ -77,7 +77,19 @@ def makejar(delete_files=True):
     
     # ----------------------
     # Create the jar file
-    omni_path = os.path.abspath(os.path.join(Settings.prefs.kylo_build_dir, "omni.jar"))
+    
+    # omni.jar was renamed to omni.ja in Gecko 10
+    
+    gecko = Settings.config.get("Build", "gecko")
+    m = re.search(r"^(\d+)\.",gecko)
+    gecko_major_ver = int(m.group(1))
+    
+    if gecko_major_ver <= 9:
+        omni_filename = "omni.jar"
+    else:
+        omni_filename = "omni.ja" 
+    
+    omni_path = os.path.abspath(os.path.join(Settings.prefs.kylo_build_dir, omni_filename))
     omni_jar = zipfile.ZipFile(omni_path, 'w', compression=zipfile.ZIP_STORED)
     
     # Here's what's going into the omni.jar
