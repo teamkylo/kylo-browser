@@ -108,6 +108,17 @@ def build():
         if not os.path.exists(Settings.prefs.build_dir):
             logger.info("Creating build directory: %s", Settings.prefs.build_dir)
             os.makedirs(Settings.prefs.build_dir)
+            
+        # If we're not omnifying this build and an omni.ja/jar exists, we need to clean up    
+        if not Settings.prefs.omnify and \
+            (os.path.isfile(os.path.join(Settings.prefs.kylo_build_dir, "omni.jar")) or \
+             os.path.isfile(os.path.join(Settings.prefs.kylo_build_dir, "omni.ja"))):
+            # delete chrome.manifest and omni.jar
+            for f in ["chrome.manifest", "omni.jar", "omni.ja"]:
+                file = os.path.join(Settings.prefs.kylo_build_dir, f)
+                if (os.path.isfile(file)):
+                    os.remove(file)
+            
         
         logger.info("Copying Kylo source from %s to %s" % (kylo_src_dir, kylo_build_dir))
         build_util.syncDirs(kylo_src_dir, kylo_build_dir, purge=False, force_write=True, exclude=[".hc.copyright.rules", "application.ini"])
@@ -116,6 +127,7 @@ def build():
         logger.info("Copying components into build directory...")
         component_build_dir = os.path.join(kylo_build_dir, "components")
         binary_mfst_contents = []
+        mfst_count = 0
         for component in Settings.config.options('components'):
             # Copy binaries first
             compDir = os.path.join(Settings.prefs.src_dir, "xpcom", component)
@@ -128,10 +140,18 @@ def build():
             # Grab component-specific manifests
             mfst = os.path.join(compDir, "%s.manifest" % component)
             if os.path.isfile(mfst):
-                binary_mfst_contents.append("\n\n# %s.manifest\n" % component)
+                if (mfst_count):
+                    binary_mfst_contents.append("\r\n")
+                binary_mfst_contents.append("# %s.manifest" % component)
                 mfst_file = open(mfst, 'r')
-                binary_mfst_contents.extend(mfst_file.readlines())
+                for line in mfst_file.readlines():
+                    if not line.startswith("#"):
+                        binary_mfst_contents.append(line)
+                #binary_mfst_contents.extend(mfst_file.readlines())
                 mfst_file.close()
+                
+                # increment our counter
+                mfst_count += 1
             
             # Grab component-specific preferences
             pref = os.path.join(compDir, "%s-prefs.js" % component)
@@ -198,12 +218,16 @@ def build():
     if os.path.isfile(os.path.join(Settings.prefs.kylo_build_dir, "components", "binary.manifest")):
         chrome_mfst = open(os.path.join(Settings.prefs.kylo_build_dir, "chrome.manifest"), "a+")
         found = False
+        line_count = 0
         for line in chrome_mfst:
+            line_count += 1
             if "binary.manifest" in line:
                 found = True
                 break
         if not found:
-            chrome_mfst.writelines(["\n", "manifest components/binary.manifest\n"])
+            if line_count > 0:
+                chrome_mfst.write("\n")
+            chrome_mfst.write("manifest    components/binary.manifest")
         chrome_mfst.close()    
 
     # ---------------------
