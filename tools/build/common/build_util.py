@@ -84,7 +84,7 @@ def mkdir_p(path):
 
 def syncDirs(dir_in, dir_out, purge=True, force_write=False, exclude=[]):
     copier = pyrobocopy.PyRobocopier()
-    args = ("-s", "-f", "-c")
+    args = ("-s", "-f", "-c", "-m")
     if purge:
         args = args + ("-p",)
     if len(exclude) > 0:

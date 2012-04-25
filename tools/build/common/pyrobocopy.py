@@ -19,6 +19,7 @@ import os, stat
 import time
 import shutil
 import filecmp
+import math
 
 def usage():
     return """
@@ -307,6 +308,17 @@ class PyRobocopier:
         """ Compare time stamps of two files and return True
         if file1 (source) is more recent than file2 (target) """
 
+        if os.stat_float_times():
+            st1_mt = math.fabs(filest1.st_mtime)
+            st2_mt = math.fabs(filest2.st_mtime)
+            st1_ct = math.fabs(filest1.st_ctime)
+            
+            diff = math.fabs(st1_mt - st2_mt)
+            diff2 = math.fabs(st1_ct - st2_mt)
+
+            return ((st1_mt > st2_mt and diff > 1) or \
+                (not self.__modtimeonly and (st1_ct > st2_mt and diff2 > 1)))
+
         return ((filest1.st_mtime > filest2.st_mtime) or \
                    (not self.__modtimeonly and (filest1.st_ctime > filest2.st_mtime)))
     
@@ -314,7 +326,7 @@ class PyRobocopier:
         """ Private function for updating a file based on
         last time stamp of modification """
 
-        print 'Updating file', filename
+        print 'Comparing file', filename
         
         # NOTE: dir1 is source & dir2 is target        
         if self.__updatefiles:
