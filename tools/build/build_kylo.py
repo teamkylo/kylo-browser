@@ -189,7 +189,7 @@ def build():
     # ---------------------
     # Jar up the app
     if Settings.prefs.omnify:
-        logger.info("Creating omni.jar")
+        logger.info("Creating omni.jar/omni.ja")
         omnify.makejar()
         
     # ---------------------
