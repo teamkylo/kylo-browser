@@ -25,7 +25,7 @@ Windows 7:
     runtime as opposed to separate install. Currently, we run off a patched
     version of the XULRunner runtime. Please see the *XULRunner* note below.
     
-    Short story: Download the SDK from mozilla. Download the XULRunner runtime
+    TL;DR: Download the SDK from mozilla. Download the XULRunner runtime
     from dev.kylo.tv, or build your own. 
     
     [OPTIONAL]
@@ -105,6 +105,9 @@ structure should look like this:
             - xulrunner
                 - versions
                     - 10.0.2
+                        - runtime
+                            -win32
+                                ...
                         - sdk
                             - win32 
                                 - bin
@@ -136,7 +139,8 @@ The build configuration files are:
     Simple documentation is provided within each config file.
 
 *.platform.conf:
-    This config file store the locations of various build tools.
+    This config file stores the locations of various build tools. You'll want to
+    make sure the paths line up to what you have installed.
 
 kylo.conf:
     This is the master config file for the Kylo build. The file provided matches
@@ -160,8 +164,8 @@ Windows 7
 
 From the command line:
 
-[path to Kylo source package]\tools\build\build_kylo.py --skip-compile 
-    --skip-app --skip-installer -v -R 1000 ..\conf\kylo.conf
+cd [path to Kylo source package]\tools\build
+build_kylo.py --skip-compile --skip-app --skip-installer -v -R 1000 ..\conf\kylo.conf
     
 This will use the pre-compiled XPCOM binaries and Kylo app executable and build 
 a "portable" version of Kylo in the build directory.
@@ -170,12 +174,14 @@ Run build_kylo.py --help to see what all the options do.
 
 The standard process is to make your changes to the JS/XUL and then build with 
 the compile, installer, and app options turned OFF. This will recreate the 
-omni.jar package of JS/XUL with your included updates.
+omni.jar package of JS/XUL with your included updates. If you want a hierarchical
+layout of source instead of the compressed omni package, run build_kylo.py with 
+the --skip-omni option.
 
-Running build_kylo.py with only the configuration file provided will perform all
-build operations:
+Running build_kylo.py without any options and only the configuration file 
+provided will perform all build operations in the following order:
 
-1) Clean and create the bin, build, and dist directories
+1) Create the build and dist directories
 2) Compile components selected in the [components] directive of the *.conf file
 3) Compile components in the extensions selected in the [extensions] directive
 4) Sync JS/XUL, components, extensions into the build directory
