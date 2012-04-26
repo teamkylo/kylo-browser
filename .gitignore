@@ -3,7 +3,7 @@
 
 xpidl_debug
 
-./dist
-./build
+/dist
+/build
 src/extern/xulrunner/versions
 src/xpcom/*/build
