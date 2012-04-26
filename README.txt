@@ -15,7 +15,8 @@ Some helpful information:
         This file describes the basic outline of the Kylo source code 
         directory structure.
     - build_instructions.txt
-        Basic documentation of the Kylo build process.
+        Basic documentation of the Kylo build process. You should also check out
+        http://dev.kylo.tv/build/instructions
     - LICENSE
         Lawyer stuff. Lists Open Source licenses and terms.
     - TRADEMARKS
@@ -23,10 +24,10 @@ Some helpful information:
         planning on distributing a modified version of Kylo, YOU SHOULD READ
         THIS.
         
-For the latest information about Kylo, visit us at http://kylo.tv and check out 
-our forums at http://kylo.tv/community
+For the latest information about Kylo, visit us at http://kylo.tv.
+Check out our forums at http://kylo.tv/community
 
-Additional developer resources are coming soon.
+For additional developer resources, please visit our wiki: http://dev.kylo.tv
 
 For more information about Hillcrest Labs and their motion control pointing 
 technology, please visit http://hillcrestlabs.com
