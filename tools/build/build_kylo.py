@@ -8,7 +8,7 @@
 
 #!/bin/bash
 
-from common import build_prefs, build_util, jarrify, modify_version, bundle, omnify
+from common import build_prefs, build_util, modify_version, omnify
 from common.build_prefs import Settings
 from optparse import OptionParser
 from ConfigParser import ConfigParser
@@ -16,6 +16,7 @@ import errno
 import os
 import shutil
 import fileinput
+import filecmp
 import stat
 import sys
 
@@ -102,27 +103,40 @@ def build():
     # ---------------------
     # Copy source materials into our build directory
     if Settings.prefs.update:
+        # Start counting how many updates we do...
+        numUpdates = 0
+        
         kylo_src_dir = os.path.join(Settings.prefs.src_dir, "kylo")
         
         # Create build_dir if it doesn't exist
         if not os.path.exists(Settings.prefs.build_dir):
             logger.info("Creating build directory: %s", Settings.prefs.build_dir)
             os.makedirs(Settings.prefs.build_dir)
-            
-        # If we're not omnifying this build and an omni.ja/jar exists, we need to clean up    
-        if not Settings.prefs.omnify and \
-            (os.path.isfile(os.path.join(Settings.prefs.kylo_build_dir, "omni.jar")) or \
-             os.path.isfile(os.path.join(Settings.prefs.kylo_build_dir, "omni.ja"))):
-            # delete chrome.manifest and omni.jar
-            for f in ["chrome.manifest", "omni.jar", "omni.ja"]:
-                file = os.path.join(Settings.prefs.kylo_build_dir, f)
-                if (os.path.isfile(file)):
-                    os.remove(file)
+            numUpdates += 1
             
         
+        # Check if we have an existing omni.ja[r]
+        omni_path = os.path.join(Settings.prefs.kylo_build_dir, "omni.jar")
+        if os.path.isfile(omni_path) or os.path.isfile(omni_path[:-1]):
+            # delete the chrome.manifest, because it's been tainted by the 
+            # omni.jar process
+            del_files = ["chrome.manifest"]
+            
+            if not Settings.prefs.omnify:
+                # if we're not omnify-ing again, delete the old jar
+                del_files += ["omni.jar", "omni.ja"]
+                
+            for f in del_files:
+                file = os.path.join(Settings.prefs.kylo_build_dir, f)
+                if (os.path.isfile(file)):
+                    logger.info("Cleaning up - deleting %s" % file)
+                    os.remove(file)
+            
+        # Sync our source directory
         logger.info("Copying Kylo source from %s to %s" % (kylo_src_dir, kylo_build_dir))
-        build_util.syncDirs(kylo_src_dir, kylo_build_dir, purge=False, force_write=True, exclude=[".hc.copyright.rules", "application.ini"])
-
+        syncSrcReport = build_util.syncDirs(kylo_src_dir, kylo_build_dir, purge=False, force_write=True, exclude=[".hc.copyright.rules", "application.ini"])
+        numUpdates += sum(syncSrcReport[1:])
+        
         # Copy Component outputs into BUILD_DIR
         logger.info("Copying components into build directory...")
         component_build_dir = os.path.join(kylo_build_dir, "components")
@@ -135,7 +149,10 @@ def build():
             for f in [os.path.join(binDir, pattern % component) \
                           for pattern in ('%s.dll', '%s.dylib', '%s.so', 'I%s.xpt')]:
                 if os.path.exists(f):
-                    shutil.copy2(f, component_build_dir)
+                    trg = os.path.join(component_build_dir, os.path.basename(f))
+                    if os.path.exists(trg):
+                        if build_util.syncFile(trg, component_build_dir):
+                            numUpdates += 1
                     
             # Grab component-specific manifests
             mfst = os.path.join(compDir, "%s.manifest" % component)
@@ -157,15 +174,38 @@ def build():
             pref = os.path.join(compDir, "%s-prefs.js" % component)
             if os.path.isfile(pref):
                 outpref = os.path.join(kylo_build_dir, "defaults", "preferences")
-                shutil.copy2(pref, outpref)
-                # make sure the pref files aren't read-only
-                build_util.chmod_w(os.path.join(outpref, os.path.basename(pref)))
+                if build_util.syncFile(pref, outpref, force_write=True):
+                    numUpdates += 1
 
         # Write binary.manifest
         if len(binary_mfst_contents) > 0:
-            binary_mfst = open(os.path.join(kylo_build_dir, "components", "binary.manifest"), "w+")
-            binary_mfst.writelines(binary_mfst_contents)
-            binary_mfst.close()
+            logger.info("Writing binary.manifest")
+            
+            bin_mfst_path = os.path.join(kylo_build_dir, "components", "binary.manifest")
+            
+            if os.path.exists(bin_mfst_path):
+                logger.info("... writing temp file")
+                temp_bin_mfst_path = os.path.join(kylo_build_dir, "components", "~binary.manifest")
+                temp_binary_mfst = open(temp_bin_mfst_path, "w+")
+                temp_binary_mfst.writelines(binary_mfst_contents)
+                temp_binary_mfst.close()
+                
+                logger.info("... comparing temp")
+                if not filecmp.cmp(temp_bin_mfst_path, bin_mfst_path, shallow=False):
+                    logger.info("... replacing original with temp")
+                    os.remove(bin_mfst_path)
+                    os.rename(temp_bin_mfst_path, bin_mfst_path)
+                    numUpdates += 1
+                else:
+                    logger.info("... temp same as original")
+                    os.remove(temp_bin_mfst_path)
+            else:
+                binary_mfst = open(bin_mfst_path, "w+")
+                binary_mfst.writelines(binary_mfst_contents)
+                binary_mfst.close()
+                numUpdates += 1
+            
+            
             
         # Copy extensions into BUILD_DIR
         logger.info("Copying extensions into build directory...")
@@ -173,16 +213,21 @@ def build():
         for ext in Settings.config.options('extensions'):
             ext_src = os.path.join(Settings.prefs.src_dir, "extensions", ext)
             ext_build = os.path.join(extensions_build_dir, ext)
-            build_util.syncDirs(ext_src, ext_build, purge=True, force_write=True, exclude=[".hc.copyright.rules", "components"])
+            syncExtReport = build_util.syncDirs(ext_src, ext_build, purge=True, force_write=True, exclude=[".hc.copyright.rules", "components"])
+            numUpdates += sum(syncExtReport[1:])
+            
             # Handle components directory separately to avoid syncing binary source
             ext_com_src = os.path.join(ext_src, "components")
             if os.path.isdir(ext_com_src):
                 ext_com_build = os.path.join(ext_build, "components")
                 if not os.path.isdir(ext_com_build):
                     os.makedirs(ext_com_build)
+                    numUpdates += 1
                 for f in os.listdir(ext_com_src):
                     if os.path.isfile(os.path.join(ext_com_src, f)):
-                        shutil.copy2(os.path.join(ext_com_src, f), ext_com_build)
+                        if build_util.syncFile(os.path.join(ext_com_src, f), ext_com_build):
+                            logger.info("--> copied %s" % f)
+                            numUpdates += 1
                 
         # ---------------------
         # Create our application.ini
@@ -198,19 +243,50 @@ def build():
             for (opt, val) in opts:
                 ini.set(section, opt, val)
         
-        ini_file = open(os.path.join(kylo_build_dir, "application.ini"), "w+")
-        ini.write(ini_file)
-        ini_file.close()
+        ini_path = os.path.join(kylo_build_dir, "application.ini")
         
-        # Seems to be a weird incompatibility - ConfigParser writes values as "name = value", but XUL runner needs "name=value" (no spaces)
-        for line in fileinput.input(os.path.join(kylo_build_dir, "application.ini"), inplace=1):
-            print line.replace(" = ", "="),
+        wrote_ini = False
+        
+        if os.path.exists(ini_path):
+            logger.info("... writing temp file")
+            temp_ini_path = os.path.join(kylo_build_dir, "~application.ini")
+            temp_ini_file = open(temp_ini_path, "w+")
+            ini.write(temp_ini_file)
+            temp_ini_file.close()
+            
+            logger.info("... comparing temp")
+            if not filecmp.cmp(temp_ini_path, ini_path, shallow=False):
+                logger.info("... replacing original with temp")
+                os.remove(ini_path)
+                os.rename(temp_ini_path, ini_path)
+                numUpdates += 1
+                wrote_ini = True
+            else:
+                logger.info("... temp same as original")
+                os.remove(temp_ini_path)
+        else:
+            ini_file = open(ini_path, "w+")
+            ini.write(ini_file)
+            ini_file.close()
+            numUpdates += 1     
+            wrote_ini = True   
+        
+        
+        if wrote_ini:
+            # Seems to be a weird incompatibility - ConfigParser writes values as "name = value", but XUL runner needs "name=value" (no spaces)
+            for line in fileinput.input(ini_path, inplace=1):
+                print line.replace(" = ", "="),
+
+        logger.info("### Number of updates: %d" % numUpdates)
 
     # ---------------------
     # Jar up the app
     if Settings.prefs.omnify:
         logger.info("Creating omni.jar/omni.ja")
-        omnify.makejar()
+        if numUpdates > 0:
+            omnify.makejar()
+        else:
+            logger.info("... skipping, nothing to add to jar")
         
     # ---------------------
     # We're going to leave the binary.manifest in the components directory

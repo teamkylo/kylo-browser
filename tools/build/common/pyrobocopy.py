@@ -15,7 +15,14 @@
     Mod  Nov 11 Rewrote to use the filecmp module.
 """
 
-import os, stat
+# Modified by: kwood1138
+# Project: kylo-browser [kylo.tv][github.com/teamkylo/kylo-browser]
+# Changes: 
+#    fixed expected order of options, arguments in usage()
+#    added ability to exclude files with -x/--exclude flag
+#    added verbosity option
+
+import os, stat, sys
 import time
 import shutil
 import filecmp
@@ -27,7 +34,7 @@ Pyrobocopy: Command line directory diff, synchronization, update & copy
 
 Author: Anand Pillai
 
-Usage: %s <sourcedir> <targetdir> Options
+Usage: %s Options <sourcedir> <targetdir>
 
 Main Options:\n
 \t-d --diff         - Only report difference between sourcedir and targetdir
@@ -44,6 +51,7 @@ Additional Options:\n
 \t                    target directory should exist.)
 \t-m, --modtime     - Only compare file's modification times for an update (By default,
 \t                    compares source file's creation time also).
+\t-v, --verbose=X   - Verbosity option. --verbose=2 provides extra comparison info 
 """                   
 
 
@@ -69,6 +77,7 @@ class PyRobocopier:
         self.__maketarget =False
         self.__modtimeonly =False
         self.__mainfunc = None
+        self.__verbosity = 0
         
         # stat vars
         self.__numdirs =0
@@ -92,9 +101,9 @@ class PyRobocopier:
         
         import getopt
 
-        shortargs = "sudx:pnfcm"
-        longargs = ["synchronize", "update", "diff", "exclude=", "purge", "nodirection", "force", "create", "modtime"]
-
+        shortargs = "sudx:pnfcmv"
+        longargs = ["synchronize", "update", "diff", "exclude=", "purge", "nodirection", "force", "create", "modtime", "verbose="]
+        
         try:
             opts, args = getopt.getopt( arguments, shortargs, longargs )
         except getopt.GetoptError, e:
@@ -128,7 +137,14 @@ class PyRobocopier:
             elif option.lower() in ('-c', '--create'):
                 self.__maketarget = True
             elif option.lower() in ('-m', '--modtime'):
-                self.__modtimeonly = True                            
+                self.__modtimeonly = True              
+            elif option.lower() in ('-v', '--verbose'):
+                if (value is None):
+                    self.__verbosity = 1
+                try:
+                    self.__verbosity = int(value)
+                except:
+                    self.__verbosity = value.count('v') + 1
             else:
                 if self.__dir1=='':
                     self.__dir1 = option
@@ -153,7 +169,8 @@ class PyRobocopier:
         
         if not os.path.isdir(self.__dir2):
             if self.__maketarget:
-                print 'Creating directory', self.__dir2
+                if self.__verbosity > 0:
+                    print 'Creating directory', self.__dir2
                 try:
                     os.makedirs(self.__dir2)
                 except Exception, e:
@@ -166,8 +183,8 @@ class PyRobocopier:
         
     def __dowork(self, dir1, dir2, copyfunc = None, updatefunc = None, exclude = None):
         """ Private attribute for doing work """
-        
-        print 'Source directory: ', dir1, ':'
+        if self.__verbosity > 1:
+            print '-->', dir1, ':'
 
         self.__numdirs += 1
         self.__dcmp = filecmp.dircmp(dir1, dir2, ignore=exclude)
@@ -176,7 +193,8 @@ class PyRobocopier:
         if self.__purge:
             for f2 in self.__dcmp.right_only:
                 fullf2 = os.path.join(dir2, f2)
-                print 'Deleting ',fullf2
+                if self.__verbosity > 0:
+                    print 'Deleting ',fullf2
                 try:
                     if os.path.isfile(fullf2):
                         
@@ -215,10 +233,12 @@ class PyRobocopier:
                 if self.__creatdirs:
                     try:
                         # Copy tree
-                        print 'Copying tree', fulld2
+                        if self.__verbosity > 0:
+                            print 'Copying tree', fulld2
                         shutil.copytree(fulld1, fulld2, ignore=shutil.ignore_patterns(*exclude))
                         self.__numnewdirs += 1
-                        print 'Done.'
+                        if self.__verbosity > 0:
+                            print 'Done.'
                     except shutil.Error, e:
                         print e
                         self.__numdirsfld += 1
@@ -251,8 +271,8 @@ class PyRobocopier:
 
         # NOTE: dir1 is source & dir2 is target
         if self.__copyfiles:
-
-            print 'Copying file', filename, dir1, dir2
+            if self.__verbosity > 0:
+                print 'Copying file', filename, dir1, dir2
             try:
                 if self.__copydirection== 0 or self.__copydirection == 2:  # source to target
                     
@@ -325,8 +345,8 @@ class PyRobocopier:
     def __update(self, filename, dir1, dir2):
         """ Private function for updating a file based on
         last time stamp of modification """
-
-        print 'Comparing file', filename
+        if self.__verbosity > 1:
+            print 'Comparing file', filename
         
         # NOTE: dir1 is source & dir2 is target        
         if self.__updatefiles:
@@ -350,7 +370,8 @@ class PyRobocopier:
                 # it so happens that a file's creation time is newer than it's
                 # modification time! (Seen this on windows)
                 if self.__cmptimestamps( st1, st2 ):
-                    print 'Updating file ', file2 # source to target
+                    if self.__verbosity > 0:
+                        print 'Updating file ', file2 # source to target
                     try:
                         if self.__forcecopy:
                             os.chmod(file2, 0666)
@@ -375,7 +396,8 @@ class PyRobocopier:
                 # it so happens that a file's creation time is newer than it's
                 # modification time! (Seen this on windows)
                 if self.__cmptimestamps( st2, st1 ):
-                    print 'Updating file ', file1 # target to source
+                    if self.__verbosity > 0:
+                        print 'Updating file ', file1 # target to source
                     try:
                         if self.__forcecopy:
                             os.chmod(file1, 0666)
@@ -411,22 +433,25 @@ class PyRobocopier:
         """ Private function which only does directory diff """
 
         if self.__dcmp.left_only:
-            print 'Only in', self.__dir1
-            for x in self.__dcmp.left_only:
-                print '>>', x
+            if self.__verbosity > 0:
+                print 'Only in', self.__dir1
+                for x in self.__dcmp.left_only:
+                    print '>>', x
 
         if self.__dcmp.right_only:
-            print 'Only in', self.__dir2
-            for x in self.__dcmp.right_only:
-                print '<<', x
+            if self.__verbosity > 0:
+                print 'Only in', self.__dir2
+                for x in self.__dcmp.right_only:
+                    print '<<', x
 
         if self.__dcmp.common:
-            print 'Common to', self.__dir1,' and ',self.__dir2
-            print
-            for x in self.__dcmp.common:
-                print '--', x
+            if self.__verbosity > 0:
+                print 'Common to', self.__dir1,' and ',self.__dir2
+                for x in self.__dcmp.common:
+                    print '--', x
         else:
-            print 'No common files or sub-directories!'
+            if self.__verbosity > 0:
+                print 'No common files or sub-directories!'
 
     def synchronize(self):
         """ Synchronize will try to synchronize two directories w.r.t
@@ -440,8 +465,9 @@ class PyRobocopier:
         self.__updatefiles = True
         self.__creatdirs = True
         self.__copydirection = 0
-
-        print 'Synchronizing directory', self.__dir2, 'with', self.__dir1 ,'\n'
+        
+        if self.__verbosity > 0:
+            print 'Synchronizing directory', self.__dir2, 'with', self.__dir1
         self.__dirdiffcopyandupdate(self.__dir1, self.__dir2)
 
     def update(self):
@@ -454,8 +480,9 @@ class PyRobocopier:
         self.__updatefiles = True
         self.__purge = False
         self.__creatdirs = False
-
-        print 'Updating directory', self.__dir2, 'from', self.__dir1 , '\n'
+        
+        if self.__verbosity > 0:
+            print 'Updating directory', self.__dir2, 'from', self.__dir1
         self.__dirdiffandupdate(self.__dir1, self.__dir2)
 
     def dirdiff(self):
@@ -468,7 +495,8 @@ class PyRobocopier:
         self.__creatdirs = False
         self.__updatefiles = False
         
-        print 'Difference of directory ', self.__dir2, 'from', self.__dir1 , '\n'
+        if self.__verbosity > 0:
+            print 'Difference of directory ', self.__dir2, 'from', self.__dir1
         self.__dirdiff()
         
     def report(self):
@@ -477,7 +505,7 @@ class PyRobocopier:
         # We need only the first 4 significant digits
         tt = (str(self.__endtime - self.__starttime))[:4]
         
-        print '\nPython robocopier finished in',tt, 'seconds.'
+        print 'Python robocopier finished in',tt, 'seconds.'
         print self.__numdirs, 'directories parsed,',self.__numfiles, 'files copied.'
         if self.__numdelfiles:
             print self.__numdelfiles, 'files were purged.'
@@ -489,7 +517,6 @@ class PyRobocopier:
             print self.__numupdates, 'files were updated by timestamp.'
 
         # Failure stats
-        print '\n'
         if self.__numcopyfld:
             print self.__numcopyfld, 'files could not be copied.'
         if self.__numdirsfld:
@@ -500,6 +527,13 @@ class PyRobocopier:
             print self.__numdeldfld, 'directories could not be purged.'
         if self.__numdelffld:
             print self.__numdelffld, 'files could not be purged.'
+            
+        return (self.__numdirs, 
+                self.__numfiles, 
+                self.__numdelfiles, 
+                self.__numdeldirs, 
+                self.__numnewdirs,
+                self.__numupdates)
         
 if __name__=="__main__":
     import sys
