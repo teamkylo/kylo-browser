@@ -13,6 +13,7 @@ import pyrobocopy
 import errno
 import logging
 import os
+import math
 import stat
 import subprocess
 import time
@@ -68,8 +69,12 @@ class StreamLogger(object):
 def RMFail(function, path, excinfo):
     function(chmod_w(path))        
 
-def chmod_w(path):
+def chmod_w(path, doCheck=False):
     if os.path.exists(path):
+        if doCheck and \
+            os.stat(path).st_mode & stat.S_IWRITE:
+                return path
+            
         os.chmod(path, os.stat(path).st_mode | stat.S_IWRITE)
     
     return path
@@ -84,7 +89,7 @@ def mkdir_p(path):
 
 def syncDirs(dir_in, dir_out, purge=True, force_write=False, exclude=[]):
     copier = pyrobocopy.PyRobocopier()
-    args = ("-s", "-f", "-c", "-m")
+    args = ("-s", "-f", "-c", "-m", "--verbose=1")
     if purge:
         args = args + ("-p",)
     if len(exclude) > 0:
@@ -94,11 +99,44 @@ def syncDirs(dir_in, dir_out, purge=True, force_write=False, exclude=[]):
     copier.parse_args(args)
     copier.do_work()
     
+    ret = copier.report()
+    
     if force_write:
         for root, dirs, files in os.walk(dir_out):
             for f in files:
-                chmod_w(os.path.join(root, f))
+                chmod_w(os.path.join(root, f), doCheck=True)
+                
+    return ret
         
+def syncFile(file_in, dir_out, force_write=False):
+    file_out = os.path.join(dir_out, os.path.basename(file_in))
+    
+    src_is_newer = True;
+    
+    if os.path.exists(file_out):
+        # File already exists, check timestamps
+        src_is_newer = False;
+        
+        src_mt = os.path.getmtime(file_in)
+        trg_mt = os.path.getmtime(file_out)
+        
+        if os.stat_float_times():
+            src_mt = math.fabs(src_mt)
+            trg_mt = math.fabs(trg_mt)
+            diff = math.fabs(src_mt - trg_mt)
+            
+            if diff > 1:
+                src_is_newer = True
+        else:
+            src_is_newer = (src_mt > trg_mt)
+
+    if src_is_newer:
+        shutil.copy2(file_in, dir_out)
+        if force_write:
+            chmod_w(os.path.join(dir_out, os.path.basename(file_in)))
+            
+    return src_is_newer
+            
 
 def runSubprocess(arguments, logger, **kwargs):
     logger.info("Running:  " + " ".join(arguments))
