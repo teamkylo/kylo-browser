@@ -6,8 +6,6 @@
 # Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
 # trademarks of Hillcrest Laboratories, Inc.
 
-#!/bin/bash
-
 from common import build_prefs, build_util, omnify
 from common.build_prefs import Settings
 from optparse import OptionParser

@@ -17,6 +17,7 @@ import math
 import stat
 import subprocess
 import time
+import shutil
 
 LOG_LEVELS = {'debug': logging.DEBUG,
               'info': logging.INFO,
