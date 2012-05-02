@@ -22,7 +22,7 @@ Helpful info regarding use of the Kylo name and trademarks. If you're planning o
 
 For the latest information about Kylo, visit us at [kylo.tv](http://kylo.tv).
 
-For additional information and resources, check out our [commnunity forums](http://kylo.tv/community) and our [developer portal](http://dev.kylo.tv).
+For additional information and resources, check out our [commnunity forums](http://kylo.tv/community), [blog](http://team.kylo.tv) and our [developer portal](http://code.kylo.tv).
 
 For more information about Hillcrest Labs and their motion control pointing technology, please visit [hillcrestlabs.com](http://hillcrestlabs.com)
 
