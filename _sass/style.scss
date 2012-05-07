@@ -1,0 +1,74 @@
+@import "compass/css3/images";
+
+footer > .container-fluid {
+  min-width: 800px;
+}
+
+.giant-logo {
+  height: 10em;
+  text-indent: -1000em;
+  background: image-url("large_logo.png") no-repeat center;
+  background-size: contain;
+  width: 100%;
+  margin: 0;
+  padding: 0;  
+}
+
+.poweredby {
+  background: image-url("powered-by-mozilla-reversed.png") no-repeat center;
+  text-indent: -1000em;
+  height: 55px;
+  width: 180px;
+  display: block;
+}
+
+header {
+  > .header-btns {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    > li {
+      display: inline;
+      .btn-large {
+        font-size: 18px;
+        font-weight: normal;
+      }
+      .btn-group {
+        text-align: left;
+      }
+    }
+  }
+}
+
+
+.headlines {
+  margin: 20px auto;
+  max-height: 21px;
+  max-width: 80em;
+  line-height: 19px;
+  border-top: 1px dashed #eee;
+  border-bottom: 1px dashed #eee;
+  @include background(linear-gradient(left right, #fff,#eee,#fff));
+  ul {
+    list-style: none;
+    text-align: center;
+    li {
+      font-size: 85%;
+      display: inline;
+      padding: 0 10px;
+      border-right: 1px solid #ccc;
+    }
+    li:last-child {
+      border: none;
+    }
+  }
+}
+
+.watch-btns {
+  list-style: none;
+  text-align: center;
+  li {
+    display: inline;
+  }
+}
