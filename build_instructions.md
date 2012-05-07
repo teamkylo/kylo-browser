@@ -45,7 +45,7 @@ content (possibly other plugins as well). It has to do with some IPC stuff - whe
 
 [The bug details are here](https://bugzilla.mozilla.org/show_bug.cgi?id=721817)
 
-Until that patch gets accepted in their release branch, we'll be hosting the most recent supported XULRunner with our patch on our own servers. We'll also include the pre-Resource Hacker'ed version of the xulrunner-stub (see below).
+Until that patch gets accepted in their release branch, we'll be hosting the most recent supported XULRunner with our patch on our own servers ([XULRunner+Patch](http://code.kylo.tv/xulrunner)). We'll also include the pre-Resource Hacker'ed version of the xulrunner-stub (see below).
 
 You should unzip/tar it on top of your Kylo source install directory, and it will create the following directory structure:
 
