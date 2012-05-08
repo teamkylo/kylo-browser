@@ -15,11 +15,12 @@ footer > .container-fluid {
 }
 
 .poweredby {
+  display: block;
+  text-indent: -1000em;  
   background: image-url("powered-by-mozilla-reversed.png") no-repeat center;
-  text-indent: -1000em;
   height: 55px;
   width: 180px;
-  display: block;
+  padding-top: 40px;
 }
 
 header {
