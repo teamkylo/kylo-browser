@@ -1,9 +1,5 @@
 @import "compass/css3/images";
 
-footer > .container-fluid {
-  min-width: 800px;
-}
-
 .giant-logo {
   height: 10em;
   text-indent: -1000em;
@@ -50,7 +46,7 @@ header {
   line-height: 19px;
   border-top: 1px dashed #eee;
   border-bottom: 1px dashed #eee;
-  @include background(linear-gradient(left right, #fff,#eee,#fff));
+  @include background(linear-gradient(right, #fff,#eee,#fff));
   ul {
     list-style: none;
     text-align: center;
