@@ -1,6 +1,9 @@
 Building Kylo from Source
 ==============================
 
+> **IMPORTANT NOTE:**
+> The latest build instructions can be found on the [kylo-browser wiki](https://github.com/teamkylo/kylo-browser/wiki/) 
+
 What You Will Need
 ------------------------------
 
