@@ -16,7 +16,7 @@ What You Will Need
 **OPTIONAL**
   * [Gecko SDK](http://ftp.mozilla.org/pub/mozilla.org/xulrunner/releases/10.0.2/)
 
-    The Kylo source code comes with two pre-built XPCOM components - [[MouseEventTool|About-MouseEventTool]] and [[SendKeys|About-SendKeys]]. If you want to make changes to their source code, you'll need to recompile. Mozilla XPCOM components are built against the [Gecko SDK](https://developer.mozilla.org/en/Gecko_SDK) (sometimes called the XULRunner SDK). You'll need to download the Gecko SDK and copy it into the Kylo source tree. Please see the [*Gecko SDK*](#geckosdk) note below.
+    The Kylo source code comes with two pre-built XPCOM components - MouseEventTool and SendKeys. If you want to make changes to their source code, you'll need to recompile. Mozilla XPCOM components are built against the [Gecko SDK](https://developer.mozilla.org/en/Gecko_SDK) (sometimes called the XULRunner SDK). You'll need to download the Gecko SDK and copy it into the Kylo source tree. Please see the [*Gecko SDK*](#geckosdk) note below.
 
     >*Note: The version numbers of the Gecko SDK and XULRunner runtimes need to match! Until the [patch](https://bugzilla.mozilla.org/show_bug.cgi?id=721817) is resolved, the supported version number is __10.0.2__*
 
@@ -51,18 +51,14 @@ You should unzip/tar it on top of your Kylo source install directory, and it wil
 
     kylo-browser/ (Path to Kylo source install directory)
       src/
-        extern/
-          xulrunner/
-            versions/
-              10.0.2/
-                runtime/
-                  win32/
-                    components/
-                    dictionaries/
-                    *.dll
-                    *.manifest
-                    etc... 
+        xulrunner/ <------| Standard XULRunner distributions start here
+          components/
+          dictionaries/
+          *.dll
+          *.manifest
+          etc... 
 
+If you want to use a standard XULRunner distribution, you can unzip the file into your `src` directory. That should match the directory structure above. Or you can specify a directory via the `--moz-dir` command line option.
 
 <a id="geckosdk" />**Gecko SDK**  
 >*Note: The Gecko SDK is also called the XULRunner SDK, so you'll see places both on mozilla's servers and our directory structure where the Gecko SDK is located under "xulrunner".*
@@ -73,20 +69,15 @@ Assuming you've grabbed the Windows v10.0.2 release of the SDK, your directory s
 
     kylo-browser/ [Kylo Source Package install location]
       src/
-        extern/
-          xulrunner/
-            versions/
-              10.0.2/
-                runtime/ <-------| Already here from xulrunner runtime install
-                  ...  
-                sdk/ <-----------| Create these directories and copy everything
-                  win32/ <-------| from "xulrunner-sdk" into the new win32 directory
-                    bin/  
-                    host/  
-                    idl/  
-                    include/
-                    lib/  
-                    sdk/  
+        xulrunner/  <-------| Already exists from XULRunner runtime install
+          ...
+        xulrunner-sdk/  <---| Unzip the SDK here
+          bin/  
+          host/  
+          idl/  
+          include/
+          lib/  
+          sdk/  
 
 ********************************************************************************
 
@@ -126,29 +117,48 @@ Run the Build
 
 To run Kylo builds, you'll be using our custom Python script: `build_kylo.py`
 
+#### Simple Build
 From the command line:  
 
     $ cd [\path\to\kylo-browser]\tools\build  
-    $ build_kylo.py --skip-compile --skip-app --skip-installer -v -R 1000 ..\conf\kylo.conf  
+    $ build_kylo.py ..\conf\kylo.conf  
     
-This will use the pre-compiled XPCOM binaries and Kylo app executable and build a "portable" version of Kylo in the build directory.
+This will use the configuration parameters specified in the `..\conf\kylo.conf` file. Without any command line options, the process will use the pre-compiled XPCOM binaries and Kylo app executable from the custom XULRunner runtime package and assemble a "portable" version of Kylo in the build directory.
 
-**Rundown of the command line optons:**
+#### Compile C++ Components
+If you make changes to any of the C++ components, you'll need to recompile. This is done with the `-c` flag or `--compile` options.
 
-  * `--skip-compile`    
-      This prevents the build script from trying to compile the XPCOM components. Run this option if you don't have the Gecko SDK or build tools installed (Visual Studio, CMAKE, etc.)
+    $ build_kylo.py -c ..\conf\kylo.conf
+    
+This will recompile __ALL__ components in both the `components` and `extensions` directories.
 
-  * `--skip-app`        
-      This avoids the process of creating the `Kylo.exe` executable on Windows. If you're using the [patched version of XULRunner](http://code.kylo.tv/xulrunner), `Kylo.exe` is provided for you. 
+#### Create the App
+On Windows, you can chose to create the `Kylo.exe` executable. This is done by making a copy of the `xulrunner-stub.exe` file in the XULRunner distribution and modifying the file resources to provide it with the correct name, icon, and metadata. This process is done through [Resource Hacker](http://www.angusj.com/resourcehacker/). On OS X, this will create the `Kylo.app` application package.
 
-  * `--skip-installer`  
-      This skips the NSIS/DMG installer process. **TODO:** Make this default.
+    $ build_kylo.py --app ../conf/kylo.conf
+
+**Helpful command line optons:**
 
   * `-v`
-      Verbose flag. Prints output to the console.
+      Verbose flag. Prints out all activity to the console
+      
+  * `--skip-update`
+      Skips the process of copying *.js, *.xul, etc. from `src` to `build`
+      
+  * `--skip-omni`
+      Typically, all application content is compressed into a single archive called `omni.ja` (formerly omni.jar). You may chose to run with an expanded directory structure.
+      
+  * `--app`
+      Create the Kylo.app or Kylo.exe file. On Windows, you can skip this process if you have copied the patched version of XULRunner into your source directory.
+   
+  * `--c`, `--compile`, `--compile-ext`, `--compile-com`
+      Compile C++ components. The first two options compile all components in the `extensions` and `components` directories. The second two options compile either the components in the `extensions` or `components` directories respectively.
 
-  * `-R 1000`           
-      Sets the revision number. See the [note on version numbers](#R) below.
+  * `--installer`
+      Create the NSIS or DMG installer file in the `dist` directory.
+
+  * `-R [REVISION NUMBER]`           
+      Sets the revision number, the fourth number in the program version (ie. `build_kylo.py -R 1000` -> 1.0.1.1000). See the [note on version numbers](#R) below.
 
   * `..\conf\Kylo.conf` 
       This is the default config file. You can modify this file or create your own. You can also pass in multiple configuration files.
@@ -160,20 +170,29 @@ To see what all the options do:
 The standard process is to make your changes to the JS/XUL and then build with the compile, installer, and app options turned **OFF**. This will recreate the omni.jar package of JS/XUL with your included updates. If you want a hierarchical
 layout of source instead of the compressed omni package, run `build_kylo.py` with the `--skip-omni` option.
 
-Running `build_kylo.py` without any options and only the configuration file provided will perform all build operations in the following order:
+Running `build_kylo.py` without any options and only the configuration file provided will perform the following operations:
+
+1. Create the build and dist directories
+2. Sync JS/XUL, components, extensions into the build directory
+3. Compress the JS/XUL into the omni.jar (omni.jar/omni.ja is a Mozilla construct - feel free to look this up in [developer.mozilla.org](https://developer.mozilla.org/en/Mozilla/About_omni.ja_(formerly_omni.jar))
+
+To run a 'complete' build:
+
+    $ build_kylo.py -c --app --installer -R 1000 ..\conf\kylo.conf
+
+This will perform the following operations:
 
 1. Create the build and dist directories
 2. Compile components selected in the `[components]` directive of the *.conf file
 3. Compile components in the extensions selected in the `[extensions]` directive
 4. Sync JS/XUL, components, extensions into the build directory
-5. Compress the JS/XUL into the omni.jar (omni.jar/omni.ja is a Mozilla construct - feel free to look this up in [developer.mozilla.org](https://developer.mozilla.org/en/Mozilla/About_omni.ja_(formerly_omni.jar))
-6. "Build" the Kylo executable (run reshacker to create `Kylo.exe` from `xulrunner-stub.exe`)
+5. Compress the JS/XUL into the omni.jar 
+6. "Build" the Kylo executable
 7. Run NSIS, create the Kylo installer
-
 
 ********************************************************************************
 <a id="R" />_**A Quick Note on Version Numbers**_  
-The -R/--revision option affects Kylo's version number. The revision number is the fourth number in the full version (ie. 1.0.1.76141). This has previously mapped to an internal revision number matching a Perforce changelist. For local builds, you can choose to provide a custom value or exclude the -R option. Without specifying a revision number, the version number will be only three parts (ie. 1.0.1). You will likely be asked to upgrade after running Kylo. You can ignore this message for development purposes.   
+The -R/--revision option affects Kylo's version number. The revision number is the fourth number in the full version (ie. 1.0.1.76141). This has previously mapped to an internal revision number matching a Perforce changelist. For local builds, you can choose to provide a custom value or exclude the -R option. Without specifying a revision number, the version number will be only three parts (ie. 1.0.1). You will likely be asked to upgrade after running Kylo. You can ignore this message for development purposes. **The `--installer` option currently requires that the revision number be explicitly set via the `-R` option.**   
 ********************************************************************************
 
 Test Your Build
@@ -190,6 +209,7 @@ The Kylo build process creates a "portable" package under the `build\[OS]\[App N
               extensions/
               xulrunner/
               Kylo.exe
+              omni.ja
               ...
 
 You can run the `Kylo.exe` file out of this directory. XULRunner apps have a couple flags that might be handy for development purposes. You can append this flags to the `Kylo.exe` like so:

@@ -37,8 +37,10 @@ def build():
     Settings.prefs.dist_dir  = os.path.normpath(os.path.join(Settings.prefs.dist_dir,  Settings.platform, Settings.config.get('App', 'ProdID')))
     
     # Set the path to the selected version of the XULRunner runtime
-    Settings.prefs.xul_dir   = os.path.normpath(os.path.join(Settings.prefs.src_dir, "extern", "xulrunner", "versions", 
-                                                             Settings.config.get('Build', 'gecko'), "runtime", Settings.platform))
+    Settings.prefs.xul_dir   = os.path.abspath(os.path.join(Settings.prefs.moz_dir, "xulrunner"))
+    
+    # Set the path to the selected version of the Gecko SDK
+    Settings.prefs.sdk_dir   = os.path.abspath(os.path.join(Settings.prefs.moz_dir, "xulrunner-sdk"))
 
     # Kylo source goes into different directories depending on platform
     if Settings.platform == "osx":
@@ -76,27 +78,29 @@ def build():
     
     # ---------------------
     # Build C++ components
-    if Settings.prefs.compile:
+    if len(Settings.prefs.compile) > 0:
         logger.info("=" * 72)
-        logger.info("Building C++ Components")
+        logger.info("Building C++ Components: %s" % Settings.prefs.compile)
         logger.info("=" * 72)
         
         # Build main set of components
-        for component in Settings.config.options('components'):
-            if not Settings.prefs.clean:
-                platform_build.cleanComponent(component)
-            platform_build.buildComponent(component)
+        if "com" in Settings.prefs.compile:
+            for component in Settings.config.options('components'):
+                if not Settings.prefs.clean:
+                    platform_build.cleanComponent(component)
+                platform_build.buildComponent(component)
         
         # Build extensions' components
-        for ext in Settings.config.options('extensions'):
-            ext_components_dir = os.path.join(Settings.prefs.src_dir, "extensions", ext, "components")
-            if os.path.isdir(ext_components_dir):
-                for component in os.listdir(ext_components_dir):
-                    if os.path.isdir(os.path.join(ext_components_dir, component)):
-                        if not Settings.prefs.clean:
-                                platform_build.cleanComponent(component, componentDir=os.path.join(ext_components_dir, component))
-                        for part in platform_build.buildComponent(component, componentDir=os.path.join(ext_components_dir, component)):
-                            shutil.copy2(part, ext_components_dir)
+        if "ext" in Settings.prefs.compile:
+            for ext in Settings.config.options('extensions'):
+                ext_components_dir = os.path.join(Settings.prefs.src_dir, "extensions", ext, "components")
+                if os.path.isdir(ext_components_dir):
+                    for component in os.listdir(ext_components_dir):
+                        if os.path.isdir(os.path.join(ext_components_dir, component)):
+                            if not Settings.prefs.clean:
+                                    platform_build.cleanComponent(component, componentDir=os.path.join(ext_components_dir, component))
+                            for part in platform_build.buildComponent(component, componentDir=os.path.join(ext_components_dir, component)):
+                                shutil.copy2(part, ext_components_dir)
             
     # ---------------------
     # Copy source materials into our build directory
@@ -142,15 +146,14 @@ def build():
         mfst_count = 0
         for component in Settings.config.options('components'):
             # Copy binaries first
-            compDir = os.path.join(Settings.prefs.src_dir, "xpcom", component)
+            compDir = os.path.join(Settings.prefs.src_dir, "components", component)
             binDir = os.path.join(compDir, "bin")
             for f in [os.path.join(binDir, pattern % component) \
                           for pattern in ('%s.dll', '%s.dylib', '%s.so', 'I%s.xpt')]:
                 if os.path.exists(f):
-                    trg = os.path.join(component_build_dir, os.path.basename(f))
-                    if os.path.exists(trg):
-                        if build_util.syncFile(trg, component_build_dir):
-                            numUpdates += 1
+                    if build_util.syncFile(f, component_build_dir):
+                        logger.info("Copied %s to %s" % (os.path.basename(f), component_build_dir))
+                        numUpdates += 1
                     
             # Grab component-specific manifests
             mfst = os.path.join(compDir, "%s.manifest" % component)
@@ -243,8 +246,6 @@ def build():
         
         ini_path = os.path.join(kylo_build_dir, "application.ini")
         
-        wrote_ini = False
-        
         if os.path.exists(ini_path):
             logger.info("... writing temp file")
             temp_ini_path = os.path.join(kylo_build_dir, "~application.ini")
@@ -252,13 +253,15 @@ def build():
             ini.write(temp_ini_file)
             temp_ini_file.close()
             
+            for line in fileinput.input(temp_ini_path, inplace=1):
+                print line.replace(" = ", "="),
+            
             logger.info("... comparing temp")
             if not filecmp.cmp(temp_ini_path, ini_path, shallow=False):
                 logger.info("... replacing original with temp")
                 os.remove(ini_path)
                 os.rename(temp_ini_path, ini_path)
                 numUpdates += 1
-                wrote_ini = True
             else:
                 logger.info("... temp same as original")
                 os.remove(temp_ini_path)
@@ -266,20 +269,18 @@ def build():
             ini_file = open(ini_path, "w+")
             ini.write(ini_file)
             ini_file.close()
-            numUpdates += 1     
-            wrote_ini = True   
-        
-        
-        if wrote_ini:
+            
             # Seems to be a weird incompatibility - ConfigParser writes values as "name = value", but XUL runner needs "name=value" (no spaces)
             for line in fileinput.input(ini_path, inplace=1):
                 print line.replace(" = ", "="),
+                
+            numUpdates += 1     
 
         logger.info("### Number of updates: %d" % numUpdates)
 
     # ---------------------
     # Jar up the app
-    if Settings.prefs.omnify:
+    if Settings.prefs.update and Settings.prefs.omnify:
         logger.info("Creating omni.jar/omni.ja")
         if numUpdates > 0:
             omnify.makejar()
@@ -334,14 +335,16 @@ def init(args = None):
     parser.set_defaults(verbosity="info")
     parser.set_defaults(logfile=None)
     
-    # Build defaults
+    # Clean defaults
     parser.set_defaults(clean=False)
     parser.set_defaults(clean_dist=False)
-    parser.set_defaults(compile=True)
+    
+    # Build defaults
     parser.set_defaults(update=True)
-    parser.set_defaults(buildapp=True)
     parser.set_defaults(omnify=True)
-    parser.set_defaults(installer=True)
+    parser.set_defaults(compile=[])
+    parser.set_defaults(buildapp=False)
+    parser.set_defaults(installer=False)
     
     # Path defaults
     ROOT_DIR = os.path.abspath("../..")
@@ -350,6 +353,7 @@ def init(args = None):
     parser.set_defaults(build_dir=os.path.abspath(os.path.join(ROOT_DIR, "build")))
     parser.set_defaults(dist_dir=os.path.abspath(os.path.join(ROOT_DIR, "dist")))
     parser.set_defaults(bin_dir=os.path.abspath(os.path.join(ROOT_DIR, "bin")))
+    parser.set_defaults(moz_dir=os.path.abspath(os.path.join(ROOT_DIR, "src")))
     
     # Identity defaults (set to None - defaults come from config files)
     parser.set_defaults(version=None)
@@ -392,7 +396,7 @@ def init(args = None):
                       help="Output the log to a specific file. Logs to stdout if not set.")
 
     # ---------------------
-    # Directory options (root, build, src, bin, dist)
+    # Directory options (root, build, src, bin, dist, moz)
     parser.add_option("--root-dir",
                       dest="root_dir",
                       type="string",
@@ -422,8 +426,21 @@ def init(args = None):
                       help="Put executable or installer in DIST_DIR. " + \
                       "Default is '../dist'")  
     
+    parser.add_option("--moz-dir",
+                      type="string",
+                      dest="moz_dir",
+                      metavar="MOZ_DIR",
+                      help="Parent directory of 'xulrunner' and 'xulrunner-sdk'. " + \
+                      "Default is '../src'")      
+    
     # ---------------------
     # Clean options
+    parser.add_option("--clean",
+                      dest="clean",
+                      action="store_true",
+                      help="Deletes existing build and bin" + \
+                      "directories, exits build process.")
+        
     parser.add_option("--clean-dist",
                       dest="clean_dist",
                       action="store_true",
@@ -431,20 +448,7 @@ def init(args = None):
                       "DIST_DIR is excluded from normal clean up process.")
     
     # ---------------------
-    # Build options (clean, skip-compile, skip-update, skip-omni, skip-app, skip-installer)
-    parser.add_option("--clean",
-                      dest="clean",
-                      action="store_true",
-                      help="Deletes existing build and bin" + \
-                      "directories, exits build process.")
-    
-    parser.add_option("--skip-compile",
-                      dest="compile",
-                      action="store_false",
-                      help="Skips compilation of XPCOM components. NOTE: this will " + \
-                      "produce an error if a BIN_DIR with pre-compiled XPCOM " + \
-                      "objects does not already exist")
-
+    # Build options (skip-update, skip-omni, compile, app, installer)
     parser.add_option("--skip-update",
                       dest="update",
                       action="store_false",
@@ -455,16 +459,37 @@ def init(args = None):
                       dest="omnify",
                       action="store_false",
                       help="Prevents application source being compressed into a single omni.jar file.")
-          
-    parser.add_option("--skip-app",
-                      dest="buildapp",
-                      action="store_false",
-                      help="Skip the creating of the Kylo executable (.exe, .app, etc.)")    
     
-    parser.add_option("--skip-installer",
-                      action="store_false",
+    parser.add_option("-c", "--compile",
+                      action="store_const",
+                      dest="compile",
+                      const=["ext", "com"],
+                      help="Compile all XPCOM components in the 'components' and 'extensions' directories. " + \
+                      "NOTE: skipping this option may " + \
+                      "produce errors if pre-compiled libraries " + \
+                      "do not already exist in their appropriate bin directories")
+    
+    parser.add_option("--compile-ext",
+                      action="append_const",
+                      dest="compile",
+                      const="ext",
+                      help="Compile XPCOM components in the 'extensions' directory ONLY.")
+    
+    parser.add_option("--compile-com",
+                      action="append_const",
+                      dest="compile",
+                      const="com",
+                      help="Compile XPCOM components in the 'components' directory ONLY.")
+          
+    parser.add_option("--app",
+                      dest="buildapp",
+                      action="store_true",
+                      help="Create the Kylo executable (.exe, .app, etc.)")    
+    
+    parser.add_option("-i", "--installer",
+                      action="store_true",
                       dest="installer",
-                      help="Skips creation of an installer file (NSIS on Windows, DMG on OS X).")
+                      help="Create the installer file (NSIS on Windows, DMG on OS X).")
     
     # ---------------------
     # Identity options (build id, product id, version)
@@ -480,7 +505,7 @@ def init(args = None):
                       help="Product id. Default is 'kylo'. Can be alphanumeric string, " + \
                       "no spaces. Overrides the ProdID value, under App, in the config file.")    
     
-    parser.add_option("-V", "--kylo-version",
+    parser.add_option("-V", "--version",
                       dest="version",
                       type="string",
                       help="The version of Kylo that is being built. Overrides the " + \
@@ -490,7 +515,7 @@ def init(args = None):
                       type="string",
                       dest="gecko",
                       help="Version of the XUL SDK to compile against. Overrides the " + \
-                      "'gecko' value, under 'Build', in the config file.")
+                      "'gecko' value, under 'Build', in the config file.")    
     
     parser.add_option("-R", "--revision",
                       type="string",
@@ -546,8 +571,8 @@ def init(args = None):
     if Settings.prefs.version:
         Settings.config.set("App", "Version", Settings.prefs.version)
     if Settings.prefs.gecko:
-        Settings.config.set("Build", "gecko", Settings.prefs.gecko)
-    
+        Settings.config.set("Build", "gecko", Settings.prefs.gecko)        
+
     # Tack on the revision number (if provided)
     if Settings.prefs.revision:
         v = Settings.config.get("App", "Version")
@@ -555,7 +580,7 @@ def init(args = None):
     
     # If we're cleaning, skip other options automatically
     if Settings.prefs.clean:
-        Settings.prefs.compile = False
+        Settings.prefs.compile = ()
         Settings.prefs.update = False
         Settings.prefs.omnify = False
         Settings.prefs.buildapp = False
