@@ -13,7 +13,7 @@ Currently, there is a [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=721817)
 
 The latest version of XULRunner supported by Kylo is 10.0.2. 
 
-<i class="icon-download-alt"></i> [kylo-browser_xulrunner-10.0.2.en-US.win32%2Bpatch_721817.zip](http://kylo.s3.amazonaws.com/dev/public/kylo-browser_xulrunner-10.0.2.en-US.win32%2Bpatch_721817.zip)
+<i class="icon-download-alt"></i> [kylo-browser_xulrunner-10.0.2.en-US.win32%2Bpatch_721817.zip](http://files.kylo.tv/kylo-browser_xulrunner-10.0.2.en-US.win32%2Bpatch_721817.zip)
 
 Unzip this to your top source directory (ie. kylo-browser). This will merge with your existing directory structure and add the xulrunner runtime to appropriate locations. See the [build documentation](https://github.com/teamkylo/kylo-browser/wiki/Build-Instructions) for more information.
 
