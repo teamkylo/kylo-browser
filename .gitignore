@@ -5,5 +5,11 @@ xpidl_debug
 
 /dist
 /build
-src/extern/xulrunner/versions
-src/xpcom/*/build
+/xulrunner*
+src/xulrunner*
+src/components/*/build
+src/extensions/*/components/*/bin
+src/extensions/*/components/*/build
+src/extensions/*/components/*/*.xpt
+src/extensions/*/components/*/I*.h
+src/extensions/*/components/*/I*.rule

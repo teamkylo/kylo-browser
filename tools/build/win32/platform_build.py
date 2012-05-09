@@ -29,7 +29,7 @@ def buildComponent(component, componentDir=None):
     prevDir = os.getcwd()
     # Component Directory
     if componentDir is None:
-        componentDir = os.path.join(Settings.prefs.src_dir, "xpcom", component)
+        componentDir = os.path.join(Settings.prefs.src_dir, "components", component)
 
     os.chdir(componentDir)
     logger.info("Making build and bin dirs for component %s"%component)
@@ -52,7 +52,7 @@ def buildComponent(component, componentDir=None):
     logger.info("Changing working directory to %s"%buildDir)
     os.chdir(buildDir)
     # Run cmake on the component directory to generate the sln file
-    build_util.runSubprocess([os.path.normpath(Settings.config.get("env","CMAKE")), '..', '-DGECKO:STRING=%s' % Settings.config.get('Build', 'gecko'), '-G', 'Visual Studio 10'], logger)
+    build_util.runSubprocess([os.path.normpath(Settings.config.get("env","CMAKE")), '..', '-DGECKO:STRING=%s' % Settings.config.get('Build', 'gecko'), '-DXULRUNNER_SDK_PATH:STRING=%s' % Settings.prefs.sdk_dir, '-G', 'Visual Studio 10'], logger)
     slnfile = os.path.normpath(os.path.join(buildDir, "%s.sln"%component))
 
     # Run devenv (or VCExpress) on the new sln file
@@ -74,7 +74,7 @@ def cleanComponent(component, componentDir=None):
     logger.info("Cleaning component %s"%component)
     
     if componentDir is None:
-        componentDir = os.path.join(Settings.prefs.src_dir, "xpcom", component)
+        componentDir = os.path.join(Settings.prefs.src_dir, "components", component)
     
     buildDir = os.path.join(componentDir, "build")
     binDir = os.path.join(componentDir, "bin")
@@ -122,7 +122,7 @@ def buildApp():
     
     # ----------------------
     # We also need mozilla DLLS
-    for lib in ["mozcrt19.dll", "mozutils.dll"]:
+    for lib in ["mozcrt19.dll", "mozutils.dll", "gkmedias.dll"]:
         f = os.path.join(Settings.prefs.xul_dir, lib)
         if (os.path.isfile(f)):
             shutil.copy2(f, os.path.join(Settings.prefs.build_dir, "application"))

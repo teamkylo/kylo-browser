@@ -37,8 +37,12 @@ Page Custom LicensePage ; custom license page that provides print capabilities
 !insertmacro MUI_PAGE_INSTFILES
 
 ; flash installer page
+/**
+ * Can't distribute flash -- commenting out for now
+ 
 Page custom FlashInstallerPage FlashInstallerPage_Leave
-
+ */
+ 
 ; Finish page params
 !define MUI_FINISHPAGE_LINK "$(FinishPageLinkText)"
 !define MUI_FINISHPAGE_LINK_LOCATION "${ABOUT_SITE_URL}"
@@ -68,8 +72,11 @@ FunctionEnd
 
 var Require_Uninstall
 
-Var FlashInstallCheckBox
-Var FlashInstallCheckBox_State
+/**
+ * Can't distribute flash plugin. Commenting out for now
+ */
+;Var FlashInstallCheckBox
+;Var FlashInstallCheckBox_State
 
 ; For custom license page
 Var Dialog             ; custom page field
@@ -299,6 +306,11 @@ Function PrepDirForUpgrade
     SetOutPath -
 FunctionEnd
 
+/**
+ * Can't distribute flash plugin. Commenting out for now
+ */
+ 
+/*
 Function FlashInstallerPage
     nsDialogs::Create 1018
     ; Pop the dialog hwnd
@@ -357,6 +369,7 @@ Function FlashInstallPage_DoInstall
     ${EndIf}
     Delete $R0
 FunctionEnd
+*/
 
 Function FinishPage_Show
     ; disable the back button if flash install was attempted
