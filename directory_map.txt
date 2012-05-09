@@ -1,111 +1,95 @@
-- hcrest.kylo
-    - src
-        - kylo 
-            - chrome
-                - gloss (default skin - 'pre-installed')
-                - polo (core browser xul/js - "Polo" was Kylo's original project name)
-                - polo-contentaccessible
+kylo-browser/
+    src/
+        kylo/ 
+            chrome/
+                gloss/ (default skin 'pre-installed')
+                polo/ (core browser xul/js - "Polo" was Kylo's original project name)
+                polo-contentaccessible/
                     arrow-cursor.png
-                - icons
-                    - default
+                icons/
+                    default/
                         polo-main.ico
                 *.manifest
-            - components
+            components/
                 *.js (JavaScript components)
-            - defaults
-                - preferences
+            defaults/
+                preferences/
                     *-prefs.js
-            - extensions
-                - gloss@kylo.tv (default skin)
+            extensions/
+                gloss@kylo.tv/ (default skin)
                     icon.png
                     preview.png
                     install.rdf
                     (No chrome.manifest file here, will cause a harmless warning in logs)
             application.ini
             chrome.manifest
-        - extensions
-            - [EXTENSION_NAME]@kylo.tv
-                - components
-                    - [COMPONENT_NAME] (binary source)
+        components/ (Binary component source)
+            [COMPONENT_NAME]/ (ie. MouseEventTool, SendKeys)
+                CMakeLists.txt
+                *.cpp
+                *.h
+                *.idl
+                *.manifest (gets moved with the compiled binary)                      
+        extensions/
+            [EXTENSION_NAME]@kylo.tv/
+                components/
+                    [COMPONENT_NAME]/ (binary source)
+                        CMakeLists.txt
                         *.cpp
                         *.h
                         *.idl
                     *.dll (compiled binaries to be moved to build/dist)
                     *.js (JavaScript components)
-                - chrome
-                    - content
+                chrome/
+                    content/
                         *.js
                         *.xul
-                    - locale
-                        - en-US
+                    locale/
+                        en-US/
                             *.dtd
                             *.properties
-                - defaults
-                    - preferences
-                        - *-prefs.js
+                defaults/
+                    preferences/
+                        *-prefs.js
                 chrome.manifest
                 install.rdf
-        - extern
-            - xulrunner
-                - versions
-                    - [VERSION NUMBER]
-                        - runtime
-                            - osx
-                            - win32
-                        - sdk
-                            - osx
-                            - win32                     
-        - xpcom (Binary component source)
-            - MouseEventTool
-                CMakeLists.txt
-                *.idl
-                *.h
-                *.cpp
-                *.manifest (gets moved with the compiled binary)
-            - SendKeys
-    - tools
-        - build
-            - common
-            - osx
-            - win32
-                - installer
-                - resources
-                - stub
+        xulrunner/ (XULRunner runtime goes here)
+        xulrunner-sdk/ (Gecko SDK goes here)
+    tools/
+        build/
+            common/
+            osx/
+            win32/
+                installer/
+                resources/
+                stub/
             build_kylo.py (The master build script)
             *.platform.conf
-        - conf
+        conf/
             *.conf
-    - build 
-        - win32
-            - kylo (On Windows, Kylo can be run from here - like a portable app)
-                - application
-                    - chrome
-                    - components
-                    - defaults
-                    - extensions
-                    - xulrunner
+    build/
+        win32/
+            kylo/ (On Windows, Kylo can be run from here like a portable app)
+                application/
+                    chrome/
+                    components/
+                    defaults/
+                    extensions/
+                    xulrunner/
                     application.ini
                     chrome.manifest
                     Kylo.exe
-        - osx
-            - kylo
-                - Kylo.app
-                    - Contents
-                        - Resources
-                        - MacOS
-                        - Frameworks
+        osx/
+            kylo/
+                Kylo.app/
+                    Contents/
+                        Resources/
+                        MacOS/
+                        Frameworks/
                         Info.plist
                         PkgInfo    
-    - dist
-        - win32
+    dist/
+        win32/
             kylo_setup-1.0.0.0.exe
-        - osx
+        osx/
             kylo_setup-1.0.0.0.dmg
-        - linux
-    - bin (Stores compiled components)
-        - win32
-            FSTool.dll
-            IFSTool.xpt
-            ...
-        - osx
-        - linux
