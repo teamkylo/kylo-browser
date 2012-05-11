@@ -23,7 +23,7 @@
     </commandset>
 
     <keyset id="mainKeyset">
-        <key id="udlr_activate_key" modifiers="accel" keycode="U" command="udlr_activate_cmd" label="&UDLR.activate;"/>
+        <key id="udlr_activate_key" modifiers="accel" key="u" command="udlr_activate_cmd" label="&UDLR.activate;"/>
     </keyset>
     
 </overlay>
