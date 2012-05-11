@@ -73,4 +73,8 @@ pref("privacy.item.geolocation", true);
 pref("privacy.item.siteSettings", true);
 
 pref("polo.cursor.goBackOnRightClick", true);
-pref("polo.showSysReq", true);
+
+// This pref sets whether a "Your system does not meet the requirements..." message appears
+// when MouseEventTool is not running or missing.
+// kwood1138: Now defaulting to off for issue #16
+pref("polo.showSysReq", false);
