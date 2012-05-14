@@ -18,9 +18,11 @@ pref("layout.overscan.max.left", 90);
 pref("layout.overscan.max.right", 90);
 pref("layout.overscan.max.top", 47);
 
+pref("layout.overscan.default.percent", 7);
+
 pref("layout.overscan.bottom", 36);
-pref("layout.overscan.left", 64);
-pref("layout.overscan.right", 64);
+pref("layout.overscan.left", 45);
+pref("layout.overscan.right", 45);
 pref("layout.overscan.top", 36);
 
 pref("polo.bookmarks.upgrade", "-1");

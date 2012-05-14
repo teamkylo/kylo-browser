@@ -380,7 +380,6 @@ function KeyboardOverlay(url, embed, keyboard) {
     this.urlSideBox_ = document.getElementById("kb-url-sidebox");
 	
 	this.anchorBottom_ = document.getElementById("anchor-bottom");
-	this.controlsOverlay_ = document.getElementById("controlsOverlay");
 	
 	document.addEventListener("keydown", function (evt) {
             if (evt.keyCode == KeyEvent.DOM_VK_TAB) {
