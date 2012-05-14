@@ -14,7 +14,7 @@ pref("headers.ua.WINNT.1.value", "Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like Ma
 pref("headers.ua.WINNT.2.name", "Playstation 3");
 pref("headers.ua.WINNT.2.value", "Mozilla/5.0 (PLAYSTATION 3; 2.00)");
 pref("headers.ua.WINNT.3.name", "Wii");
-pref("headers.ua.WINNT.3.value", "Opera/9.00 (Nintendo Wii; U; ; 1038-58; Wii Shop Channel/1.0; en)");
+pref("headers.ua.WINNT.3.value", "Opera/9.30 (Nintendo Wii; U; ; 3642; en)");
 pref("headers.ua.WINNT.4.name", "Internet Explorer 9");
 pref("headers.ua.WINNT.4.value", "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)");
 pref("headers.ua.WINNT.5.name", "Motorola Xoom (Android)");
@@ -29,7 +29,7 @@ pref("headers.ua.Darwin.1.value", "Mozilla/5.0(iPad; U; CPU iPhone OS 3_2 like M
 pref("headers.ua.Darwin.2.name", "Playstation 3");
 pref("headers.ua.Darwin.2.value", "Mozilla/5.0 (PLAYSTATION 3; 2.00)");
 pref("headers.ua.Darwin.3.name", "Wii");
-pref("headers.ua.Darwin.3.value", "Opera/9.00 (Nintendo Wii; U; ; 1038-58; Wii Shop Channel/1.0; en)");
+pref("headers.ua.Darwin.3.value", "Opera/9.30 (Nintendo Wii; U; ; 3642; en)");
 pref("headers.ua.Darwin.4.name", "Safari 5");
 pref("headers.ua.Darwin.4.value", "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_7; en-us) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1");
 pref("headers.ua.Darwin.5.name", "Motorola Xoom (Android)");

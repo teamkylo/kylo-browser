@@ -8,6 +8,9 @@ xpidl_debug
 /xulrunner*
 src/xulrunner*
 src/components/*/build
+src/components/*/*.xpt
+src/components/*/I*.h
+src/components/*/I*.rule
 src/extensions/*/components/*/bin
 src/extensions/*/components/*/build
 src/extensions/*/components/*/*.xpt

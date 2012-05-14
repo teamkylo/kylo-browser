@@ -1,4 +1,6 @@
 <?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://polo/skin/overscan/overscan.css" type="text/css"?>
 <!-- This Source Code Form is subject to the terms of the Mozilla Public
    - License, v. 2.0. If a copy of the MPL was not distributed with this file,
    - You can obtain one at http://mozilla.org/MPL/2.0/.  
@@ -35,11 +37,25 @@
                 <button id="overscan-arrow-bottom-less" type="repeat" class="overscan-arrow" />
             </vbox>
             <vbox flex="1" mousethrough="always">
-                <hbox id="overscan-textrow">
-                    <description flex="1" value="&adjustScreen.adjustScreenLabel;" crop="end"/>
-                    <button id="overscan-reset" label="&adjustScreen.restoreButtonLabel;" />
-                    <button id="overscan-exit-mode" label="&adjustScreen.acceptButtonLabel;" />
-                    <button id="overscan-cancel" label="&adjustScreen.cancelButtonLabel;" />
+                <spacer flex="1" />
+                <hbox>
+                    <spacer flex="1" />
+                    <description id="overscan-text">&adjustScreen.adjustScreenLabel;</description>
+                    <spacer flex="1" />
+                </hbox>
+                <spacer flex="1" />
+            </vbox>
+            <vbox flex="1" mousethrough="always">
+                <hbox id="overscan-buttons">
+                    <vbox>
+                        <button id="overscan-reset" class="overscan-btn-minmax" label="&adjustScreen.restoreButtonLabel;" />
+                        <button id="overscan-max" class="overscan-btn-minmax" label="&adjustScreen.maxButtonLabel;" />
+                    </vbox>
+                    <spacer flex="1"/>
+                    <vbox>
+                        <button id="overscan-exit-mode" label="&adjustScreen.acceptButtonLabel;" />
+                        <button id="overscan-cancel" label="&adjustScreen.cancelButtonLabel;" />
+                    </vbox>
                 </hbox>
                 <spacer flex="1" />
             </vbox>

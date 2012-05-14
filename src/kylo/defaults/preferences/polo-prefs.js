@@ -18,9 +18,11 @@ pref("layout.overscan.max.left", 90);
 pref("layout.overscan.max.right", 90);
 pref("layout.overscan.max.top", 47);
 
+pref("layout.overscan.default.percent", 7);
+
 pref("layout.overscan.bottom", 36);
-pref("layout.overscan.left", 64);
-pref("layout.overscan.right", 64);
+pref("layout.overscan.left", 45);
+pref("layout.overscan.right", 45);
 pref("layout.overscan.top", 36);
 
 pref("polo.bookmarks.upgrade", "-1");
@@ -73,4 +75,8 @@ pref("privacy.item.geolocation", true);
 pref("privacy.item.siteSettings", true);
 
 pref("polo.cursor.goBackOnRightClick", true);
-pref("polo.showSysReq", true);
+
+// This pref sets whether a "Your system does not meet the requirements..." message appears
+// when MouseEventTool is not running or missing.
+// kwood1138: Now defaulting to off for issue #16
+pref("polo.showSysReq", false);
