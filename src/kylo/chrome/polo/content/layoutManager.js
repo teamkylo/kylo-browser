@@ -66,6 +66,13 @@ function LayoutManager() {
     document.getElementById("overscan-reset").addEventListener("mouseout", function (evt) {
         root.removeAttribute("highlight");
     }, false);
+    
+    document.getElementById("overscan-max").addEventListener("mouseover", function (evt) {
+        root.setAttribute("highlight", "top right bottom left");
+    }, false);
+    document.getElementById("overscan-max").addEventListener("mouseout", function (evt) {
+        root.removeAttribute("highlight");
+    }, false);
 
     this.initPrefs();
     
@@ -127,6 +134,24 @@ LayoutManager.prototype.observe = function (subject, topic, pref)  {
  * @name updateOverscan
  */
 LayoutManager.prototype.updateOverscan = function () {
+    // First check if we have a user value, otherwise calculate the default
+    // overscan size by percentage
+    
+    if (!this.prefs_.prefHasUserValue("overscan.top")) {
+        var p = this.prefs_.getIntPref("overscan.default.percent");
+        
+        var w = window.screen.width;
+        var h = window.screen.height;
+        
+        var rl = (w * p)/200;
+        var tb = (h * p)/200;
+        
+        this.prefs_.setIntPref("overscan.top", tb);
+        this.prefs_.setIntPref("overscan.bottom", tb);
+        this.prefs_.setIntPref("overscan.right", rl);
+        this.prefs_.setIntPref("overscan.left", rl);
+    }
+    
     for (var id in this.spacers_) {
         // need a minimum overscan of 1px so that panels don't anchor on the wrong
         // screen when using dual monitors
@@ -412,12 +437,28 @@ LayoutManager.prototype.buttonEvent = function (evt) {
                 }
             } else {
                 var def = gPrefService.getDefaultBranch("layout.overscan.");
-                adjust("bottom", def.getIntPref("bottom"));
-                adjust("left", def.getIntPref("left"));
-                adjust("right", def.getIntPref("right"));
-                adjust("top", def.getIntPref("top"));                
+                
+                var p = def.getIntPref("default.percent");
+        
+                var w = window.screen.width;
+                var h = window.screen.height;
+        
+                var rl = (w * p)/200;
+                var tb = (h * p)/200;
+                
+                adjust("bottom", tb);
+                adjust("left", rl);
+                adjust("right", rl);
+                adjust("top", tb);                
             }
             break;      
+            
+        case "overscan-max":
+            adjust("bottom", 0);
+            adjust("left", 0);
+            adjust("right", 0);
+            adjust("top", 0);
+            break;
             
         case "overscan-exit-mode":
             persist();                    

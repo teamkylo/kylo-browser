@@ -390,6 +390,14 @@ BrowserManager.prototype.monitorKeys = function (evt) {
                 //Ctrl+m minimizes
                 controls_.handleMinimize();
                 break;
+            case 79:
+                //Ctrl+o opens settings
+                browser_.switchOrCreate("about:settings");
+                break;
+            case 66:
+                //Ctrl+b opens bookmarks
+                browser_.switchOrCreate("about:places");
+                break;
             case 82: 
                 //Ctrl+r reloads the page
                 browser_.getCurrentBrowser().reload();
@@ -398,6 +406,7 @@ BrowserManager.prototype.monitorKeys = function (evt) {
                 //Ctrl+q quits
                 controls_.confirmClose();
                 break;
+            
         }
 	}
 }

@@ -9,7 +9,8 @@
    
 <!-- Adjust Screen -->
 <!ENTITY adjustScreen.adjustScreenLabel "Stretch to fill your screen">
-<!ENTITY adjustScreen.restoreButtonLabel "Restore">
+<!ENTITY adjustScreen.restoreButtonLabel "Restore Default">
+<!ENTITY adjustScreen.maxButtonLabel "Fill 100&#37;">
 <!ENTITY adjustScreen.acceptButtonLabel "Accept">
 <!ENTITY adjustScreen.cancelButtonLabel "Cancel">
 
