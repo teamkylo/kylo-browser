@@ -93,12 +93,16 @@
     !define BUILD_ID        "0000000000-dev"
 !endif
 
-!ifndef VERSION
-    !define VERSION         "0.0.0.0"
+!ifndef WIN_VERSION
+    !define WIN_VERSION     "0.0.0.0"
 !endif
 
-!ifndef INFO_VERSION
-    !define INFO_VERSION    "0.0.0.0"
+!ifndef FULL_VERSION
+    !define FULL_VERSION    "0.0.0.0"
+!endif
+
+!ifndef FILENAME_VERSION
+    !define FILENAME_VERSION "0_0_0_0"
 !endif
 
 !ifndef VERSION_MAJOR
@@ -109,14 +113,14 @@
     !define VERSION_MINOR   0
 !endif
 
-!ifndef FILE_VERSION
-    !define FILE_VERSION    "0.0.0.0"
+!ifndef DISPLAY_VERSION
+    !define DISPLAY_VERSION    "0.0.0"
 !endif
 
 !if ${LOCALE} == "en-US"
-    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${INFO_VERSION}.exe"
+    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${FILENAME_VERSION}.exe"
 !else
-    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${LOCALE}-${INFO_VERSION}.exe"
+    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${LOCALE}-${FILENAME_VERSION}.exe"
 !endif
 
 ; =============================================================================
@@ -234,11 +238,11 @@ OutFile "${OUT_FILE_NAME}"
 ;Version Information
 
 ; Common for all languages
-VIProductVersion "${VERSION}"
-VIAddVersionKey "ProductVersion"    "${VERSION}"
+VIProductVersion "${WIN_VERSION}"
 VIAddVersionKey "BuildID"           "${BUILD_ID}"
 VIAddVersionKey "InternalName"      "${INTERNAL_NAME}"
-VIAddVersionKey "FileVersion"       "${VERSION}"
+VIAddVersionKey "FileVersion"       "${DISPLAY_VERSION}"
+VIAddVersionKey "ProductVersion"    "${FULL_VERSION}"
 
 VIAddVersionKey "FileDescription"   "${SetupFileDescription}"
 VIAddVersionKey "LegalCopyright"    "${LegalCopyright}"
@@ -246,7 +250,7 @@ VIAddVersionKey "Publisher"         "${PUBLISHER}"
 VIAddVersionKey "CompanyName"       "${PUBLISHER}"
 VIAddVersionKey "LegalTrademarks"   "${LegalTrademarks}"
 VIAddVersionKey "ProductName"       "${ProductDisplayName}"
-VIAddVersionKey "Comments"          "${SetupFilleComment}"
+VIAddVersionKey "Comments"          "${SetupFileComment}"
 
 VIAddVersionKey "OriginalFilename"  "${OUT_FILE_NAME}"
 !macroend

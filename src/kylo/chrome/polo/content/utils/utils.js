@@ -288,6 +288,16 @@ var Utils = {
 		}
 	},
 	
+	formatVersion: function (version) {
+	    // Expect version numbers in the format: Major.Minor.Build
+	    var parts = version.split(".");
+	    var out = [];
+	    for (var i=0; i<3; i++) {
+	        out[i] = parts[i] || "0";
+	    }
+	    return out.join(".");
+	},
+	
 }
 
 function debug(str) {

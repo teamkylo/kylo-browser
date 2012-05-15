@@ -18,6 +18,7 @@ import stat
 import subprocess
 import time
 import shutil
+import re
 
 LOG_LEVELS = {'debug': logging.DEBUG,
               'info': logging.INFO,
@@ -66,6 +67,50 @@ class StreamLogger(object):
             tmp = tmp.rstrip('\x0a\x0d')
             self.logger.info('%s%s' % (self.prefix, tmp))
             self.data = ''
+            
+class VersionFormat(object):
+    # Version numbers are screwy. 
+    #
+    # version = The "complete" version number
+    #    Can have alphanumeric values and will contain full revision data. This
+    #    is the version that Kylo uses to identify itself to the update servers.
+    #
+    # win = Windows format version number
+    #    Windows expects version numbers in the format x.x.x.x (Major, Minor, 
+    #    Build, Revision), where x is an integer value. This version only
+    #    applies to the NSIS installer. We will strip non-numerical values from
+    #    the complete version to get this number.
+    #
+    # display = "Display" version number
+    #    This is the first three version numbers (Major, Minor, Build). It can
+    #    have alphanumeric values.
+    
+    def __init__(self, version=None):
+        if version is None:
+            self.full = Settings.config.get("App", "Version")
+        else:
+            self.full = version
+        
+        # First, strip off any trailing "-xxxx" revision numbers (ie. 1.1b2.1.1-abcdef -> 1.1b2.1.1)
+        self.stripped = re.sub("([^-]+)-.*", self.__replVersion, self.full)
+        
+        # Second, remove any alpha, beta, etc. tags (ie. 1.1b2.1.1 -> 1.1.1.1) 
+        self.num = re.sub("(\d+)[a-zA-Z]+\d*", self.__replVersion, self.stripped)
+          
+        # Array of integers    
+        self.ints = [int(x) for x in self.num.split(".")[:4]]
+        
+        # Display version
+        self.display = ".".join(str(x) for x in self.ints[:3])
+        
+        # Win version
+        self.win = "%s.0" % self.display
+        
+        # Display with alpha/beta tags
+        self.displayTagged = ".".join(x for x in self.stripped.split(".")[:3])        
+    
+    def __replVersion(self, m):
+        return m.group(1)
 
 def RMFail(function, path, excinfo):
     function(chmod_w(path))        

@@ -144,25 +144,17 @@ def buildInstaller():
     
     nsi_file = os.path.normpath(os.path.join(module_path, "installer", "kylo.nsi"))
            
-    # We have potentially two different version numbers: one alphanumeric (infoversion) 
-    # and one with just digits (ie. 1.0.1b.1000, 1.0.1.1000).
-    # This is because NSIS does not accept version strings with letters, but Mozilla does.    
-    
-    def replVersion(m):
-        return m.group(1)
-    
-    infoversion = Settings.config.get("App", "Version")
-    version = re.sub("(\d+)[a-zA-z]+\d*",replVersion,infoversion)    
-    versionInts = [int(x) for x in version.split(".")]
+    version = build_util.VersionFormat()
     
     nsis_defs = {
         "APP_DIR": Settings.prefs.kylo_build_dir,
         "BUILD_ID": Settings.config.get("App", "BuildID"),
-        "VERSION": version,
-        "INFO_VERSION": infoversion,
-        "VERSION_MAJOR": versionInts[0],
-        "VERSION_MINOR": versionInts[1],
-        "FILE_VERSION": version,
+        "WIN_VERSION": version.win,
+        "FULL_VERSION": version.full,
+        "FILENAME_VERSION": version.full.replace(".","_"),
+        "VERSION_MAJOR": version.ints[0],
+        "VERSION_MINOR": version.ints[1],
+        "DISPLAY_VERSION": version.display,
         "OUT_FILE_DIR": Settings.prefs.dist_dir,
         "LOCALE": "en-US",
     }

@@ -17,6 +17,7 @@ import fileinput
 import filecmp
 import stat
 import sys
+from datetime import datetime
 
 # ----------------------
 # Only platform specific lines here
@@ -568,10 +569,13 @@ def init(args = None):
         Settings.config.set("App", "ProdID", Settings.prefs.prodid)
     if Settings.prefs.buildid:
         Settings.config.set("App", "BuildID", Settings.prefs.buildid)
+    else:
+        # Default build id is current time stamp
+        Settings.config.set("App", "BuildID", datetime.now().strftime("%Y%m%d%H%M%S"))
     if Settings.prefs.version:
         Settings.config.set("App", "Version", Settings.prefs.version)
     if Settings.prefs.gecko:
-        Settings.config.set("Build", "gecko", Settings.prefs.gecko)        
+        Settings.config.set("Build", "gecko", Settings.prefs.gecko)
 
     # Tack on the revision number (if provided)
     if Settings.prefs.revision:
