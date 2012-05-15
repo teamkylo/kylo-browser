@@ -128,7 +128,7 @@ function doCheck() {
         if (evt.result.available) {
 			setLayout("available");
 			descriptor_ = evt.result.descriptor;
-			setLatestVersionText(descriptor_.version);	
+			setLatestVersionText(Utils.formatVersion(descriptor_.version));	
 		} else {
 			setLayout("uptodate");
 			descriptor = null;
@@ -159,10 +159,17 @@ function getAboutText() {
     if (!aboutURL || aboutURL == "") {
     	//get acutal version here, and use it.
 	    var currentVersion = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo).version;
-	    document.getElementById("version").innerHTML= strbundle_.getString("about.version") + currentVersion;
+	    document.getElementById("version").innerHTML= strbundle_.getString("about.version") + Utils.formatVersion(currentVersion);
         document.getElementById("defaultText").hidden = false;
         return;
     }
+    
+    var appInfo = Cc["@mozilla.org/xre/app-info;1"].getService(Ci.nsIXULAppInfo);
+    var vendor = gPrefService.getCharPref("polo.swupdate.vendor");
+    aboutURL = aboutURL
+        .replace("$vendor", encodeURIComponent(vendor))
+        .replace("$version", encodeURIComponent(appInfo.version));    
+    
     Utils.getURL(aboutURL, function (evt) {
         var response = evt.result;
         document.getElementById("insertionPoint").innerHTML = response;

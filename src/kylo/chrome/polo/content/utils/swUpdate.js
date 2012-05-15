@@ -85,10 +85,16 @@ var SWUpdate = {
 				osResult = {};
 			}
 			
+			// Strip off the last version chunk (revision number)
+			v1 = Utils.formatVersion(osResult.newest.version);
+			
+			// Strip off the last version chunk (revision number)
+			v2 = Utils.formatVersion(appInfo.version);	
+			
 		    // Now we'll start comparing versions and making sure the new one is greater
 		    var vc = Cc["@mozilla.org/xpcom/version-comparator;1"].getService(Ci.nsIVersionComparator);
 
-            if (osResult.newest && (vc.compare(osResult.newest.version, appInfo.version) > 0)) {
+            if (osResult.newest && (vc.compare(v1, v2) > 0)) {
                 cb({failed: false, result: { available: true, descriptor: osResult.newest, currentVersion: appInfo.version } });
             } else {
                 cb({ failed: false, result: { available: false, descriptor: null }});
