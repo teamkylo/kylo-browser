@@ -99,18 +99,23 @@ Log=%(reshacker_log_path)s
 """
     #%(polo_ico_path)s %(params_res_path)s
 
-    versionInts = version.split(".")[:4]
+    version = build_util.VersionFormat(version=version)
+
+    versionInts = version.ints
+
     while len(versionInts) < 4:
-        versionInts.append("0")
-    versionInts = ",".join(versionInts)
+        versionInts.append(0)
+    versionInts = ",".join(str(x) for x in versionInts)
+    
+    fileVersion_ints = version.win.replace(".",",")
 
     params = {
         "ProductVersion_Ints": versionInts,
-        "ProductVersion": r'"%s"' % version,
+        "ProductVersion": r'"%s"' % version.full,
         "BuildID": r'"%s"' % buildId,
 
-        "FileVersion": r'"1.9.2.3705"',
-        "FileVersion_Ints": "1,9,2,3705",
+        "FileVersion": r'"%s"' % version.displayTagged,
+        "FileVersion_Ints": "%s" % fileVersion_ints,
 
         "FileDescription": r'"The Kylo Browser"',
         "LegalCopyright": r'"Copyright (c) 2010 Hillcrest Labs, Inc"',

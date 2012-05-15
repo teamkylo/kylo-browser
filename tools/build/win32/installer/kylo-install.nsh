@@ -188,8 +188,8 @@ Section -Uninstaller
 
     WriteRegStr SHCTX "${UNINSTALL_REG_LOC}" "URLInfoAbout"      "${ABOUT_SITE_URL}"
 
-    WriteRegStr SHCTX "${UNINSTALL_REG_LOC}"   "Version"         ${VERSION}
-    WriteRegStr SHCTX "${UNINSTALL_REG_LOC}"   "DisplayVersion"  ${VERSION}
+    WriteRegStr SHCTX "${UNINSTALL_REG_LOC}"   "Version"         ${FULL_VERSION}
+    WriteRegStr SHCTX "${UNINSTALL_REG_LOC}"   "DisplayVersion"  ${DISPLAY_VERSION}
     WriteRegDWORD SHCTX "${UNINSTALL_REG_LOC}" "VersionMajor"    ${VERSION_MAJOR}
     WriteRegDWORD SHCTX "${UNINSTALL_REG_LOC}" "VersionMinor"    ${VERSION_MINOR}
 SectionEnd
