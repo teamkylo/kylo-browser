@@ -108,4 +108,8 @@ pref("extensions.getAddons.cache.enabled", false);
 //pref("extensions.update.url", "http://addons.kylo.tv");
 pref("extensions.update.enabled", false);
 pref("extensions.update.autoUpdateDefault", false);
+
+// Min compatible versions
+pref("extensions.minCompatibleAppVersion", "0.8"); // Kylo v0.8
+pref("extensions.minCompatiblePlatformVersion", "5.0");  // Gecko v5.0
 // END EXTENSIONS ========================================================
