@@ -190,7 +190,7 @@ def signExe(path, logger):
             
         signtool_bat = os.path.normpath(os.path.join(os.environ["SIGNTOOL_PATH"], "run_signtool.bat"))
          
-        cmd = [signtool_bat, polo_exe_path]
+        cmd = [signtool_bat, path]
         logger.info("... Signing: %s", path)
         runSubprocess(cmd, logger)
     else:
