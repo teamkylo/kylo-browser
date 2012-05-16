@@ -17,7 +17,7 @@
     	<Description>
     		<em:id>{dd77d456-f77d-4302-a7df-f6f8868ded4e}</em:id>
     		<em:minVersion>0.8.1</em:minVersion>
-    		<em:maxVersion>1.0.*</em:maxVersion>
+    		<em:maxVersion>1.1.*</em:maxVersion>
     	</Description>
     </em:targetApplication>
     <em:name>Gloss [1080]</em:name>
