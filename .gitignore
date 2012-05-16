@@ -16,3 +16,5 @@ src/extensions/*/components/*/build
 src/extensions/*/components/*/*.xpt
 src/extensions/*/components/*/I*.h
 src/extensions/*/components/*/I*.rule
+tools/build/win32/installer/redist
+!tools/build/win32/installer/redist/MceAppHandler.exe

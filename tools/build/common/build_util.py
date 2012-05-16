@@ -182,7 +182,19 @@ def syncFile(file_in, dir_out, force_write=False):
             chmod_w(os.path.join(dir_out, os.path.basename(file_in)))
             
     return src_is_newer
+
+def signExe(path, logger):
+    if "SIGNTOOL_PATH" in os.environ:
+        if not os.path.exists(path):
+            logger.error("... file to sign is missing: %s", path)
             
+        signtool_bat = os.path.normpath(os.path.join(os.environ["SIGNTOOL_PATH"], "run_signtool.bat"))
+         
+        cmd = [signtool_bat, polo_exe_path]
+        logger.info("... Signing: %s", path)
+        runSubprocess(cmd, logger)
+    else:
+        logger.info("... SIGNTOOL_PATH not defined. Skipping sign for: %s", path)
 
 def runSubprocess(arguments, logger, **kwargs):
     logger.info("Running:  " + " ".join(arguments))
