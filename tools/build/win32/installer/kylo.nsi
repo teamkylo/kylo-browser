@@ -14,7 +14,7 @@
 ;
 
 
-!define DEBUG_BUILD
+#!define DEBUG_BUILD
 #!define DEBUG_NOJAR
 
 !ifndef DEBUG_BUILD
@@ -35,6 +35,11 @@
 ; Contains icons, images for installer, etc.
 !ifndef RESOURCE_DIR
     !define RESOURCE_DIR "..\resources"
+!endif
+
+; Contains redistributable packages
+!ifndef REDIST_DIR
+    !define REDIST_DIR "redist"
 !endif
 
 ; License file definition
@@ -70,6 +75,9 @@
 !define EXE_NAME            "Kylo.exe"
 !define ICO_NAME            "Kylo.ico"
 
+!define FLASH_PLUGIN        "install_flash_player_10.exe"
+!define MSVC_REDIST         "vcredist_x86.exe"
+
 !define S_DEFINSTDIR_USER   "$LOCALAPPDATA\${DEFAULT_INSTALL_DIR}"
 !define S_DEFINSTDIR_ADMIN  "$PROGRAMFILES\${DEFAULT_INSTALL_DIR}"
 !define UNINSTALLER_FULLPATH "$InstDir\uninstall.exe"
@@ -90,7 +98,7 @@
 !define MUI_WELCOMEFINISHPAGE_BITMAP "${RESOURCE_DIR}\nsis_welcome_finish.bmp"
 
 !ifndef BUILD_ID
-    !define BUILD_ID        "0000000000-dev"
+    !define BUILD_ID        "00000000000000"
 !endif
 
 !ifndef WIN_VERSION
@@ -117,12 +125,13 @@
     !define DISPLAY_VERSION    "0.0.0"
 !endif
 
-!if ${LOCALE} == "en-US"
-    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${FILENAME_VERSION}.exe"
-!else
-    !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${LOCALE}-${FILENAME_VERSION}.exe"
+!ifndef OUT_FILE_NAME
+  !if ${LOCALE} == "en-US"
+      !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${FILENAME_VERSION}.exe"
+  !else
+      !define OUT_FILE_NAME       "${OUT_FILE_DIR}\kylo-setup-${LOCALE}-${FILENAME_VERSION}.exe"
+  !endif
 !endif
-
 ; =============================================================================
 
 ; The name of the installer
@@ -191,7 +200,7 @@ OutFile "${OUT_FILE_NAME}"
 !macroend
 
 
-!define USE_SIGN_UNINSTALLER
+!define CALL_SIGN_UNINSTALLER
 !macro SIGN_UNINSTALLER path
     !if "$%SIGNTOOL_PATH%"
         !echo "Signing ${path}"

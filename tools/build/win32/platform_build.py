@@ -146,17 +146,27 @@ def buildInstaller():
            
     version = build_util.VersionFormat()
     
+    locale = "en-US" 
+    
+    filename_version = version.full.replace(".","_")
+    
+    if locale == "en-US":
+        exe_name = "kylo-setup-%s.exe" % filename_version
+    else:
+        exe_name = "kylo-setup-%s-%s.exe" % (locale, filename_version)
+ 
+    installer_exe = os.path.normpath(os.path.join(Settings.prefs.dist_dir, exe_name))    
+    
     nsis_defs = {
         "APP_DIR": Settings.prefs.kylo_build_dir,
         "BUILD_ID": Settings.config.get("App", "BuildID"),
         "WIN_VERSION": version.win,
         "FULL_VERSION": version.full,
-        "FILENAME_VERSION": version.full.replace(".","_"),
         "VERSION_MAJOR": version.ints[0],
         "VERSION_MINOR": version.ints[1],
         "DISPLAY_VERSION": version.display,
-        "OUT_FILE_DIR": Settings.prefs.dist_dir,
-        "LOCALE": "en-US",
+        "OUT_FILE_NAME": installer_exe,
+        "LOCALE": locale
     }
     
     # Create dist_dir if it doesn't exist
@@ -167,4 +177,9 @@ def buildInstaller():
     args= [makensis] + ["/D%s=%s" % (k,v) for (k,v) in nsis_defs.iteritems()] +  [nsi_file]
     logger.debug("Running: **" + " ".join(args))
     build_util.runSubprocess(args, logger)
+    
+    assert os.path.exists(installer_exe), "Installer not at expected location"
+    
+    logger.info("Attempt to sign installer...")
+    build_util.signExe(installer_exe, logger)
 

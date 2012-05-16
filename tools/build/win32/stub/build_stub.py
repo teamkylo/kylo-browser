@@ -151,17 +151,8 @@ Log=%(reshacker_log_path)s
     logger.info("Cleaning up...")
     shutil.rmtree(temp_dir, ignore_errors=False, onerror=build_util.RMFail)
 
-    #if "SIGNTOOL_PATH" in os.environ:
-    #    if not os.path.exists(polo_exe_path):
-    #        print " !! exe file missing %s" % polo_exe_path
-    #        exit(-1)
-    #
-    #    cmd = '"%s/run_signtool.bat" "%s"' % (os.environ["SIGNTOOL_PATH"], polo_exe_path)
-    #    print " ** Running:", cmd
-    #    exitCode = os.system(cmd)
-    #    if exitCode != 0:
-    #        print " !! failed signing Polo.exe, exit code:", exitCode
-    #        exit(exitCode)
+    logger.info("Attempting to sign application...")
+    build_util.signExe(polo_exe_path, logger)
 
 if __name__ == '__main__':
     # read the params in
