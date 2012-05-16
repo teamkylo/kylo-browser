@@ -28,14 +28,16 @@ Section -un.killApp
 SectionEnd
 
 Section -un.wmc
-    ${If} $IsWMCInstalled == 1
-        ${If} ${UAC_IsAdmin} 
-            ExecWait '"$WINDIR\ehome\registermceapp.exe" /u /allusers "$INSTDIR\wmc\kylo_wmc.xml"'
-        ${Else}
-            ExecWait '"$WINDIR\ehome\registermceapp.exe" /u "$INSTDIR\wmc\kylo_wmc.xml"'
-        ${EndIf}
-        
-        RMDir /r $INSTDIR\wmc
+    ${If} $IsWMCInstalled == 1 
+    ${AndIf} ${FileExists} $INSTDIR\wmc\kylo_wmc.xml
+      DetailPrint "Uninstalling WMC shortcut"
+      ${If} ${UAC_IsAdmin}
+        ExecWait '"$WINDIR\ehome\registermceapp.exe" /u /allusers "$INSTDIR\wmc\kylo_wmc.xml"'
+      ${Else}
+        ExecWait '"$WINDIR\ehome\registermceapp.exe" /u "$INSTDIR\wmc\kylo_wmc.xml"'
+      ${EndIf}
+      
+      RMDir /r $INSTDIR\wmc
     ${EndIf}
 SectionEnd
 
@@ -49,7 +51,10 @@ Section -un.main
     Delete $INSTDIR\application.ini
     Delete $INSTDIR\chrome.manifest
     Delete $INSTDIR\mozcrt19.dll
+    Delete $INSTDIR\mozutils.dll
+    Delete $INSTDIR\gkmedias.dll
     Delete $INSTDIR\omni.jar
+    Delete $INSTDIR\omni.ja
     Delete $INSTDIR\${EXE_NAME}
     Delete $INSTDIR\${ICO_NAME}
     Delete $INSTDIR\uninstall.exe
@@ -167,7 +172,5 @@ Function un.cleanDefaultLocation
         RMDir $1
     ${EndIf}
 FunctionEnd
-
-
 
 !macroend

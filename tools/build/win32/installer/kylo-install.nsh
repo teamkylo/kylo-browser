@@ -37,12 +37,8 @@ Page Custom LicensePage ; custom license page that provides print capabilities
 !insertmacro MUI_PAGE_INSTFILES
 
 ; flash installer page
-/**
- * Can't distribute flash -- commenting out for now
- 
 Page custom FlashInstallerPage FlashInstallerPage_Leave
- */
- 
+
 ; Finish page params
 !define MUI_FINISHPAGE_LINK "$(FinishPageLinkText)"
 !define MUI_FINISHPAGE_LINK_LOCATION "${ABOUT_SITE_URL}"
@@ -72,11 +68,9 @@ FunctionEnd
 
 var Require_Uninstall
 
-/**
- * Can't distribute flash plugin. Commenting out for now
- */
-;Var FlashInstallCheckBox
-;Var FlashInstallCheckBox_State
+; For flash install page
+Var FlashInstallCheckBox
+Var FlashInstallCheckBox_State
 
 ; For custom license page
 Var Dialog             ; custom page field
@@ -110,6 +104,7 @@ Section "$(SectNameMain)" SecBrowser
     ; Icon file
     File /oname=${ICO_NAME} ${MUI_ICON}
     
+    call MSVC_DoInstall
 SectionEnd
 
 Section -UpgradeCleanup
@@ -146,7 +141,7 @@ Section "$(SectNameWinMediaCtrShrtcuts)" SecWMCShortcuts
 		SetOutPath $INSTDIR\wmc   
         
     	File ${RESOURCE_DIR}\kylo_wmc.png
-    	File redist\MceAppHandler.exe
+    	File ${REDIST_DIR}\MceAppHandler.exe
 
     	FileOpen $0 kylo_wmc.xml w
     	FileWrite $0 '<application title="Kylo Browser" id="{25e1993f-a9d8-4251-871c-0bf84c6d6e29}" StartMenuStripTitle="Kylo" StartMenuStripCategory="Kylo\Kylo"><entrypoint id="{58267566-672b-4b1d-812a-fc46d728d073}" run="$INSTDIR\wmc\kylo_wmc.lnk" title="Kylo Browser" description="The browser built for the big screen" imageUrl="$INSTDIR\wmc\kylo_wmc.png"><category category="More Programs"/><category category="Kylo\Kylo"/></entrypoint></application>'
@@ -284,6 +279,17 @@ Function PrepDirForUpgrade
     ; Don't remain and cause problems
 
     ; TODO improve this section
+    
+    ; Uninstall wmc
+    ${If} $IsWMCInstalled == 1 
+    ${AndIf} ${FileExists} $INSTDIR\wmc\kylo_wmc.xml
+      DetailPrint "Uninstalling WMC shortcut"
+      ${If} ${UAC_IsAdmin}
+        ExecWait '"$WINDIR\ehome\registermceapp.exe" /u /allusers "$INSTDIR\wmc\kylo_wmc.xml"'
+      ${Else}
+        ExecWait '"$WINDIR\ehome\registermceapp.exe" /u "$INSTDIR\wmc\kylo_wmc.xml"'
+      ${EndIf}
+    ${EndIf}    
 
     DetailPrint "Backing up installed files"
     CreateDirectory $INSTDIR\backup
@@ -298,7 +304,10 @@ Function PrepDirForUpgrade
     Rename $INSTDIR\uninstall.exe uninstall.exe
     Rename $INSTDIR\chrome.manifest chrome.manifest
     Rename $INSTDIR\mozcrt19.dll mozcrt19.dll
+    Rename $INSTDIR\mozutils.dll mozutils.dll
+    Rename $INSTDIR\gkmedias.dll gkmedias.dll
     Rename $INSTDIR\omni.jar omni.jar
+    Rename $INSTDIR\omni.ja omni.ja
     Rename $INSTDIR\${EXE_NAME} ${EXE_NAME}
     Rename $INSTDIR\${ICO_NAME} ${ICO_NAME}
     Rename $INSTDIR\application.ini     application.ini
@@ -306,12 +315,22 @@ Function PrepDirForUpgrade
     SetOutPath -
 FunctionEnd
 
-/**
- * Can't distribute flash plugin. Commenting out for now
- */
- 
-/*
+Function MSVC_DoInstall
+      ReadRegDword $R0 HKLM "SOFTWARE\Microsoft\VisualStudio\10.0\VC\VCRedist\x86" "Installed"                
+      ${If} $R0 == ""
+          StrCpy $R1 "$PLUGINSDIR\${MSVC_REDIST}"
+          File /nonfatal /oname=$R1  ${REDIST_DIR}\${MSVC_REDIST}
+          ${If} ${FileExists} $R1
+            ExecWait '"$R1" /q /norestart'
+          ${EndIf}    
+          Delete $R1
+      ${EndIf}
+FunctionEnd
+
 Function FlashInstallerPage
+    ${IfNot} ${FileExists} ${REDIST_DIR}/${FLASH_PLUGIN}
+        Abort
+    ${EndIf}
     nsDialogs::Create 1018
     ; Pop the dialog hwnd
     Pop $0
@@ -358,7 +377,7 @@ FunctionEnd
 
 Function FlashInstallPage_DoInstall
     StrCpy $R0 "$PLUGINSDIR\install_flash_player_10.exe"
-    File /oname=$R0  redist\install_flash_player_10.exe
+    File /nonfatal /oname=$R0  ${REDIST_DIR}\${FLASH_PLUGIN}
     ${If} ${UAC_IsAdmin}
         ExecWait $R0
     ${Else}
@@ -369,7 +388,7 @@ Function FlashInstallPage_DoInstall
     ${EndIf}
     Delete $R0
 FunctionEnd
-*/
+
 
 Function FinishPage_Show
     ; disable the back button if flash install was attempted
