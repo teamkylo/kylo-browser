@@ -212,12 +212,6 @@ BookmarkGrid.prototype.makeItem = function (resultNode) {
 		return elem;
 	}
 	
-    if (PlacesUtils.nodeIsDynamicContainer(resultNode)) {
-        elem.setAttribute("type", "dfolder");
-        elem.setAttribute("title", resultNode.title.slice(0, 300));
-        return elem;
-    }
-	
     if (PlacesUtils.nodeIsBookmark(resultNode)) {
         elem.setAttribute("type", "bookmark");
         elem.setAttribute("title", resultNode.title.slice(0, 300));
