@@ -328,7 +328,8 @@ Function MSVC_DoInstall
 FunctionEnd
 
 Function FlashInstallerPage
-    ${IfNot} ${FileExists} ${REDIST_DIR}/${FLASH_PLUGIN}
+    File /nonfatal /oname=$PLUGINSDIR\${FLASH_PLUGIN}  ${REDIST_DIR}\${FLASH_PLUGIN}
+    ${IfNot} ${FileExists} $PLUGINSDIR\${FLASH_PLUGIN}
         Abort
     ${EndIf}
     nsDialogs::Create 1018
@@ -376,15 +377,13 @@ Function FlashInstallerPage_Leave
 FunctionEnd
 
 Function FlashInstallPage_DoInstall
-    StrCpy $R0 "$PLUGINSDIR\install_flash_player_10.exe"
-    File /nonfatal /oname=$R0  ${REDIST_DIR}\${FLASH_PLUGIN}
     ${If} ${UAC_IsAdmin}
-        ExecWait $R0
+        ExecWait '"$PLUGINSDIR\${FLASH_PLUGIN}"'
     ${Else}
         ; Exec, ExecWait will not launch the adobe installer and do a UAC prompt
         ; ExecShell will, the lines below try and do "ExecShellWait"
         ; http://nsis.sourceforge.net/ShellExecWait
-        !insertmacro ShellExecWait "" $R0 "" "" ${SW_SHOW} $1
+        !insertmacro ShellExecWait "" "$PLUGINSDIR\${FLASH_PLUGIN}" "" "" ${SW_SHOW} $1
     ${EndIf}
     Delete $R0
 FunctionEnd
@@ -423,21 +422,21 @@ Function LicensePage
     Pop $PageDownMessage
 
     ; License box
-    nsDialogs::CreateControl /NOUNLOAD "RichEdit20A" ${DEFAULT_STYLES}|${WS_VSCROLL}|${ES_MULTILINE} ${__NSD_Text_EXSTYLE} 1u 12u -1u 90u ''
+    nsDialogs::CreateControl /NOUNLOAD "RichEdit20A" ${DEFAULT_STYLES}|${WS_VSCROLL}|${ES_MULTILINE} ${__NSD_Text_EXSTYLE} 1u 12u -1u 89u ''
     Pop $LicenseTextBox
 
     ; Text after license box
-    ${NSD_CreateLabel} 0 -55 100% 16u "$(LicPageAcceptInstr)"
+    ${NSD_CreateLabel} 0 -60 100% 16u "$(LicPageAcceptInstr)"
     Pop $IfYouAcceptMessage
 
     ; Print license agreement button
-    ${NSD_CreateButton} 10u -20 30% 12u "$(LicPagePrintButton)"
+    ${NSD_CreateButton} 10u -25 30% 12u "$(LicPagePrintButton)"
     Pop $PrintButton
     GetFunctionAddress $0 PrintOnClick
     nsDialogs::OnClick $PrintButton $0
 
     ; I Agree button
-    ${NSD_CreateCheckbox} -50u -20 20% 16u "$(LicPageAgreeButton)"
+    ${NSD_CreateCheckbox} -50u -25 20% 16u "$(LicPageAgreeButton)"
     Pop $AgreeCheckBox
     ; Set unchecked by default
     ${NSD_SetState} $AgreeCheckBox 0
