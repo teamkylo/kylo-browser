@@ -8,8 +8,6 @@
    - trademarks of Hillcrest Laboratories, Inc.
    --> 
    
-<?xml-stylesheet href="chrome://udlrcursor/skin/udlrcursor.css" type="text/css"?>
-
 <!DOCTYPE page [
 <!ENTITY % udlrDTD SYSTEM "chrome://udlrcursor/locale/udlrcursor.dtd" >
 %udlrDTD;
