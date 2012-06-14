@@ -14,6 +14,7 @@
 #include "nsStringAPI.h"
 #include "nsCOMPtr.h"
 #include "windows.h"
+#include "tlhelp32.h"
 
 #define UDLRTOOL_CONTRACTID "@hcrest.com/UDLRTool;1"
 #define UDLRTOOL_CLASSNAME "Hillcrest UDLRTool Module"
@@ -29,9 +30,7 @@ public:
     UDLRTool();
 
     static LRESULT WINAPI KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam);
-    static LRESULT CALLBACK ShellHookProc(int nCode, WPARAM wParam, LPARAM lParam);
     static VOID CALLBACK TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
-    static BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam);
 
     void HandleTimerEvent();
     bool HandleKeyEvent(WPARAM wParam, LPARAM lParam);
@@ -60,6 +59,11 @@ private:
     PRInt16 downKey_;
     PRInt16 leftKey_;
     PRInt16 rightKey_;
+
+    bool upKeyState_;
+    bool downKeyState_;
+    bool leftKeyState_;
+    bool rightKeyState_;
 
     PRInt16 leftClickKey_;
     PRInt16 rightClickKey_;
