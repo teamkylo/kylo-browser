@@ -600,6 +600,7 @@ def init(args = None):
     logger.info(' source dir: %s' % Settings.prefs.src_dir)
     logger.info(' build dir:  %s' % Settings.prefs.build_dir)
     logger.info(' dist dir:   %s' % Settings.prefs.dist_dir)
+    logger.info(' moz dir:   %s' % Settings.prefs.moz_dir)
     logger.info('=' * 72)
 
     

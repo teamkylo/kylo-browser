@@ -12,8 +12,9 @@
 #include "nsIClassInfoImpl.h"
 #include "nsMemory.h"
 #include <stdio.h>
+#include <fstream>
 
-//#define _DEBUG_
+#define _DEBUG_
 
 #define TIMER 10
 #define MIN_SPEED 3
@@ -21,12 +22,15 @@
 
 #define ACCELERATION 0.1
 
-static HINSTANCE hinstDLL; 
 static HHOOK keyboardhhook;
 static HHOOK shellhhook;
 static UDLRTool* myself;
 static DWORD myPid;
 static DWORD myTid;
+
+#ifdef _DEBUG_
+    std::wofstream _log;
+#endif
 
 //NS_IMPL_ISUPPORTS1(UDLRTool, IUDLRTool)
 NS_IMPL_CLASSINFO(UDLRTool, NULL, 0, UDLRTOOL_CID)
@@ -40,6 +44,11 @@ UDLRTool::UDLRTool()
     leftKey_ = VK_LEFT;
     rightKey_ = VK_RIGHT;
 
+    upKeyState_ = false;
+    downKeyState_ = false;
+    leftKeyState_ = false;
+    rightKeyState_ = false;
+
     minSpeed_ = MIN_SPEED;
     maxSpeed_ = MAX_SPEED;
     acceleration_ = ACCELERATION;
@@ -48,7 +57,6 @@ UDLRTool::UDLRTool()
     pressed_ = false;
     capture_ = true;
     
-
     leftClickKey_ = VK_RETURN;
     rightClickKey_ = NULL;
     middleClickKey_ = NULL;
@@ -60,9 +68,8 @@ UDLRTool::UDLRTool()
     keyboardhhook = NULL;
     
 #ifdef _DEBUG_
-    FILE* f = fopen("C:\\udlrtool.log", "w");
-    fprintf(f, " Starrting UDLR Tool\n");
-    fclose(f);
+    _log.open("C:\\Users\\kwood\\udlrtool.log", std::ios::app);
+    _log << "starting UDLRTool" << std::endl;
 #endif
 }
 
@@ -73,6 +80,10 @@ UDLRTool::~UDLRTool()
     {
         RemoveHook();
     }
+
+    #ifdef _DEBUG_
+        _log << "ending UDLRTool" << std::endl;
+    #endif
 }
 
 HINSTANCE GetHInstance()
@@ -99,15 +110,13 @@ void UDLRTool::AddHook()
     }
     myself = this;
     myPid = pid_;
-    myTid = GetCurrentThreadId();
-    hinstDLL = GetHInstance();
 
     uIDEvent_ = SetTimer(0, 0, TIMER, TimerProc);
 
-    keyboardhhook = SetWindowsHookEx(WH_KEYBOARD,
+    keyboardhhook = SetWindowsHookEx(WH_KEYBOARD_LL,
         KeyboardHookProc,
         NULL,
-        myTid);
+        0);
 
     return;
 }
@@ -126,30 +135,18 @@ VOID CALLBACK UDLRTool::TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD 
     DWORD frontpid;
     DWORD tid = GetWindowThreadProcessId(frontmost, (LPDWORD) &frontpid);
 
-    if (frontpid != myPid) { 
-#ifdef _DEBUG_
-       // FILE* f = fopen("C:\\udlrtool.log", "a+");
-       // fprintf(f, "Not my pid in front.\n");
-       // fclose(f);
-#endif
+    if (frontpid != myPid) {
         return;
     }
     myself->HandleTimerEvent();
 }
 
 void UDLRTool::HandleTimerEvent() {
-#ifdef _DEBUG_
-    FILE* f = fopen("C:\\udlrtool.log", "a+");
-#endif
     DWORD dwFlags = 0;
-    bool upDown = (GetKeyState(upKey_) >> 1);
-    bool downDown = (GetKeyState(downKey_) >> 1);
-    bool leftDown = (GetKeyState(leftKey_) >> 1);
-    bool rightDown = (GetKeyState(rightKey_) >> 1);
 
     int dx = 0;
     int dy = 0;
-    if (downDown || upDown || leftDown || rightDown) {
+    if (downKeyState_ || upKeyState_ || leftKeyState_ || rightKeyState_) {
         dwFlags |= MOUSEEVENTF_MOVE;
         if (pressed_) {
             speed_ += acceleration_;
@@ -163,45 +160,30 @@ void UDLRTool::HandleTimerEvent() {
     } else {
         pressed_ = false;
         speed_ = 0;
-#ifdef _DEBUG_
-        fclose(f);
-#endif
         return;
     }
 
-    if (downDown) {
+    if (downKeyState_) {
         dy = speed_;
     }
 
-    if (upDown) {
+    if (upKeyState_) {
         dy -= speed_;
     }
 
-    if (rightDown) {
+    if (rightKeyState_) {
         dx += speed_;
     }
 
-    if (leftDown) {
+    if (leftKeyState_) {
         dx -= speed_;
     }
-#ifdef _DEBUG_
-    //fprintf(f, "Speed: %d, %d\n", dx, dy);
-    fclose(f);
-#endif
-    mouse_event(dwFlags, dx, dy, 0, 0);
-}
 
-LRESULT CALLBACK UDLRTool::ShellHookProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-    if (nCode < 0) {
-        CallNextHookEx(shellhhook, nCode, wParam, lParam);
-    }
 #ifdef _DEBUG_
-    FILE* f = fopen("C:\\udlrtool.log", "a+");
-    fprintf(f, "ncode: %d, wParam: %x\n", nCode, wParam);
-    fclose(f);
+    _log << "Speed: " << dx << ", " << dy << std::endl;
 #endif
-    return 0;
+
+    mouse_event(dwFlags, dx, dy, 0, 0);
 }
 
 LRESULT WINAPI UDLRTool::KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lParam)
@@ -211,49 +193,57 @@ LRESULT WINAPI UDLRTool::KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lPara
             return 1;
         }
     }
+
     return CallNextHookEx(keyboardhhook, nCode, wParam, lParam);
 }
 
 bool UDLRTool::HandleKeyEvent(WPARAM wParam, LPARAM lParam) {
-    bool buttonPress = !((lParam >> 30) & 1);
-#if 0
-    FILE* f = fopen("C:\\udlrtool.log", "a+");
-    fprintf(f, "Key: %x\n", wParam);
-    fprintf(f, "LPARAM: %x\n", lParam);
-    fprintf(f, "buttonPress: %d\n", buttonPress);
-    fclose(f);
-#endif
+    bool buttonPress = (wParam == WM_KEYDOWN);
     bool capture = false;
 
-    if (capture_ && 
-        (wParam == upKey_ ||
-        wParam == downKey_ ||
-        wParam == leftKey_ ||
-        wParam == rightKey_)) {
-            capture = capture_;
+    PRInt16 vkCode = ((KBDLLHOOKSTRUCT *) lParam)->vkCode;
+
+    if (vkCode == upKey_) {
+        upKeyState_ = buttonPress;
+    } else if (vkCode == downKey_) {
+        downKeyState_ = buttonPress;
+    } else if (vkCode == leftKey_) {
+        leftKeyState_ = buttonPress;
+    } else if (vkCode == rightKey_) {
+        rightKeyState_ = buttonPress;
     }
 
+    // Handle arrow keys
+    if (capture_ &&
+            (vkCode == upKey_ ||
+             vkCode == downKey_ ||
+             vkCode == leftKey_ ||
+             vkCode == rightKey_)) {
+        capture = capture_;
+    }
+
+    // Handle mouse events
     if (buttonPress) {
-        if (wParam == leftClickKey_) {
+        if (vkCode == leftClickKey_) {
             mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
             mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
             capture = capture_;
         }
-        if (wParam == rightClickKey_) {
+        if (vkCode == rightClickKey_) {
             mouse_event(MOUSEEVENTF_RIGHTDOWN, 0, 0, 0, 0);
             mouse_event(MOUSEEVENTF_RIGHTUP, 0, 0, 0, 0);
             capture = capture_;
         }
-        if (wParam == middleClickKey_) {
+        if (vkCode == middleClickKey_) {
             mouse_event(MOUSEEVENTF_MIDDLEDOWN, 0, 0, 0, 0);
             mouse_event(MOUSEEVENTF_MIDDLEUP, 0, 0, 0, 0);
             capture = capture_;
         }
-        if (wParam == scrollUpKey_) {
+        if (vkCode == scrollUpKey_) {
             mouse_event(MOUSEEVENTF_WHEEL, 0, 0, WHEEL_DELTA, 0);
             capture = capture_;
         }
-        if (wParam == scrollDownKey_) {
+        if (vkCode == scrollDownKey_) {
             mouse_event(MOUSEEVENTF_WHEEL, 0, 0, -WHEEL_DELTA, 0);
             capture = capture_;
         }
@@ -267,9 +257,7 @@ bool UDLRTool::HandleKeyEvent(WPARAM wParam, LPARAM lParam) {
 NS_IMETHODIMP UDLRTool::EnableUDLR()
 {
 #ifdef _DEBUG_;
-    FILE* f = fopen("C:\\udlrtool.log", "a+");
-    fprintf(f, "enabling udlr\n");
-    fclose(f);
+    _log << "enabling" << std::endl;
 #endif
     AddHook();
     return NS_OK;
@@ -279,9 +267,7 @@ NS_IMETHODIMP UDLRTool::EnableUDLR()
 NS_IMETHODIMP UDLRTool::DisableUDLR()
 {
 #ifdef _DEBUG_;
-    FILE* f = fopen("C:\\udlrtool.log", "a+");
-    fprintf(f, "disabling udlr\n");
-    fclose(f);
+    _log << "disabling" << std::endl;
 #endif
     RemoveHook();
     return NS_OK;
