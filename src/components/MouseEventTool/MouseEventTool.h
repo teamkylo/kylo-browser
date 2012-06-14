@@ -21,15 +21,9 @@
 #include "nsStringAPI.h"
 #include <utility>
 #include <string>
-
+#include <iostream>
+#include <fstream>
 #include "windows.h"
-struct PidAndName {
-    char name[512];
-    DWORD pid;
-    WINDOWINFO info;
-    bool hasWindowInfo;
-    HWND hwnd;
-};
 
 typedef std::pair<const char*,short> AppSignalPair;
 typedef std::vector<AppSignalPair> AppSignalPairVec;
@@ -43,7 +37,7 @@ typedef std::vector<AppSignalPair> AppSignalPairVec;
 #endif //WIN32
 
 enum wMessages {
-    ENUM_LBUTTONDOWN = 0,
+    ENUM_LBUTTONDOWN,
     ENUM_LBUTTONUP,
     ENUM_LBUTTONDBLCLK,
     ENUM_RBUTTONDOWN,
@@ -94,10 +88,6 @@ private:
     AppSignalPairVec* getVecFromInputValue(short input);
     
     POINT prevMousePoint_;
-
-    HOOKPROC hkprc;
-
-    DWORD pid_;
 #else	
 #ifdef __APPLE__
 
