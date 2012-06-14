@@ -126,6 +126,7 @@ function BrowserManager() {
     document.getElementById("zoomVeil").addEventListener("DOMMouseScroll", this.handleScroll.bind(this), false);
     
     window.addEventListener("keydown", this.monitorKeys.bind(this), false);
+    window.addEventListener("AppCommand", this.handleAppCommandEvent.bind(this), true);
     
     this.tabListBox_.addEventListener("select", this.tabListItemSelected.bind(this), false);
     this.closeBar_.addEventListener("click", this.closeTabList.bind(this), false);
@@ -409,6 +410,44 @@ BrowserManager.prototype.monitorKeys = function (evt) {
             
         }
 	}
+}
+
+/**
+ * Handles app commands (special commands sent by media keyboards, remotes, etc.)
+ * @name handleAppCommandEvent
+ * @param evt the AppCommand event
+ */
+BrowserManager.prototype.handleAppCommandEvent = function (evt) {
+  evt.stopPropagation();
+  switch (evt.command) {
+      case "Back":
+        browser_.getCurrentBrowser().goBack();
+        break;
+      case "Forward":
+        browser_.getCurrentBrowser().goForward();
+        break;
+      case "Reload":
+        browser_.getCurrentBrowser().reload();
+        break;
+      case "Stop":
+        browser_.getCurrentBrowser().stop();
+        break;
+      case "Search":
+        if (controls_.isPanelOpen("keyboard_url")) {
+            controls_.closePanel("keyboard_url");
+        } else {
+            controls_.openPanel("keyboard_url");
+        }
+        break;
+      case "Bookmarks":
+        browser_.switchOrCreate("about:places");
+        break;
+      case "Home":
+        browser_.getCurrentBrowserObject().goHome();
+        break;
+      default:
+        break;
+  }
 }
 
 /**
