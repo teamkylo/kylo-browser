@@ -153,7 +153,7 @@ function BrowserManager() {
 BrowserManager.prototype.setupTools = function () {
     this.mouseevttoolObjCallback_ = {
         MouseEvent: function(eventType, mouseX, mouseY, deltaX, deltaY, deltaScroll) {
-            if (eventType == EventMap.MOUSE_MOVE) {
+            if (this.mouseDown_ && eventType == EventMap.MOUSE_MOVE) {
                 browser_.dragBrowser(deltaX, deltaY);
             } else if (eventType == EventMap.MIDDLE_UP) {
                 if (controls_.isPanelOpen("zoom")) {
@@ -164,7 +164,7 @@ BrowserManager.prototype.setupTools = function () {
                 }
             } else if (eventType == EventMap.RIGHT_UP) {
             } else if (eventType == EventMap.RIGHT_DOWN) { 
-                window.focus();
+                //window.focus();
             } else if (eventType == EventMap.LEFT_DOWN) {
                 this.mouseDown_ = true;
             } else if (eventType == EventMap.LEFT_UP) {
