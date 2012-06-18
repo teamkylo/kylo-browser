@@ -47,11 +47,9 @@ pref("controls.clickNHoldDelay.home", 1000);
 pref("controls.clickNHoldDelay.bookmarks", 1000);
 pref("controls.clickNHoldDelay.bookmarks.notificationDur", 7500);
 
-
 pref("keyboard.autolaunch.zoom", true);
 pref("keyboard.autolaunch.open", true);
 pref("keyboard.autolaunch.focusLock", true);
-
 
 pref("keyboard.tlds", "com net org");
 
@@ -80,3 +78,6 @@ pref("polo.cursor.goBackOnRightClick", true);
 // when MouseEventTool is not running or missing.
 // kwood1138: Now defaulting to off for issue #16
 pref("polo.showSysReq", false);
+
+// Allows page titles in control bar to be override by appropriate titles in bookmarks DB
+pref("polo.pages.use_bookmark_titles", false);

@@ -19,6 +19,7 @@
 <!ENTITY settings.screenTabLabel "Screen">
 <!ENTITY settings.compatibilityTabLabel "Compatibility">
 <!ENTITY settings.themeTabLabel "Theme">
+<!ENTITY settings.advancedTabLabel "Advanced">
 <!-- Main -->
 <!ENTITY settings.homePageLabel "Home page">
 <!ENTITY settings.openPageButton "Select an open page">
@@ -76,9 +77,10 @@
 <!ENTITY settings.150Percent "150">
 <!ENTITY settings.175Percent "175">
 <!ENTITY settings.200Percent "200">
-
 <!-- Themes -->
 <!ENTITY settings.addons.unknownDate "Unknown">
 <!ENTITY settings.addons.enableAddon.label "Enable">
 <!ENTITY settings.addons.disableAddon.label "Disable">
 <!ENTITY settings.addons.uninstallAddon.label "Uninstall">
+<!-- Advanced -->
+<!ENTITY settings.advanced.useBookmarkTitlesLabel "Use bookmark titles for page titles">

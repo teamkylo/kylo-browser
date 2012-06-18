@@ -34,6 +34,7 @@ function Browser(idx, deck) {
     deck.appendChild(notification);
     
     this.title_ = "";
+    this.bookmarkTitle_ = null;
     this.icon_ = null;
     this.url_ = "";
     this.browser_ = el;
@@ -55,7 +56,6 @@ function Browser(idx, deck) {
     
     this.numNetworkRequests_ = 0;
     this.navigation_ = "NEW";
-
     this.zoomLevel_ = 1;
     this.longClickLink_ = "";
     this.longClickTimeout_ = "";
@@ -260,7 +260,12 @@ Browser.prototype.handleBrowserCommand = function (evt) {
  * @name updateControls
  */
 Browser.prototype.updateControls = function () {
-    controls_.setTitle(this, this.title_);
+    var title = this.getTitle();
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }    
+    controls_.setTitle(this, title);
     controls_.setIcon(this, this.icon_);
     controls_.setURLLabel(this, this.url_);
     controls_.setLoading(this, this.loading_);
@@ -305,6 +310,10 @@ Browser.prototype.getDisplayTitleURI = function () {
     }
     
     var title = this.getTitle();
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }
     if (this.loading_ && !title) {
         return [i18nStrings_["browser"].getString("browser.loadingUrlTitle"), uri];
     }
@@ -320,6 +329,27 @@ Browser.prototype.getDisplayTitleURI = function () {
 Browser.prototype.getTitle = function () {
     return this.title_ || this.browser_.contentTitle || null;
 };
+
+/**
+ * Returns the title stored with the associated URI in the Bookmarks DB.
+ * @name getBookmarkTitle
+ * @returns {String} The title associated with the bookmark 
+ */
+Browser.prototype.getBookmarkTitle = function () {
+    if (this.bookmarkTitle_ !== null) {
+        return this.bookmarkTitle_;
+    }
+    
+    if (this.originalURI_) {
+        var bmk = PlacesUtils.getMostRecentBookmarkForURI(this.originalURI_); 
+        if (bmk > -1) {
+            this.bookmarkTitle_ = PlacesUtils.bookmarks.getItemTitle(bmk);
+            return this.bookmarkTitle_;
+        }
+    }    
+    
+    return "";
+}
 
 /**
  * Returns the favicon for this browser's page
@@ -355,6 +385,25 @@ Browser.prototype.QueryInterface = function(aIID) {
 }
 
 /**
+ * Function that does the work to see if our contentTitle had changed, fires necessary events,
+ * handles bookmark title override.
+ * @name handleDocumentTitleUpdate() 
+ */
+Browser.prototype.handleDocumentTitleUpdate = function () {
+    if (this.title_ != this.browser_.contentTitle) {
+        var title = this.title_ = this.browser_.contentTitle;
+        
+        if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+            var bmkTitle = this.getBookmarkTitle();
+            title = bmkTitle || title;
+        }
+                
+        controls_.setTitle(this, title);
+        browser_.notifyDocumentTitleChanged(this);
+    }
+}
+
+/**
  * Callback for DOMContent listener.  Called when the page's content has been loaded.
  * Sets the title member variable and sets the title in the controls.
  * @name contentLoaded 
@@ -363,8 +412,7 @@ Browser.prototype.QueryInterface = function(aIID) {
 Browser.prototype.contentLoaded = function (evt) {
     // duplicates titleChanged?
     window.setTimeout(function () {
-        this.title_ = this.browser_.contentTitle;
-        controls_.setTitle(this, this.browser_.contentTitle);
+        this.handleDocumentTitleUpdate();
     }.bind(this),0);
 }
 
@@ -377,9 +425,7 @@ Browser.prototype.contentLoaded = function (evt) {
 Browser.prototype.titleChanged = function (evt) {
     // make sure it's the root document that changed and not an iframe
     if (this.browser_ == evt.currentTarget) {       
-        this.title_ = this.browser_.contentTitle;        
-        browser_.notifyDocumentTitleChanged(this);        
-        controls_.setTitle(this, this.browser_.contentTitle);
+        this.handleDocumentTitleUpdate();
     }
 }
 
@@ -411,6 +457,7 @@ Browser.prototype.beginPageLoad = function (uri, originalURI) {
         controls_.setIcon(this, PlacesUtils.favicons.getFaviconImageForPage(uri).spec);
     }    
     this.icon_ = null;
+    this.bookmarkTitle_ = null;
     
     controls_.setLoading(this, true);
     controls_.setTitle(this, i18nStrings_["browser"].getString("browser.loadingUrlTitle"));

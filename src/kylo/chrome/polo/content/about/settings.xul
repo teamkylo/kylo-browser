@@ -46,6 +46,7 @@
                 <tab id="screenTab" label="&settings.screenTabLabel;"/>
                 <tab id="compatibilityTab" label="&settings.compatibilityTabLabel;"/>
                 <tab id="themeTab" label="&settings.themeTabLabel;"/>
+                <tab id="advancedTab" label="&settings.advancedTabLabel;"/>
             </tabs> 
             <tabpanels id="tabPanels" orient="vertical" flex="1">
                 <tabpanel id="mainTabPanel" orient="vertical" class="pref-container" flex="1">
@@ -197,7 +198,12 @@
                 </tabpanel>
                 <tabpanel id="themeTabPanel" class="pref-container" orient="vertical" flex="1">
                     <richlistbox id="themeList" class="list" flex="1"/>
-                </tabpanel>                 
+                </tabpanel>   
+                <tabpanel id="advancedTabPanel" orient="vertical" class="pref-container" flex="1">
+                    <settings id="prefs-advanced" class="pref-container" flex="1">                                                                        
+                        <setting pref="polo.pages.use_bookmark_titles" type="bool" title="&settings.advanced.useBookmarkTitlesLabel;"/>
+                    </settings>
+                </tabpanel>              
             </tabpanels>
         </tabbox>
     </vbox>
