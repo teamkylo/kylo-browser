@@ -56,7 +56,7 @@ function Browser(idx, deck) {
     
     this.numNetworkRequests_ = 0;
     this.navigation_ = "NEW";
-    this.zoomLevel_ = 1;
+    this.zoomLevel_ = null;
     this.longClickLink_ = "";
     this.longClickTimeout_ = "";
     
@@ -84,7 +84,7 @@ Browser.prototype.getMarkupDocumentViewer = function () {
  * @returns {Number} The current zoom level
  */
 Browser.prototype.getZoomLevel = function() {
-    return this.zoomLevel_;
+    return this.getMarkupDocumentViewer().fullZoom;
 }
 
 /**
@@ -94,9 +94,26 @@ Browser.prototype.getZoomLevel = function() {
  * @param {Number} zoom The zoom level to set the browser to
  */
 Browser.prototype.setZoomLevel = function(zoom) {
-    this.getMarkupDocumentViewer().fullZoom = zoom;
-    gZoomWidget.setZoom(zoom);
     this.zoomLevel_ = zoom;
+    this.getMarkupDocumentViewer().fullZoom = this.zoomLevel_;
+    gZoomWidget.setZoom(this.zoomLevel_);
+}
+
+/**
+ * Sets the zoom level to the last user-set state, or if reset = true, then to the
+ * default zoom level
+ * @name restoreZoomLevel
+ * @param {Boolean} reset Reset to the default zoom level or not (default) 
+ */
+Browser.prototype.restoreZoomLevel = function(reset) {
+    if (this.zoomLevel_ === null || reset) {
+        var defaultZoom = 1;
+        if (this.getURL().indexOf("about:") != 0) {
+            defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
+        }
+        this.zoomLevel_ = defaultZoom;
+    }
+    this.setZoomLevel(this.zoomLevel_);
 }
 
 /**
@@ -390,15 +407,18 @@ Browser.prototype.QueryInterface = function(aIID) {
  * @name handleDocumentTitleUpdate() 
  */
 Browser.prototype.handleDocumentTitleUpdate = function () {
+    var title = this.browser_.contentTitle;
+    
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }
+    
+    controls_.setTitle(this, title);
+    
     if (this.title_ != this.browser_.contentTitle) {
-        var title = this.title_ = this.browser_.contentTitle;
+        this.title_ = this.browser_.contentTitle;
         
-        if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
-            var bmkTitle = this.getBookmarkTitle();
-            title = bmkTitle || title;
-        }
-                
-        controls_.setTitle(this, title);
         browser_.notifyDocumentTitleChanged(this);
     }
 }

@@ -247,7 +247,6 @@ var gZoomWidget = {
             this.defaultZoom_ = Math.round(parseFloat(gPrefService.getCharPref("polo.defaultZoomLevel")) * 100) / 100;
             this.panel_.openPopup(this.anchorTop_, "after_start", 0, 0, false, false);
             this.setZoom(browser_.getCurrentBrowserObject().getMarkupDocumentViewer().fullZoom);
-			
         }
     },
     

@@ -408,9 +408,6 @@ var ZoomSettings  = {
 	setDefaultZoom: function () {
 		var radioGroup = document.getElementById("default-zoom");
 		gPrefService.getBranch("polo.").setCharPref("defaultZoomLevel", radioGroup.value);
-		// This is duplicated when the setting change is observed, but this is visually
-		// better because it shows instantly.
-		chromeWin_.browser_.getCurrentBrowserObject().setZoomLevel(radioGroup.value);
 	},
 	
 	observe: function (subject, topic, pref) {

@@ -258,7 +258,10 @@ BrowserManager.prototype.getPlatform = function () {
  */
 BrowserManager.prototype.updateZoomLevels = function(zoom){
 	for (var x = 0; x < this.browsers_.length; x++) {
-		this.browsers_[x].setZoomLevel(zoom);
+	    // Skip applying default zoom to "about:" pages
+	    if (this.browsers_[x].url_.indexOf("about:") != 0) {
+    		this.browsers_[x].setZoomLevel(zoom);
+	    }
 	}
 }
 
@@ -384,8 +387,7 @@ BrowserManager.prototype.monitorKeys = function (evt) {
                 break;
             case 48:
                 //Ctrl+0 resets zoom level
-				var defaultZoom = parseFloat(gPrefService.getCharPref("polo.defaultZoomLevel"));
-                browser_.getCurrentBrowserObject().setZoomLevel(defaultZoom);
+                browser_.getCurrentBrowserObject().restoreZoomLevel(true);
                 break;
             case 77: 
                 //Ctrl+m minimizes

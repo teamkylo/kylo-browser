@@ -704,35 +704,43 @@ Controls.prototype.observe = function(browser, topic, data) {
 
     if (!data.success) {
         return;
+    }  
+
+    // See if we should store our zoom level for the last URI loaded
+    if (data.lastURI && data.lastURI.indexOf("about:") != 0) {
+        var lastZoom = browser.getMarkupDocumentViewer().getZoomLevel();
+        var defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
+        if (lastZoom != defaultZoom) {
+            PlacesUtils.annotations.setPageAnnotation(Utils.newURI(data.lastURI), "polo/panZoomLevel", JSON.stringify({zoom: lastZoom}), 0, Ci.nsIAnnotationService.EXPIRE_SESSION);
+        }    
     }
+    
+    // See if we can restore the zoom level for the new URI from a saved annotation
+    var saveData = null;
+    try {
+        saveData = PlacesUtils.annotations.getPageAnnotation(Utils.newURI(data.URI), "polo/panZoomLevel");
+        saveData = JSON.parse(saveData);
+    } catch(e) {
+        // Annotation doesn't exist
+    }
+    
+    if (saveData) {
+        browser_.getCurrentBrowserObject().setZoomLevel(saveData.zoom);
+    } else {
+        browser_.getCurrentBrowserObject().restoreZoomLevel(true);
+    }   
 
     switch (data.navigation) {
         case "NEW":
-            this.setLoading(browser, false);
-            this.savePanZoom(browser, data.lastURI, this.getPanZoomLevel(browser));
-            var newPanZoom = null; //TODO? =this.loadPanZoom(browser, data.URI);
-            if (newPanZoom) {
-                this.setPanZoomLevel(newPanZoom);
-            } else if (getBaseURI(data.URI)!=getBaseURI(data.lastURI)) {
-                this.resetPanZoomLevel();
-            }
-            break;
-
         case "BACK":
         case "FORWARD":
         case "JUMP":
         case "RELOAD":
-            this.savePanZoom(browser, data.lastURI, this.getPanZoomLevel(browser));
-			var defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));			            
-            this.setPanZoomLevel(this.loadPanZoom(browser, data.URI) || {zoom:defaultZoom});
             break;
 
         default:
             debug("Unexpected Navigation: ", data.navigation);            
-    }    
-
-
-
+    }
 };
 
 /**
@@ -848,75 +856,16 @@ Controls.prototype.getContentWindow = function () {
 	return browser_.getCurrentBrowser().contentWindow;
 };
 
-/**
- * Returns the zoom level for the given browser's window.
- * @name getPanZoomLevel
- * @param {Object} browser
- * @returns {Object} soom level of the browser's window.
- */
-Controls.prototype.getPanZoomLevel = function (browser) {
-    // TODO scroll
-	return {
-	    zoom: browser.getMarkupDocumentViewer().fullZoom
-	};
-};
-
-/**
- * Sets the zoom level of the current browser's window.
- * @name setPanZoomLevel 
- * @param {Object} data object containing the zoom level
- */
-Controls.prototype.setPanZoomLevel = function (data) {
-    // TODO scroll
-    //this.getMarkupDocumentViewer().fullZoom = data.zoom;
-	browser_.getCurrentBrowserObject().setZoomLevel(data.zoom);
-};
-
-/**
- * Resets the pan zoom level to the default pan zoom level set in the settings page;
- * @name resetPanZoomLevel
- */
-Controls.prototype.resetPanZoomLevel = function () {
-    // TODO scroll
-	var defaultZoom = gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel");
-    this.setPanZoomLevel({zoom: parseFloat(defaultZoom)});
-    scrollPos = 0;
-};
-
-
 /** 
  * Button handler for reset button on the zoom widget.  Resets the zoom level
  * and closes the panel.
  * @name handleZoomReset
  */ 
 Controls.prototype.handleZoomReset = function () {
-	this.resetPanZoomLevel();
+	browser_.getCurrentBrowserObject().restoreZoomLevel(true);
 	this.closePanel("zoom");
 	this.focusOut();
 }
-
-/**
- * Restores the zoom level for a page that has been 
- * visited and zoomed in the current session.
- * @name restorePanZoomLevel
- */
-Controls.prototype.restorePanZoomLevel = function () {
-    // TODO scroll
-    this.getMarkupDocumentViewer().fullZoom = browser_.getCurrentBrowserObject().getZoomLevel();    
-}    
-
-/**
- * Returns the markupDocumentViewer of the current browser.
- * @name getMarkupDocuentViewer
- * @reutrns {markupDocumentViewer} the document viewer of the current browser.
- */
-Controls.prototype.getMarkupDocumentViewer = function () {
-	var navigator1 = window.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation);
-	var docShell = navigator1.QueryInterface(Ci.nsIDocShell);
-	var docviewer = docShell.contentViewer.QueryInterface(Ci.nsIMarkupDocumentViewer);
-	var doc = browser_.getCurrentBrowser().markupDocumentViewer;
-	return doc;	
-};
 
 /**
  * Enables the back button if the browser's window has history associated with it,
@@ -1022,34 +971,6 @@ Controls.prototype.setURLLabel = function (browser, urlLabel) {
 	} else {
 	    this.pageURL_.value = urlLabel;
 	}
-}
-
-/**
- * Saves the zoom level for the current page so it may be reset upon viewing the page later in the session.
- * @name savePanZoom
- * @param {Object} browser The browser containing the window loading content.
- * @param {String} uri The uri currently loaded page.
- * @param {object} data The object containing the zoom data.
- */
-Controls.prototype.savePanZoom = function (browser, uri, data) {
-    // TODO scroll
-    data = JSON.stringify(data);
-    if (uri && data) {
-        PlacesUtils.annotations.setPageAnnotation(Utils.newURI(uri), "polo/panZoomLevel", data, 0, PlacesUtils.annotations.EXPIRE_SESSION);
-    }
-}
-
-/**
- * Loads the zoom level for the current page if it has been viewed during the current sessoin.
- * @name loadPanZoom
- * @param {Object} browser The browser containing the window loading content.
- * @param {String} uri The uri currently loaded page.
- * @returns {Object} An object containing the zoom data.
- */
-Controls.prototype.loadPanZoom = function (browser, uri) {
-    // TODO scroll
-    var data = PlacesUtils.annotations.getPageAnnotation(Utils.newURI(uri), "polo/panZoomLevel");
-    return data ? JSON.parse(data) : null;
 }
 
 /**

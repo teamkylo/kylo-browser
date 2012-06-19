@@ -7,15 +7,6 @@
  * trademarks of Hillcrest Laboratories, Inc.
  * */
 
-//Utility function to get the document of the current browser.
-function getMarkupDocumentViewer() {
-	var navigator1 = window.QueryInterface(Ci.nsIInterfaceRequestor).getInterface(Ci.nsIWebNavigation);
-	var docShell = navigator1.QueryInterface(Ci.nsIDocShell);
-	var docviewer = docShell.contentViewer.QueryInterface(Ci.nsIMarkupDocumentViewer);
-	var doc = browser_.getCurrentBrowser().markupDocumentViewer;
-	return doc;	
-}
-
 //Global variable for the keyboard overlay panel 
 var gKeyboardOverlay;
 
@@ -922,11 +913,9 @@ KeyboardAutoLauncher.prototype.zoomNode = function (aNode)  {
     var ratio = viewportWidth / w;
     var maxRatio = 1.5;
     
-    var docViewer = getMarkupDocumentViewer();
-    
     var ratio = (maxRatio > 0) ? Math.min(maxRatio, ratio) : ratio;
     // apply zoom factor
-    docViewer.fullZoom = ratio;
+    browser_.getCurrentBrowserObject().getMarkupDocumentViewer().fullZoom = ratio;
     // compute the element's position
     var position = this.getElementPosition(aNode);
     
@@ -951,7 +940,7 @@ KeyboardAutoLauncher.prototype.zoomNode = function (aNode)  {
 KeyboardAutoLauncher.prototype.zoomOut = function () {
     // restore zoom level of browser
     if (this.zoomedElem_) {
-        controls_.restorePanZoomLevel();
+        browser_.getCurrentBrowserObject().restoreZoomLevel();
         this.zoomedElem_ = null;
     }
 }
