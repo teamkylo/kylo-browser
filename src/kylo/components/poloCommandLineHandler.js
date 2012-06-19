@@ -14,8 +14,15 @@ var Cu = Components.utils;
 
 Cu["import"]("resource://gre/modules/XPCOMUtils.jsm");
 
-function debug() {
-//    Cu.reportError(Array.join(arguments, "  "));	
+var DEBUG = false;
+if (DEBUG) {    
+    function debug() {
+        debug.consoleService.logStringMessage(Array.join(arguments, "  "));  
+    }
+    
+    debug.consoleService = Cc["@mozilla.org/consoleservice;1"].getService(Ci.nsIConsoleService);
+} else {
+    function debug() {};
 }
 
 function PoloCommandLine() {
@@ -27,10 +34,10 @@ PoloCommandLine.prototype = {
 	 * @interface nsICommandLineHandler
 	 */	
     handle: function(cmdLine) {
-		debug(" == Handling CLI ==")
+		debug(" == Handling CLI ==");
         for (var i = 0; i < cmdLine.length; i++) {
 			var arg = cmdLine.getArgument(i);
-			debug("   -- ", i, arg)
+			debug("   -- ", i, arg);
 		}
 		
 		
@@ -52,12 +59,22 @@ PoloCommandLine.prototype = {
 		}
 		
 		var toOpen = [];
+		var opts = [];
 		
 		// support Polo.exe -options to bring up settings
 		if (cmdLine.handleFlag("options", false)) {
 			var ios = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 			toOpen.push(ios.newURI("about:settings", null, null));
 		}
+		
+		// support -debug to enable debug tools
+        if (cmdLine.handleFlag("debug", false)) {
+            if (firstLaunch) {
+                opts.push("debug=");
+            } else {
+                win.gDebugTools.enable();
+            }
+        }
 		
 		/**
 		 * Support firefox style launching of -url foo, -new-tab foo and -new-window foo
@@ -155,6 +172,7 @@ PoloCommandLine.prototype = {
 			 * Save these urls here. Polo will pick these up on startup
 			 */
 			this.toOpenOnStartup_ = toOpen;
+			this.startupOpts_ = opts;
 		} else {
 			toOpen.map(win.CLIHelper.open, win.CLIHelper);
 		}
@@ -165,7 +183,12 @@ PoloCommandLine.prototype = {
 		var v = this.toOpenOnStartup_;
 		this.toOpenOnStartup_ = null;
 		return v;
-		
+	},
+	
+	getStartupOptions: function () {
+	    var v = this.startupOpts_;
+	    this.startupOpts_ = null;
+	    return v;
 	},
 	
 	resolveURI: function (cmdLine, uri) {

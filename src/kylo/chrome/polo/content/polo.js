@@ -184,16 +184,16 @@ BrowserManager.prototype.setupTools = function () {
         
         //right click mapping   
         if (cursorPrefs.getBoolPref("goBackOnRightClick")) {
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
         } else {
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);            
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);            
         }
         
         //middle click mapping
-        mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_MBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-        mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_MBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
+        mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_MBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+        mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_MBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
         cursorPrefs.addObserver("", {
                 observe: function(subject, topic, pref)  {
                     if (topic != "nsPref:changed") {
@@ -203,11 +203,11 @@ BrowserManager.prototype.setupTools = function () {
                     switch (pref) {
                         case "goBackOnRightClick":
                             if (cursorPrefs.getBoolPref("goBackOnRightClick")) {
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
                             } else {
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
                             }
                             break;
                     }  
@@ -990,8 +990,25 @@ BrowserManager.prototype.initBrowser = function () {
         gPrefService.clearUserPref("browser.tabs.savedSession");
     }
     
-    // Check for command line tabs
+    // Get urls and options from command line
     var clh = Cc["@hcrest.com/polo/final-clh;1"].getService(Ci.nsICommandLineHandler);
+    
+    // Check for command line options
+    var cliOpts = clh.wrappedJSObject.getStartupOptions();
+    for (var i=0, j=cliOpts.length; i<j; i++) {
+        let [opt, val] = cliOpts[i].split('=');
+        switch (opt) {
+            case "debug":
+                gDebugTools.enable();
+                break;
+                
+            default:
+                debug("unexpected command line option: " + opt);
+                break;
+        }
+    }
+    
+    // Check for command line tabs
     var cliURIs = clh.wrappedJSObject.getStartupURIs();
     
     for (var i=0, j=cliURIs.length; i<j; i++) {
@@ -1210,17 +1227,14 @@ function app_onload() {
     HTMLTooltip.init();
     SWUpdate.init();
 
-    var debugPrefs = gPrefService.getBranch("debug.");
-    if (debugPrefs.getBoolPref("enableDebugTools")) {
-        new DebugTools();
-    }
     SWUpdate.checkAndPrompt();
     
+    window.setTimeout(function () {
+        var fullScreen = gPrefService.getBoolPref("layout.fullScreen");
+        window.fullScreen = fullScreen;
+    }, 100);
     //TODO: Horrible hack for Mac not being able to minimize when fullscreen
     if (platform_ == "osx" || platform_ == "x11") {      
-        window.setTimeout(function () {
-                window.fullScreen = true;
-        }, 100);
         document.getElementById("polo-main").addEventListener("click", gLayoutManager.checkFullScreen.bind(gLayoutManager), false);
     }
 }
