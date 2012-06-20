@@ -312,106 +312,129 @@ BrowserManager.prototype.monitorKeys = function (evt) {
         modKey = evt.metaKey;
     }
     
-    if (evt.keyCode == 166) { // VK_BROWSER_BACK
-        browser_.getCurrentBrowser().goBack();
-    } else if (evt.keyCode == 167) { //VK_BROWSER_FORWARD
-        browser_.getCurrentBrowser().goForward();
-    } else if (evt.keyCode == 8 //VK_BACK (backspace) 
-                && !KeyboardAutoLauncher.isEditableNode(evt.target)) {
-        if (evt.shiftKey) {
-            browser_.getCurrentBrowser().goForward();    
-        } else {            
+    if (!modKey) {
+        if (evt.keyCode == 166) { // VK_BROWSER_BACK
             browser_.getCurrentBrowser().goBack();
+        } else if (evt.keyCode == 167) { //VK_BROWSER_FORWARD
+            browser_.getCurrentBrowser().goForward();
+        } else if (evt.keyCode == 8 //VK_BACK (backspace) 
+                    && !KeyboardAutoLauncher.isEditableNode(evt.target)) {
+            if (evt.shiftKey) {
+                browser_.getCurrentBrowser().goForward();    
+            } else {            
+                browser_.getCurrentBrowser().goBack();
+            }
+        } else if (evt.keyCode == 112) { // VK_F1
+            browser_.switchOrCreate("about:help");
+        } else if (evt.keyCode == 113) { // VK_F2
+            browser_.switchOrCreate("about:settings");
+        } else if (evt.keyCode == 114) { // VK_F3
+            browser_.switchOrCreate("about:bookmarks");
+        } else if (evt.keyCode == 115) { // VK_F4
+            browser_.switchOrCreate("about:bookmarks");
+        } else if (evt.keyCode == 116) { // VK_F5
+            browser_.getCurrentBrowser().reload();
         }
-    } else if (modKey) {
-        switch (evt.keyCode) {
+        
+        return;
+    }
+        
+    switch (evt.keyCode) {
+        
+        // Windows Back/Forward
+        case 37: //VK_LEFT
+            if (platform_ == "win32") {
+                browser_.getCurrentBrowser().goBack();
+            }
+            break;
+        case 39: //VK_RIGHT
+            if (platform_ == "win32") {
+                browser_.getCurrentBrowser().goForward();
+            }
+            break;
             
-            // Windows Back/Forward
-            case 37: //VK_LEFT
-                if (platform_ == "win32") {
-                    browser_.getCurrentBrowser().goBack();
-                }
-                break;
-            case 39: //VK_RIGHT
-                if (platform_ == "win32") {
-                    browser_.getCurrentBrowser().goForward();
-                }
-                break;
-                
-            // Mac OSX Back/Forward
-            case 219: // [
-                if (platform_ == "osx") {
-                    browser_.getCurrentBrowser().goBack();
-                }
-                break;
-            case 221: // ]
-                if (platform_ == "osx") {
-                    browser_.getCurrentBrowser().goForward();
-                }
-                break;
-                                    
-            case 84:
-            case 78:
-                //Ctrl+t opens a new tab
-                //Ctrl+n opens a new page (does the same thing... using "page" lingo for tabs in Kyloland)
-                controls_.addTab();
-                break;    
-            case 75:
-                //Ctrl+k opens keyboard
-                if (controls_.isPanelOpen("keyboard")) {
-                    controls_.closePanel("keyboard");
-                } else {
-                    controls_.openPanel("keyboard");
-                }
-                break;
-            case 76:
-                //Ctrl+l opens url keyboard
-                if (controls_.isPanelOpen("keyboard_url")) {
-                    controls_.closePanel("keyboard_url");
-                } else {
-                    controls_.openPanel("keyboard_url");
-                }
-                break;
-            case 72:
-                //Ctrl+h goes home
-			    browser_.getCurrentBrowserObject().goHome();
-                break;
-            case 107:
-            case 61:  // osx
-                //Ctrl++ zooms in
-                browser_.getCurrentBrowserObject().zoomIn();
-                break;
-            case 109: 
-                //Ctrl+- zooms out
-                browser_.getCurrentBrowserObject().zoomOut();
-                break;
-            case 48:
-                //Ctrl+0 resets zoom level
-                browser_.getCurrentBrowserObject().restoreZoomLevel(true);
-                break;
-            case 77: 
-                //Ctrl+m minimizes
-                controls_.handleMinimize();
-                break;
-            case 79:
-                //Ctrl+o opens settings
-                browser_.switchOrCreate("about:settings");
-                break;
-            case 66:
-                //Ctrl+b opens bookmarks
-                browser_.switchOrCreate("about:places");
-                break;
-            case 82: 
-                //Ctrl+r reloads the page
+        // Mac OSX Back/Forward
+        case 219: // [
+            if (platform_ == "osx") {
+                browser_.getCurrentBrowser().goBack();
+            }
+            break;
+        case 221: // ]
+            if (platform_ == "osx") {
+                browser_.getCurrentBrowser().goForward();
+            }
+            break;
+                                
+        case 84:
+        case 78:
+            //Ctrl+t opens a new tab
+            //Ctrl+n opens a new page (does the same thing... using "page" lingo for tabs in Kyloland)
+            controls_.addTab();
+            break;    
+        case 75:
+            //Ctrl+k opens keyboard
+            if (controls_.isPanelOpen("keyboard")) {
+                controls_.closePanel("keyboard");
+            } else {
+                controls_.openPanel("keyboard");
+            }
+            break;
+        case 76:
+            //Ctrl+l opens url keyboard
+            if (controls_.isPanelOpen("keyboard_url")) {
+                controls_.closePanel("keyboard_url");
+            } else {
+                controls_.openPanel("keyboard_url");
+            }
+            break;
+        case 72:
+            //Ctrl+h goes home
+		    browser_.getCurrentBrowserObject().goHome();
+            break;
+        case 107:
+        case 61:  // osx
+            //Ctrl++ zooms in
+            browser_.getCurrentBrowserObject().zoomIn();
+            break;
+        case 109: 
+            //Ctrl+- zooms out
+            browser_.getCurrentBrowserObject().zoomOut();
+            break;
+        case 48:
+            //Ctrl+0 resets zoom level
+            browser_.getCurrentBrowserObject().restoreZoomLevel(true);
+            break;
+        case 77: 
+            //Ctrl+m minimizes
+            controls_.handleMinimize();
+            break;
+        case 79:
+            //Ctrl+o opens settings
+            browser_.switchOrCreate("about:settings");
+            break;
+        case 66:
+            //Ctrl+b opens bookmarks
+            browser_.switchOrCreate("about:places");
+            break;
+        case 82: 
+            //Ctrl+r reloads the page
+            if (evt.shiftKey) {
+                // Ctrl+Shift+r ignores cache
+                browser_.getCurrentBrowser().reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
+            } else {
                 browser_.getCurrentBrowser().reload();
-                break;
-            case 81:
-                //Ctrl+q quits
-                controls_.confirmClose();
-                break;
-            
-        }
-	}
+            }
+            break;
+        case 116:
+            //Ctrl+F5 forces refresh
+            browser_.getCurrentBrowser().reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
+            break;
+        case 81:
+            //Ctrl+q quits
+            controls_.confirmClose();
+            break;
+        
+    }
 }
 
 /**

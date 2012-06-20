@@ -55,6 +55,10 @@ var gDebugTools = {
                 break;
                 
             case 116: // F5
+                // Ctrl+F5 is force refresh, handled in polo.js
+                break;
+            
+            case 117: // F6
                 var params = {curWidth: window.innerWidth,
                               curHeight: window.innerHeight,
                               newRes: null};
@@ -65,11 +69,7 @@ var gDebugTools = {
                     var wh = params.newRes.split("x");
                     window.innerWidth = parseInt(wh[0]);
                     window.innerHeight = parseInt(wh[1]);
-                }
-                
-                break;
-            
-            case 117: // F6
+                }            
                 break;
                 
             case 118: // F7
