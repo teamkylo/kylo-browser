@@ -329,9 +329,9 @@ BrowserManager.prototype.monitorKeys = function (evt) {
         } else if (evt.keyCode == 113) { // VK_F2
             browser_.switchOrCreate("about:settings");
         } else if (evt.keyCode == 114) { // VK_F3
-            browser_.switchOrCreate("about:bookmarks");
+            browser_.switchOrCreate("about:downloads");
         } else if (evt.keyCode == 115) { // VK_F4
-            browser_.switchOrCreate("about:bookmarks");
+            browser_.switchOrCreate("about:places");
         } else if (evt.keyCode == 116) { // VK_F5
             browser_.getCurrentBrowser().reload();
         }
@@ -408,6 +408,10 @@ BrowserManager.prototype.monitorKeys = function (evt) {
             //Ctrl+m minimizes
             controls_.handleMinimize();
             break;
+        case 74:
+            //Ctrl+j opens downloads
+            browser_.switchOrCreate("about:downloads");
+            break;            
         case 79:
             //Ctrl+o opens settings
             browser_.switchOrCreate("about:settings");
