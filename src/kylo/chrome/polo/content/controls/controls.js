@@ -75,7 +75,7 @@ function Controls() {
     document.getElementById("newTabButton").addEventListener("command", this.addTab.bind(this), false);
     	
 	this.browserDeck_ = document.getElementById("browserDeck");	
-	gObserverService.addObserver(this, "Browser:DocumentLoadCompleted", false);
+	gObserverService.addObserver(this, "Browser:DocumentLoadStarted", false);
 	
 	var links = document.querySelectorAll("#tools-menu button[href]");
 	for (var i  = 0; i < links.length; i++) {
@@ -690,11 +690,10 @@ Controls.prototype.handlePrint = function () {
  * @param {Object} data data about the document change
  */
 Controls.prototype.observe = function(browser, topic, data) {
-    if (topic != "Browser:DocumentLoadCompleted") {
+    if (topic != "Browser:DocumentLoadStarted") {
         throw "Unexpected topic: " + topic;
     }
 
-    var data = JSON.parse(data);
     browser = browser.wrappedJSObject;
 
     window.setTimeout(function () {
@@ -702,45 +701,6 @@ Controls.prototype.observe = function(browser, topic, data) {
         this.setForwardEnabled(browser, browser.browser_.canGoForward);
     }.bind(this),0);
 
-    if (!data.success) {
-        return;
-    }  
-
-    // See if we should store our zoom level for the last URI loaded
-    if (data.lastURI && data.lastURI.indexOf("about:") != 0) {
-        var lastZoom = browser.getMarkupDocumentViewer().getZoomLevel();
-        var defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
-        if (lastZoom != defaultZoom) {
-            PlacesUtils.annotations.setPageAnnotation(Utils.newURI(data.lastURI), "polo/panZoomLevel", JSON.stringify({zoom: lastZoom}), 0, Ci.nsIAnnotationService.EXPIRE_SESSION);
-        }    
-    }
-    
-    // See if we can restore the zoom level for the new URI from a saved annotation
-    var saveData = null;
-    try {
-        saveData = PlacesUtils.annotations.getPageAnnotation(Utils.newURI(data.URI), "polo/panZoomLevel");
-        saveData = JSON.parse(saveData);
-    } catch(e) {
-        // Annotation doesn't exist
-    }
-    
-    if (saveData) {
-        browser_.getCurrentBrowserObject().setZoomLevel(saveData.zoom);
-    } else {
-        browser_.getCurrentBrowserObject().restoreZoomLevel(true);
-    }   
-
-    switch (data.navigation) {
-        case "NEW":
-        case "BACK":
-        case "FORWARD":
-        case "JUMP":
-        case "RELOAD":
-            break;
-
-        default:
-            debug("Unexpected Navigation: ", data.navigation);            
-    }
 };
 
 /**

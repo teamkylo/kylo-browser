@@ -257,10 +257,10 @@ BrowserManager.prototype.getPlatform = function () {
  * @name updateZoomLevels
  */
 BrowserManager.prototype.updateZoomLevels = function(zoom){
-	for (var x = 0; x < this.browsers_.length; x++) {
+    for (var i = 0; i < this.browsers_.length; i++) {
 	    // Skip applying default zoom to "about:" pages
-	    if (this.browsers_[x].url_.indexOf("about:") != 0) {
-    		this.browsers_[x].setZoomLevel(zoom);
+	    if (this.browsers_[i].browser_.currentURI.spec.indexOf("about:") != 0) {
+    		this.browsers_[i].restoreZoomLevel();
 	    }
 	}
 }
@@ -663,7 +663,7 @@ BrowserManager.prototype.createNewBrowser = function (focus, url) {
     if (url) {
         this.loadURL(url);
     }
-    
+
     return browser;
 };
 
@@ -1255,15 +1255,6 @@ function app_onload() {
     SWUpdate.init();
 
     SWUpdate.checkAndPrompt();
-    
-    window.setTimeout(function () {
-        var fullScreen = gPrefService.getBoolPref("layout.fullScreen");
-        window.fullScreen = fullScreen;
-    }, 100);
-    //TODO: Horrible hack for Mac not being able to minimize when fullscreen
-    if (platform_ == "osx" || platform_ == "x11") {      
-        document.getElementById("polo-main").addEventListener("click", gLayoutManager.checkFullScreen.bind(gLayoutManager), false);
-    }
 }
 
 /**

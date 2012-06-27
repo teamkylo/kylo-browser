@@ -295,7 +295,7 @@ var gZoomWidget = {
             this.zoomOutBtn_.removeAttribute("disabled");
         }
 
-        if (zoom == this.defaultZoom_) {
+        if (zoom === this.defaultZoom_) {
             this.zoomResetBtn_.setAttribute("disabled", true);
         } else {
             this.zoomResetBtn_.removeAttribute("disabled");

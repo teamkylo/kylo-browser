@@ -36,7 +36,6 @@ function Browser(idx, deck) {
     this.title_ = "";
     this.bookmarkTitle_ = null;
     this.icon_ = null;
-    this.url_ = "";
     this.browser_ = el;
     
     this.giveBrowserFocusOnLoadComplete_ = true;
@@ -94,9 +93,33 @@ Browser.prototype.getZoomLevel = function() {
  * @param {Number} zoom The zoom level to set the browser to
  */
 Browser.prototype.setZoomLevel = function(zoom) {
-    this.zoomLevel_ = zoom;
-    this.getMarkupDocumentViewer().fullZoom = this.zoomLevel_;
-    gZoomWidget.setZoom(this.zoomLevel_);
+    zoom = parseFloat(zoom).toFixed(2);
+    this.getMarkupDocumentViewer().fullZoom = zoom;
+    
+    if (zoom == this.zoomLevel_) {
+        return;
+    }
+    
+    // Start by setting this null - the "unset" state
+    this.zoomLevel_ = null;
+    
+    // See if we should store our zoom level for the last URI loaded
+    if (this.browser_.currentURI && this.browser_.currentURI.spec.indexOf("about:") != 0) {
+        var defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
+        if (zoom != defaultZoom) {
+            this.zoomLevel_ = zoom;
+            try {
+                PlacesUtils.annotations.setPageAnnotation(this.browser_.currentURI, "polo/panZoomLevel", JSON.stringify({zoom: this.zoomLevel_}), 0, Ci.nsIAnnotationService.EXPIRE_NEVER);
+            } catch(e) {
+                debug(e);
+            }
+        }
+    }
+    
+    // Update the zoom widget if it's open and we're the selected browser object
+    if (controls_.isPanelOpen("zoom") && browser_.getCurrentBrowserObject() == this) {
+        gZoomWidget.setZoom(this.zoomLevel_);
+    }
 }
 
 /**
@@ -106,14 +129,14 @@ Browser.prototype.setZoomLevel = function(zoom) {
  * @param {Boolean} reset Reset to the default zoom level or not (default) 
  */
 Browser.prototype.restoreZoomLevel = function(reset) {
+    var zoom = this.zoomLevel_;
     if (this.zoomLevel_ === null || reset) {
-        var defaultZoom = 1;
+        zoom = 1;
         if (this.getURL().indexOf("about:") != 0) {
-            defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
+            zoom = gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel");
         }
-        this.zoomLevel_ = defaultZoom;
     }
-    this.setZoomLevel(this.zoomLevel_);
+    this.setZoomLevel(zoom);
 }
 
 /**
@@ -284,7 +307,7 @@ Browser.prototype.updateControls = function () {
     }    
     controls_.setTitle(this, title);
     controls_.setIcon(this, this.icon_);
-    controls_.setURLLabel(this, this.url_);
+    controls_.setURLLabel(this, this.browser_.currentURI.spec);
     controls_.setLoading(this, this.loading_);
     controls_.setBackEnabled(this, this.browser_.canGoBack);
     controls_.setForwardEnabled(this, this.browser_.canGoForward);    
@@ -383,7 +406,7 @@ Browser.prototype.getIcon = function () {
  * @returns {String} The url of the browsers page.
  */
 Browser.prototype.getURL = function () {
-    return this.url_ || this.browser_.currentURI.spec || null;
+    return this.browser_.currentURI.spec || null;
 }
 
 /**
@@ -473,11 +496,12 @@ Browser.prototype.beginPageLoad = function (uri, originalURI) {
     this.originalURI_ = originalURI; // i.e. about:help instead of file://c:/Program Files/Polo/blah/blah/blah
     
     this.loading_ = true;
+    this.icon_ = null;
+    this.bookmarkTitle_ = null;
+    
     if (!this.lastURI_  || (this.lastURI_.host != uri.host)) {
         controls_.setIcon(this, PlacesUtils.favicons.getFaviconImageForPage(uri).spec);
     }    
-    this.icon_ = null;
-    this.bookmarkTitle_ = null;
     
     controls_.setLoading(this, true);
     controls_.setTitle(this, i18nStrings_["browser"].getString("browser.loadingUrlTitle"));
@@ -592,10 +616,29 @@ Browser.prototype.onStateChange = function(aProgress, aRequest, aFlag, aStatus) 
  * @param {Object} aURI
  * @interface nsIWebProgress
  */
-Browser.prototype.onLocationChange = function(aProgress, aRequest, aURI) {
+Browser.prototype.onLocationChange = function(aProgress, aRequest, aURI, aFlags) {
     if (aProgress.DOMWindow == this.browser_.contentWindow) {
         controls_.setURLLabel(this, this.browser_.currentURI.spec);
-        this.url_ = this.browser_.currentURI.spec;
+        
+        // See if we can restore the zoom level for the new URI from a saved annotation
+        var saveData = null;
+        try {
+            saveData = PlacesUtils.annotations.getPageAnnotation(aURI, "polo/panZoomLevel");
+            saveData = JSON.parse(saveData);
+        } catch(e) {
+            // Annotation doesn't exist
+        }
+        
+        if (saveData) {
+            this.zoomLevel_ = parseFloat(saveData.zoom).toFixed(2);
+            this.getMarkupDocumentViewer().fullZoom = this.zoomLevel_;  
+            if (controls_.isPanelOpen("zoom") && browser_.getCurrentBrowserObject() == this) {
+                gZoomWidget.setZoom(this.zoomLevel_);
+            }    
+        } else {
+            this.restoreZoomLevel(true);
+        }               
+        
     }
 }
 
