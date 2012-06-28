@@ -85,3 +85,4 @@
 <!ENTITY settings.addons.uninstallAddon.label "Uninstall">
 <!-- Advanced -->
 <!ENTITY settings.advanced.useBookmarkTitlesLabel "Use bookmark titles for page titles">
+<!ENTITY settings.advanced.ipcPluginsEnabledLabel "Run plugins in a separate process">
