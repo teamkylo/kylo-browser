@@ -75,7 +75,7 @@
 !define EXE_NAME            "Kylo.exe"
 !define ICO_NAME            "Kylo.ico"
 
-!define FLASH_PLUGIN        "install_flash_player_11_plugin_32bit.exe"
+!define FLASH_PLUGIN        "install_flash_player_11_plugin.exe"
 !define MSVC_REDIST         "vcredist_x86.exe"
 
 !define S_DEFINSTDIR_USER   "$LOCALAPPDATA\${DEFAULT_INSTALL_DIR}"
