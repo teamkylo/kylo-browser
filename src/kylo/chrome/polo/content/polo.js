@@ -1246,8 +1246,7 @@ function app_onload() {
 
     start_missing_plugin_installer();
     registerStyleSheets();
-    
-	gHomeChooser.init();
+
     gZoomWidget.init();
     gToolsMenu.init();
     Help.init();

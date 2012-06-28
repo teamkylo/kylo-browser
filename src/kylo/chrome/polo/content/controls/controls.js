@@ -48,13 +48,10 @@ function Controls() {
 		this.panelBtns_[pnl].addEventListener("click", this.handlePanelButton.bind(this, pnl), false);
 	}
     
-	// use a custom "handlePanelButton"	
-	this.panelBtns_.homechooser = document.getElementById("homeButton");
-
 	this.openPanel_ = null;
 	
 
-	EventUtility.clickNHold(this.panelBtns_.homechooser, gPrefService.getIntPref("controls.clickNHoldDelay.home"), this.goHome.bind(this), this.setCurrentPageAsHomepage.bind(this));
+	EventUtility.clickNHold(document.getElementById("homeButton"), gPrefService.getIntPref("controls.clickNHoldDelay.home"), this.goHome.bind(this), this.setCurrentPageAsHomepage.bind(this));
 
     var placesButton = document.getElementById("favoritesButton");	
     EventUtility.clickNHold(placesButton, gPrefService.getIntPref("controls.clickNHoldDelay.bookmarks"), function () {
@@ -438,9 +435,6 @@ Controls.prototype.openPanel = function (panel, callback) {
             case "tools":
                 gToolsMenu.close();
                 break;
-            case "homechooser":
-			     gHomeChooser.close();
-			     break;
             case "keyboard":
             case "keyboard_url":
             case "keyboard_search":
@@ -475,10 +469,6 @@ Controls.prototype.openPanel = function (panel, callback) {
 //        case "places":
 //            gBookmarkManager.open();
 //          break;
-
-        case "homechooser":
-             gHomeChooser.open();
-             break;
             
         case "keyboard":
             gKeyboardOverlay.open("EMBEDDED");
@@ -546,9 +536,6 @@ Controls.prototype.closePanel = function(panel) {
         case "tools":
             gToolsMenu.close();
 			break;
-        case "homechooser":
-             gHomeChooser.close();
-             break;
         case "keyboard":
         case "keyboard_url":
         case "keyboard_search":
@@ -620,11 +607,7 @@ Controls.prototype.isVisible = function () {
  * @param {Object} evt the button click event of the home button
  */
 Controls.prototype.goHome = function (evt) {
-	if (!gPrefService.prefHasUserValue("browser.startup.homepage")) {
-		return browser_.getCurrentBrowserObject().goHome();
-	}
-	
-	this.handlePanelButton("homechooser");
+    return browser_.getCurrentBrowserObject().goHome();
 }
 
 /**

@@ -551,7 +551,6 @@ LayoutManager.prototype.resize = function () {
         
         gZoomWidget.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
         gToolsMenu.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
-		gHomeChooser.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
     }
 }
 
