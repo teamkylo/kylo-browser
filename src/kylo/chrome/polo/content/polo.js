@@ -334,8 +334,9 @@ BrowserManager.prototype.monitorKeys = function (evt) {
             browser_.switchOrCreate("about:places");
         } else if (evt.keyCode == 116) { // VK_F5
             browser_.getCurrentBrowser().reload();
+        } else if (evt.keyCode == 27) { // VK_ESCAPE
+            controls_.closePanel(); // Close all panels
         }
-        
         return;
     }
         

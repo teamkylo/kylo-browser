@@ -228,12 +228,38 @@
                         <vbox flex="1">
                             <description>&help.shortcutBookmark;</description>
                         </vbox>
-                    </hbox>
+                    </hbox>                                                                              
+                                                                           
                     <hbox class="faq-item">
                         <description class="faq-title">&help.keyboardTitle;</description>
                     </hbox>
                     
+                    <hbox class="faq-item" hint="menu">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.shortcutHelp;</description>
+                        </vbox>
+                    </hbox>
+                                    
                          <!-- Windows specific keyboard shortcuts -->    
+                    <hbox class="faq-item os-win32" hint="menu">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutSettings;</description>
+                        </vbox>
+                    </hbox>                          
+                    <hbox class="faq-item os-win32" hint="menu">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutDownloads;</description>
+                        </vbox>
+                    </hbox>
+                    <hbox class="faq-item os-win32" hint="bookmarks">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.win32.shortcutBookmarks;</description>
+                        </vbox>
+                    </hbox>
                     <hbox class="faq-item os-win32" hint="keyboard">
                         <image class="icon-keyboard" />
                         <vbox flex="1">
@@ -302,6 +328,24 @@
                     </hbox>
                     
                         <!-- Mac OSX specific keyboard shortcuts -->
+                    <hbox class="faq-item os-osx" hint="menu">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutSettings;</description>
+                        </vbox>
+                    </hbox>                      
+                    <hbox class="faq-item os-osx" hint="menu">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutDownloads;</description>
+                        </vbox>
+                    </hbox>             
+                    <hbox class="faq-item os-osx" hint="bookmarks">
+                        <image class="icon-keyboard" />
+                        <vbox flex="1">
+                            <description>&help.osx.shortcutBookmarks;</description>
+                        </vbox>
+                    </hbox>                          
                     <hbox class="faq-item os-osx" hint="keyboard">
                         <image class="icon-keyboard" />
                         <vbox flex="1">
