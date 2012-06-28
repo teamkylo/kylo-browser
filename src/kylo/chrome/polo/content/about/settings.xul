@@ -41,8 +41,7 @@
             <tabs id="tabs" orient="vertical">
                 <tab id="mainTab" label="&settings.mainTabLabel;"/>
                 <tab id="controlsTab" label="&settings.controlsTabLabel;"/>
-                <tab id="networkTab" label="&settings.networkTabLabel;"/>
-                <tab id="zoomTab" label="&settings.zoomTabLabel;"/>
+                <tab id="privacyTab" label="&settings.privacyTabLabel;"/>
                 <tab id="screenTab" label="&settings.screenTabLabel;"/>
                 <tab id="compatibilityTab" label="&settings.compatibilityTabLabel;"/>
                 <tab id="themeTab" label="&settings.themeTabLabel;"/>
@@ -76,20 +75,6 @@
                             <button id="browseFolderButton" label="&settings.browseButtonLabel;" oncommand="DownloadSettings.chooseFolder();"/>
                         </hbox>
                     </settings>
-                    <settings>
-                        <hbox align="center">
-	                        <description class="label-align-left" value="&settings.clearDataLabel;"/>
-                            <spacer flex="1"/>
-                            <button id="clearDataButton" label="&settings.clearDataButtonLabel;" oncommand="Settings.sanitize(event);"/>
-                        </hbox>                    
-                    </settings>
-                    <settings>
-                        <hbox align="center">
-                            <description class="label-align" value="&settings.restoreDefaultsButtonLabel;"/>
-                            <spacer flex="1"/>
-                            <button id="restoreButton" label="&settings.restoreButtonLabel;" oncommand="RestoreDefaults.restore(event);"/>
-                        </hbox>
-                    </settings>
 					<settings>
 						<hbox align="center">
 							<description class="label-align" value="&settings.chooseSearch;"/>
@@ -103,6 +88,13 @@
 							</menulist>
 						</hbox>
 					</settings>
+                    <settings>
+                        <hbox align="center">
+                            <description class="label-align" value="&settings.restoreDefaultsButtonLabel;"/>
+                            <spacer flex="1"/>
+                            <button id="restoreButton" label="&settings.restoreButtonLabel;" oncommand="RestoreDefaults.restore(event);"/>
+                        </hbox>
+                    </settings>
                 </tabpanel>
                 <tabpanel id="controlsTabPanel" flex="1">
                     <settings id="prefs-controls" class="pref-container" flex="1">                                                                        
@@ -111,10 +103,92 @@
                         <setting pref="keyboard.autolaunch.zoom" type="bool" title="&settings.enableAutoZoomLabel;"/>
                         <setting pref="polo.cursor.goBackOnRightClick" type="bool" title="&settings.enableRightClickLabel;"/>
 					</settings>
-					
                 </tabpanel>
-                <tabpanel id="networkTabPanel" flex="1">
-                    <vbox flex="1">
+                <tabpanel id="privacyTabPanel" class="pref-container" orient="vertical" flex="1">
+                    <settings>
+                        <description class="label-align-left" value="&settings.clearDataLabel;"/>
+                        <hbox class="setting_subitem">
+                            <vbox>
+                                <setting pref="privacy.item.history" type="bool" title="&settings.privacy.historyLabel;"/>
+                                <setting pref="privacy.item.passwords" type="bool" title="&settings.privacy.passwordsLabel;"/>
+                                <setting pref="privacy.item.cookies" type="bool" title="&settings.privacy.cookiesLabel;"/>
+                            </vbox>
+                            <vbox>
+                                <setting pref="privacy.item.cache" type="bool" title="&settings.privacy.cacheLabel;"/>
+                                <setting pref="privacy.item.downloads" type="bool" title="&settings.privacy.downloadsLabel;"/>
+                                <setting pref="privacy.item.formdata" type="bool" title="&settings.privacy.formdataLabel;"/>
+                            </vbox>
+                        </hbox>
+                        <hbox class="setting_subitem">
+                            <button id="clearDataButton" label="&settings.clearDataButtonLabel;" oncommand="Settings.sanitize(event);"/>
+                            <spacer flex="1"/>                            
+                        </hbox>
+                    </settings>
+                </tabpanel>                
+                <tabpanel id="screenTabPanel" class="pref-container" orient="vertical" flex="1">                         
+                    <vbox>
+                        <description class="setting_header" value="&settings.defaultZoomLabel;"/>
+                        <radiogroup id="default-zoom" class="setting_subitem" orient="horizontal" oncommand="ZoomSettings.setDefaultZoom();">
+                            <radio value="1.0" label="&settings.100Percent;&#37;"/>  
+                            <radio value="1.25" label="&settings.125Percent;&#37;"/>
+                            <radio value="1.5" label="&settings.150Percent;&#37;"/>
+                            <radio value="1.75" label="&settings.175Percent;&#37;"/>
+                            <radio value="2.0" label="&settings.200Percent;&#37;"/>
+                        </radiogroup>                        
+                    </vbox> 
+                    <vbox>
+                        <description class="setting_header" value="&settings.screenLabel;"/>
+                        <!-- TODO freebie refresh button to get new resolution/screen changes -->
+                        <hbox class="setting_subitem">
+                            <radiogroup id="screen-index" orient="vertical" oncommand="ScreenManager.selectedScreenChanged();"/>
+                            <vbox align="center">
+                              <button id="screen-change-refresh-settings" oncommand="ScreenManager.reset();" label="&settings.refreshButtonLabel;"/>
+                              <spacer flex="1"/>
+                            </vbox>
+                            <spacer flex="1"/>
+                        </hbox>
+                        <hbox id="screen-change-message" hidden="true">
+                            <vbox flex="1">
+                                <description/>
+                                <description/>
+                            </vbox>
+                            <button id="screen-change-confirm-btn" oncommand="ScreenManager.confirmChange();" label="&settings.confirmButtonLabel;"/>
+                            <button id="screen-change-confirm-btn" oncommand="ScreenManager.cancelChange();" label="&settings.cancelButtonLabel;"/>
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <description class="setting_header" value="&settings.adjustScreenLabel;"/>
+                        <hbox class="setting_subitem">
+                            <button id="screen-change-adjust-overscan" oncommand="ScreenManager.adjustOverscan();" label="&settings.adjustScreenButtonLabel;"/>
+                            <spacer flex="1"/>
+                        </hbox>
+                    </vbox>
+                    <vbox>
+                        <description class="setting_header" value="&settings.textSizeLabel;"/>
+                        <hbox>
+                            <radiogroup id="font-size" class="setting_subitem" orient="vertical" oncommand="FontSettings.applySetting();">
+                                <radio value="off" label="&settings.noMinimumButtonLabel;"/>
+                                <radio value="14" label="&settings.mediumButtonLabel;"/>
+                                <radio value="18" label="&settings.largeButtonLabel;"/>
+                                <radio value="22" label="&settings.xlButtonLabel;"/>
+                            </radiogroup>
+                            <vbox class="text-size-example">
+                                <description class="text-size-example-content" flex="1">
+                                    &settings.sampleText;
+                                </description>
+                            </vbox>
+                        </hbox>                         
+                    </vbox>                    
+                </tabpanel>
+                <tabpanel id="compatibilityTabPanel" class="pref-container" orient="vertical" flex="1">
+                </tabpanel>
+                <tabpanel id="themeTabPanel" class="pref-container" orient="vertical" flex="1">
+                    <richlistbox id="themeList" class="list" flex="1"/>
+                </tabpanel>   
+                <tabpanel id="advancedTabPanel" orient="vertical" class="pref-container" flex="1">
+                    <setting pref="polo.pages.use_bookmark_titles" type="bool" title="&settings.advanced.useBookmarkTitlesLabel;"/>
+                    <setting pref="dom.ipc.plugins.enabled" type="bool" title="&settings.advanced.ipcPluginsEnabledLabel;" onclick="Settings.promptRestart(this);"/>
+                    <vbox>
                         <description class="setting_header" value="&settings.proxyLabel;"/>
                         <radiogroup id="proxy_type" pref="network.proxy.type" class="setting_subitem" orient="vertical" flex="1">
                             <radio value="1" label="&settings.manualConfigLabel;"/>
@@ -127,84 +201,7 @@
                             <radio value="4" label="&settings.autoDetectLabel;"/>
                             <radio value="0" label="&settings.noProxyLabel;"/>
                         </radiogroup>
-                    </vbox>
-                </tabpanel>
-                <tabpanel id="zoomTabPanel" class="pref-container" orient="vertical" flex="1">
-                   <vbox>
-                        <description class="setting_header" value="&settings.defaultZoomLabel;"/>
-                        <radiogroup id="default-zoom" class="setting_subitem" orient="horizontal" oncommand="ZoomSettings.setDefaultZoom();">
-                            <radio value="1.0" label="&settings.100Percent;&#37;"/>  
-                            <radio value="1.25" label="&settings.125Percent;&#37;"/>
-                            <radio value="1.5" label="&settings.150Percent;&#37;"/>
-                            <radio value="1.75" label="&settings.175Percent;&#37;"/>
-                            <radio value="2.0" label="&settings.200Percent;&#37;"/>
-                        </radiogroup>                        
-                   </vbox>                  
-                   <vbox>
-                      <description class="setting_header" value="&settings.textSizeLabel;"/>
-                         <hbox>
-	                      <radiogroup id="font-size" class="setting_subitem" orient="vertical" oncommand="FontSettings.applySetting();">
-	                          <radio value="off" label="&settings.noMinimumButtonLabel;"/>
-	                          <radio value="14" label="&settings.mediumButtonLabel;"/>
-	                          <radio value="18" label="&settings.largeButtonLabel;"/>
-	                          <radio value="22" label="&settings.xlButtonLabel;"/>
-	                      </radiogroup>
-	                      <vbox class="text-size-example">
-	                          <description class="text-size-example-content" flex="1">
-	                             &settings.sampleText;
-	                          </description>
-	                      </vbox>
-                      </hbox>                         
-                    </vbox>
-                </tabpanel>
-                <tabpanel id="screenTabPanel" orient="vertical" flex="1">
-                    <settings class="pref-container">
-	                    <hbox>
-		                    <vbox>
-		                        <description class="setting_header" value="&settings.screenLabel;"/>
-		                        <!-- TODO freebie refresh button to get new resolution/screen changes -->
-		                        <hbox class="setting_subitem">
-		                            <radiogroup id="screen-index" orient="vertical" oncommand="ScreenManager.selectedScreenChanged();"/>
-		                            <spacer flex="1"/>
-		                            <vbox align="center">
-		                              <button id="screen-change-refresh-settings" oncommand="ScreenManager.reset();" label="&settings.refreshButtonLabel;"/>
-		                              <spacer flex="1"/>
-		                            </vbox>
-		                        </hbox>
-		                        <hbox id="screen-change-message" hidden="true">
-		                            <vbox flex="1">
-		                                <description/>
-		                                <description/>
-		                            </vbox>
-		                            <button id="screen-change-confirm-btn" oncommand="ScreenManager.confirmChange();" label="&settings.confirmButtonLabel;"/>
-		                            <button id="screen-change-confirm-btn" oncommand="ScreenManager.cancelChange();" label="&settings.cancelButtonLabel;"/>
-		                        </hbox>
-		                    </vbox>
-	                    </hbox>
-	                    <hbox>
-	                       <vbox>
-		                      <description class="setting_header" value="&settings.adjustScreenLabel;"/>
-		                      <hbox class="setting_subitem">
-		                          <button id="screen-change-adjust-overscan" oncommand="ScreenManager.adjustOverscan();" label="&settings.adjustScreenButtonLabel;"/>
-                                  <spacer flex="1"/>
-                              </hbox>
-	                       </vbox>
-	                    </hbox>
-                    </settings>
-                </tabpanel>
-                <tabpanel id="compatibilityTabPanel" class="pref-container" orient="vertical" flex="1">
-                    <settings>
-                        <setting pref="javascript.enabled" type="bool" title="&settings.enableJSLabel;"/>
-                    </settings>
-                </tabpanel>
-                <tabpanel id="themeTabPanel" class="pref-container" orient="vertical" flex="1">
-                    <richlistbox id="themeList" class="list" flex="1"/>
-                </tabpanel>   
-                <tabpanel id="advancedTabPanel" orient="vertical" class="pref-container" flex="1">
-                    <settings id="prefs-advanced" class="pref-container" flex="1">                                                                        
-                        <setting pref="polo.pages.use_bookmark_titles" type="bool" title="&settings.advanced.useBookmarkTitlesLabel;"/>
-                        <setting pref="dom.ipc.plugins.enabled" type="bool" title="&settings.advanced.ipcPluginsEnabledLabel;" onclick="Settings.promptRestart(this);"/>
-                    </settings>
+                    </vbox>                    
                 </tabpanel>              
             </tabpanels>
         </tabbox>

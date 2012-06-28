@@ -16,7 +16,7 @@
 <!ENTITY settings.zoomTabLabel "Zoom">
 <!ENTITY settings.privacyTabLabel "Privacy">
 <!ENTITY settings.networkTabLabel "Network">
-<!ENTITY settings.screenTabLabel "Screen">
+<!ENTITY settings.screenTabLabel "Display">
 <!ENTITY settings.compatibilityTabLabel "Compatibility">
 <!ENTITY settings.themeTabLabel "Theme">
 <!ENTITY settings.advancedTabLabel "Advanced">
@@ -56,6 +56,13 @@
 <!-- Privacy -->
 <!ENTITY settings.clearDataLabel "Clear all history, passwords, cookies, cache, etc.">
 <!ENTITY settings.clearDataButtonLabel "Clear private data">
+<!ENTITY settings.privacy.historyLabel "History">
+<!ENTITY settings.privacy.passwordsLabel "Passwords">
+<!ENTITY settings.privacy.cookiesLabel "Cookies">
+<!ENTITY settings.privacy.cacheLabel "Cache">
+<!ENTITY settings.privacy.downloadsLabel "Downloads">
+<!ENTITY settings.privacy.formdataLabel "Form Data">
+<!ENTITY settings.privacy.sessionsLabel "Sessions">
 <!-- Network -->
 <!ENTITY settings.proxyLabel "Configure proxy for Internet access">
 <!ENTITY settings.noProxyLabel "No proxy">
