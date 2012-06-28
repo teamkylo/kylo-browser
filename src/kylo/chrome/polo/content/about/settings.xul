@@ -109,6 +109,7 @@
                         <setting pref="controls.autoHide" type="bool" title="&settings.autoHideLabel;"/>
                         <setting pref="keyboard.autolaunch.open" type="bool" title="&settings.enableAutoLaunchLabel;" onclick="Settings.syncFocusLockPref(this);"/>
                         <setting pref="keyboard.autolaunch.zoom" type="bool" title="&settings.enableAutoZoomLabel;"/>
+                        <setting pref="polo.cursor.goBackOnRightClick" type="bool" title="&settings.enableRightClickLabel;"/>
 					</settings>
 					
                 </tabpanel>

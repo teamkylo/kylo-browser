@@ -75,7 +75,7 @@ function Controls() {
     document.getElementById("newTabButton").addEventListener("command", this.addTab.bind(this), false);
     	
 	this.browserDeck_ = document.getElementById("browserDeck");	
-	gObserverService.addObserver(this, "Browser:DocumentLoadStarted", false);
+	gObserverService.addObserver(this, "Browser:DocumentLoadCompleted", false);
 	
 	var links = document.querySelectorAll("#tools-menu button[href]");
 	for (var i  = 0; i < links.length; i++) {
@@ -690,7 +690,7 @@ Controls.prototype.handlePrint = function () {
  * @param {Object} data data about the document change
  */
 Controls.prototype.observe = function(browser, topic, data) {
-    if (topic != "Browser:DocumentLoadStarted") {
+    if (topic != "Browser:DocumentLoadCompleted") {
         throw "Unexpected topic: " + topic;
     }
 

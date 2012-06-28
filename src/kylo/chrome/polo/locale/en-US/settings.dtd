@@ -42,6 +42,7 @@
 <!ENTITY settings.autoHideLabel "Auto-hide the control bar">
 <!ENTITY settings.enableAutoLaunchLabel "Show the on-screen keyboard when form fields are selected">
 <!ENTITY settings.enableAutoZoomLabel "Zoom in on form fields when typing">
+<!ENTITY settings.enableRightClickLabel "Go back on right-click">
 <!-- Content -->
 <!ENTITY settings.enableJSLabel "Enable JavaScript">
 <!ENTITY settings.textSizeLabel "Set the minimum text size">
