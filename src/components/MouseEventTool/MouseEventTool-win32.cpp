@@ -30,7 +30,7 @@ static MouseEventTool* myself;
 static HWND mainHWND;
 static DWORD mainPID;
 
-#define _DEBUG_
+//#define _DEBUG_
 
 #ifdef _DEBUG_
 static std::wofstream _log;
