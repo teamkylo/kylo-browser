@@ -76,6 +76,7 @@
 !define ICO_NAME            "Kylo.ico"
 
 !define FLASH_PLUGIN        "install_flash_player_11_plugin.exe"
+!define WMP_PLUGIN_DIR      "${REDIST_DIR}\wmp"
 !define MSVC_REDIST         "vcredist_x86.exe"
 
 !define S_DEFINSTDIR_USER   "$LOCALAPPDATA\${DEFAULT_INSTALL_DIR}"
