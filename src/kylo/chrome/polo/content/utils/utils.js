@@ -38,6 +38,11 @@ var NS = {
     [Ci.nsIPrefService, Ci.nsIPrefBranch2]
   ],
   [
+    "gContentPrefService",
+    "@mozilla.org/content-pref/service;1",
+    [Ci.nsIContentPrefService]
+  ],
+  [
     "gObserverService",
     "@mozilla.org/observer-service;1",
     [Ci.nsIObserverService]

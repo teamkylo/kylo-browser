@@ -72,8 +72,7 @@ function Controls() {
     document.getElementById("newTabButton").addEventListener("command", this.addTab.bind(this), false);
     	
 	this.browserDeck_ = document.getElementById("browserDeck");	
-	gObserverService.addObserver(this, "Browser:DocumentLoadCompleted", false);
-	
+
 	var links = document.querySelectorAll("#tools-menu button[href]");
 	for (var i  = 0; i < links.length; i++) {
 	    links.item(i).addEventListener("command", function() {
@@ -663,28 +662,6 @@ Controls.prototype.handlePrint = function () {
 	   browser_.resetMouseEventToolCallback();
 	}
 }
-
-/**
- * Observer for document load events, sets the state of
- * controls and sets the zoom level based on type of navigation
- * @name observe
- * @param {Object} browser the browser whose document created the topic change
- * @param {Object} topic the notification topic
- * @param {Object} data data about the document change
- */
-Controls.prototype.observe = function(browser, topic, data) {
-    if (topic != "Browser:DocumentLoadCompleted") {
-        throw "Unexpected topic: " + topic;
-    }
-
-    browser = browser.wrappedJSObject;
-
-    window.setTimeout(function () {
-        this.setBackEnabled(browser, browser.browser_.canGoBack);
-        this.setForwardEnabled(browser, browser.browser_.canGoForward);
-    }.bind(this),0);
-
-};
 
 /**
  * Sets the active browser member variable after a browser switch

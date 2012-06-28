@@ -109,9 +109,15 @@ Browser.prototype.setZoomLevel = function(zoom) {
         if (zoom != defaultZoom) {
             this.zoomLevel_ = zoom;
             try {
-                PlacesUtils.annotations.setPageAnnotation(this.browser_.currentURI, "polo/panZoomLevel", JSON.stringify({zoom: this.zoomLevel_}), 0, Ci.nsIAnnotationService.EXPIRE_NEVER);
+                gContentPrefService.setPref(this.browser_.currentURI, "polo.content.zoomLevel", this.zoomLevel_);
             } catch(e) {
                 debug(e);
+            }
+        } else {
+            try {
+                gContentPrefService.removePref(this.browser_.currentURI, "polo.content.zoomLevel");    
+            } catch (e) {
+                // didn't have a site-specific pref set
             }
         }
     }
@@ -618,19 +624,22 @@ Browser.prototype.onStateChange = function(aProgress, aRequest, aFlag, aStatus) 
  */
 Browser.prototype.onLocationChange = function(aProgress, aRequest, aURI, aFlags) {
     if (aProgress.DOMWindow == this.browser_.contentWindow) {
-        controls_.setURLLabel(this, this.browser_.currentURI.spec);
+        if (browser_.getCurrentBrowserObject() == this) {
+            controls_.setURLLabel(this, this.browser_.currentURI.spec);
+            controls_.setBackEnabled(this, this.browser_.canGoBack);
+            controls_.setForwardEnabled(this, this.browser_.canGoForward);
+        }
         
         // See if we can restore the zoom level for the new URI from a saved annotation
         var saveData = null;
         try {
-            saveData = PlacesUtils.annotations.getPageAnnotation(aURI, "polo/panZoomLevel");
-            saveData = JSON.parse(saveData);
+            saveData = gContentPrefService.getPref(aURI, "polo.content.zoomLevel");
         } catch(e) {
             // Annotation doesn't exist
         }
-        
+
         if (saveData) {
-            this.zoomLevel_ = parseFloat(saveData.zoom).toFixed(2);
+            this.zoomLevel_ = saveData;
             this.getMarkupDocumentViewer().fullZoom = this.zoomLevel_;  
             if (controls_.isPanelOpen("zoom") && browser_.getCurrentBrowserObject() == this) {
                 gZoomWidget.setZoom(this.zoomLevel_);
