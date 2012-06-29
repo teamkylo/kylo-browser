@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <fstream>
 
-#define _DEBUG_
+//#define _DEBUG_
 
 #define TIMER 10
 #define MIN_SPEED 3
@@ -22,6 +22,7 @@
 
 #define ACCELERATION 0.1
 
+static HINSTANCE hinstDLL;
 static HHOOK keyboardhhook;
 static HHOOK shellhhook;
 static UDLRTool* myself;
@@ -68,7 +69,9 @@ UDLRTool::UDLRTool()
     keyboardhhook = NULL;
     
 #ifdef _DEBUG_
-    _log.open("C:\\Users\\kwood\\udlrtool.log", std::ios::app);
+    WCHAR buff[512];
+    _snwprintf_s(buff, _countof(buff), _TRUNCATE, L"%s\\Hillcrest Labs\\Kylo\\udlrtool.log", _wgetenv(L"APPDATA"));
+    _log.open(buff, std::ios::app);
     _log << "starting UDLRTool" << std::endl;
 #endif
 }
@@ -110,12 +113,13 @@ void UDLRTool::AddHook()
     }
     myself = this;
     myPid = pid_;
+    hinstDLL = GetHInstance();
 
     uIDEvent_ = SetTimer(0, 0, TIMER, TimerProc);
 
     keyboardhhook = SetWindowsHookEx(WH_KEYBOARD_LL,
         KeyboardHookProc,
-        NULL,
+        hinstDLL,
         0);
 
     return;
