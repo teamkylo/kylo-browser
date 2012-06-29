@@ -8,6 +8,13 @@
  * */
 
 #include "UDLRTool.h"
+#include "nsXPCOM.h"
+#include "nsServiceManagerUtils.h"
+#include "nsIWindowMediator.h"
+#include "nsIDocShell.h"
+#include "nsIBaseWindow.h"
+#include "nsIXULWindow.h"
+#include "nsIWidget.h"
 #include "nsEmbedString.h"
 #include "nsIClassInfoImpl.h"
 #include "nsMemory.h"
@@ -22,12 +29,17 @@
 
 #define ACCELERATION 0.1
 
+#define FULLSCREEN_FLASH_CLASS_NAME L"ShockwaveFlashFullScreen"
+#define FULLSCREEN_SILVERLIGHT_CLASS_NAME L"AGFullScreenWinClass"
+#define OOP_PLUGIN_CLASS_NAME L"GeckoPluginWindow"
+#define FLASH_SANDBOX_CLASS_NAME L"GeckoFPSandboxChildWindow"
+
 static HINSTANCE hinstDLL;
 static HHOOK keyboardhhook;
 static HHOOK shellhhook;
 static UDLRTool* myself;
-static DWORD myPid;
-static DWORD myTid;
+static HWND mainHWND;
+static DWORD mainPID;
 
 #ifdef _DEBUG_
     std::wofstream _log;
@@ -64,7 +76,73 @@ UDLRTool::UDLRTool()
     scrollUpKey_ = NULL;
     scrollDownKey_ = NULL;
     
-    pid_ = GetCurrentProcessId();
+    /**
+     * We're going to get the main Kylo window through some special XPCOM APIs.
+     *
+     * Steps:
+     * 1) Get the WindowMediator service
+     * 2) Get an enumerator of all XUL window objects with a "contenttype" of "poloContent"
+     * 3) Take the first window. It should be the *only* window because Kylo is
+     *    designed to only have 1 main window
+     */
+    nsCOMPtr<nsIServiceManager> svcMgr;
+    nsresult rv = NS_GetServiceManager(getter_AddRefs(svcMgr));
+
+    if (NS_FAILED(rv))
+    {
+#ifdef _DEBUG_
+        _log << "Can't get the service manager!" << std::endl;
+#endif
+        NS_ShutdownXPCOM(nsnull);
+        return;
+    }
+
+    nsCOMPtr<nsIWindowMediator> winMediator;
+    rv = svcMgr->GetServiceByContractID(NS_WINDOWMEDIATOR_CONTRACTID,
+            NS_GET_IID(nsIWindowMediator), getter_AddRefs(winMediator));
+
+    if (NS_FAILED(rv))
+    {
+#ifdef _DEBUG_
+        _log << "Can't get the WindowMediator service!" << std::endl;
+#endif
+        return;
+    }
+
+    // Get the enumerator
+    nsCOMPtr<nsISimpleEnumerator> winEnum;
+    winMediator->GetXULWindowEnumerator(NS_LITERAL_STRING("poloContent").get(), getter_AddRefs(winEnum));
+
+    bool more;
+    winEnum->HasMoreElements(&more);
+    if (!more) {
+#ifdef _DEBUG_
+        _log << "No XUL windows!" << std::endl;
+#endif
+        return;
+    }
+
+    // Get the first item in the enumerator
+    nsCOMPtr<nsIXULWindow> xulWin;
+    winEnum->GetNext(getter_AddRefs(xulWin));
+
+    // Get the docShell from the window...
+    nsCOMPtr<nsIDocShell> docShell;
+    xulWin->GetDocShell(getter_AddRefs(docShell));
+
+    // ...which becomes nsIBaseWindow...
+    nsIBaseWindow* win = 0;
+    docShell->QueryInterface(NS_GET_IID(nsIBaseWindow), (void**)&win);
+
+    // ...which lets me get the "main widget"...
+    nsCOMPtr<nsIWidget> widget;
+    win->GetMainWidget(getter_AddRefs(widget));
+
+    // ...which gives me the native window handle...
+    mainHWND = (HWND) widget->GetNativeData(NS_NATIVE_WINDOW);
+
+    // ...and now I can get the PID (for comparison).
+    GetWindowThreadProcessId(mainHWND, &mainPID);
 
     keyboardhhook = NULL;
     
@@ -105,6 +183,30 @@ HINSTANCE GetHInstance()
     return NULL;
 }
 
+bool IsFGWinKylo()
+{
+    HWND fgWin = GetForegroundWindow();
+    DWORD fgPID;
+    GetWindowThreadProcessId(fgWin, &fgPID);
+
+    WCHAR fgWinClassName[512];
+
+    GetClassName(fgWin, fgWinClassName, 512);
+
+    bool fullScreenPlugin = false;
+    bool oopPlugin = false;
+    bool flashSB = false;
+
+    fullScreenPlugin = (lstrcmpi(fgWinClassName, FULLSCREEN_FLASH_CLASS_NAME) == 0 ||
+                        lstrcmpi(fgWinClassName, FULLSCREEN_SILVERLIGHT_CLASS_NAME) == 0);
+
+    oopPlugin = (lstrcmpi(fgWinClassName, OOP_PLUGIN_CLASS_NAME) == 0);
+
+    flashSB = (lstrcmpi(fgWinClassName, FLASH_SANDBOX_CLASS_NAME) == 0);
+
+    return (fgPID == mainPID || fullScreenPlugin || oopPlugin || flashSB);
+}
+
 void UDLRTool::AddHook()
 {
     if (keyboardhhook != NULL) {
@@ -112,7 +214,7 @@ void UDLRTool::AddHook()
         return;
     }
     myself = this;
-    myPid = pid_;
+
     hinstDLL = GetHInstance();
 
     uIDEvent_ = SetTimer(0, 0, TIMER, TimerProc);
@@ -135,14 +237,9 @@ void UDLRTool::RemoveHook()
 }
 
 VOID CALLBACK UDLRTool::TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime) {
-    HWND frontmost = GetForegroundWindow();
-    DWORD frontpid;
-    DWORD tid = GetWindowThreadProcessId(frontmost, (LPDWORD) &frontpid);
-
-    if (frontpid != myPid) {
-        return;
+    if (IsFGWinKylo()) {
+        myself->HandleTimerEvent();
     }
-    myself->HandleTimerEvent();
 }
 
 void UDLRTool::HandleTimerEvent() {
@@ -202,10 +299,23 @@ LRESULT WINAPI UDLRTool::KeyboardHookProc(int nCode, WPARAM wParam, LPARAM lPara
 }
 
 bool UDLRTool::HandleKeyEvent(WPARAM wParam, LPARAM lParam) {
+
+    if (!IsFGWinKylo()) {
+        return false;
+    }
+
     bool buttonPress = (wParam == WM_KEYDOWN);
     bool capture = false;
 
     PRInt16 vkCode = ((KBDLLHOOKSTRUCT *) lParam)->vkCode;
+
+#ifdef _DEBUG_
+    _log << "vkCode: " << vkCode << std::endl;
+#endif
+
+    if (!vkCode) {
+        return false;
+    }
 
     if (vkCode == upKey_) {
         upKeyState_ = buttonPress;
