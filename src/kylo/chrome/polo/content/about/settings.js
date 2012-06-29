@@ -408,9 +408,6 @@ var ZoomSettings  = {
 	setDefaultZoom: function () {
 		var radioGroup = document.getElementById("default-zoom");
 		gPrefService.getBranch("polo.").setCharPref("defaultZoomLevel", radioGroup.value);
-		// This is duplicated when the setting change is observed, but this is visually
-		// better because it shows instantly.
-		chromeWin_.browser_.getCurrentBrowserObject().setZoomLevel(radioGroup.value);
 	},
 	
 	observe: function (subject, topic, pref) {
@@ -615,6 +612,44 @@ var Settings = {
 	
 	syncFocusLockPref: function (elem) {
 		gPrefService.setBoolPref("keyboard.autolaunch.focusLock", elem.value);
+	},
+	
+    promptRestart: function (elem) {
+        if (Settings.promptRestart._isPrompting) {
+	        return;
+        }
+        Settings.promptRestart._isPrompting = true;
+ 
+        if (gPromptService.confirm(window, 
+                                   i18nStrings_.getString("settings.promptRestartTitle"), 
+                                   i18nStrings_.getString("settings.promptRestartBody").replace("%S", 
+                                        document.getElementById("brandStrings").getString("brandShortName"))
+                                   )) {
+            // Restart the app
+            let cancelQuit = Cc["@mozilla.org/supports-PRBool;1"].
+                             createInstance(Ci.nsISupportsPRBool);
+            Services.obs.notifyObservers(cancelQuit, "quit-application-requested",
+                                         "restart");
+            if (cancelQuit.data)
+              return; // somebody canceled our quit request
+              
+            elem.valueToPreference();
+    
+            let appStartup = Cc["@mozilla.org/toolkit/app-startup;1"].
+                             getService(Ci.nsIAppStartup);
+            appStartup.quit(Ci.nsIAppStartup.eAttemptQuit |  Ci.nsIAppStartup.eRestart);               
+        } else {
+            switch (elem.type) {
+                case "bool":
+                    elem.value = !elem.value;
+                    elem.valueToPreference();
+                    break;
+                default:
+                    break;
+            }
+        }
+        
+        Settings.promptRestart._isPrompting = false;
 	},
 	
 	showOpenTabChooser: function (title, ok, cancel, cb) {

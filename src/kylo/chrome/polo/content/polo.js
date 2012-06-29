@@ -126,6 +126,7 @@ function BrowserManager() {
     document.getElementById("zoomVeil").addEventListener("DOMMouseScroll", this.handleScroll.bind(this), false);
     
     window.addEventListener("keydown", this.monitorKeys.bind(this), false);
+    window.addEventListener("AppCommand", this.handleAppCommandEvent.bind(this), true);
     
     this.tabListBox_.addEventListener("select", this.tabListItemSelected.bind(this), false);
     this.closeBar_.addEventListener("click", this.closeTabList.bind(this), false);
@@ -183,16 +184,16 @@ BrowserManager.prototype.setupTools = function () {
         
         //right click mapping   
         if (cursorPrefs.getBoolPref("goBackOnRightClick")) {
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
         } else {
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-            mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);            
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+            mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);            
         }
         
         //middle click mapping
-        mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_MBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-        mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_MBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
+        mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_MBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+        mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_MBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
         cursorPrefs.addObserver("", {
                 observe: function(subject, topic, pref)  {
                     if (topic != "nsPref:changed") {
@@ -202,11 +203,11 @@ BrowserManager.prototype.setupTools = function () {
                     switch (pref) {
                         case "goBackOnRightClick":
                             if (cursorPrefs.getBoolPref("goBackOnRightClick")) {
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_BROWSER_BACK);
                             } else {
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
-                                mouseevttool_.RemapButton("xulrunner.exe", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONDOWN, Ci.IMouseEventTool.VK_NO_EVENT);
+                                mouseevttool_.RemapButton("xulrunner", Ci.IMouseEventTool.WM_RBUTTONUP, Ci.IMouseEventTool.VK_NO_EVENT);
                             }
                             break;
                     }  
@@ -256,8 +257,11 @@ BrowserManager.prototype.getPlatform = function () {
  * @name updateZoomLevels
  */
 BrowserManager.prototype.updateZoomLevels = function(zoom){
-	for (var x = 0; x < this.browsers_.length; x++) {
-		this.browsers_[x].setZoomLevel(zoom);
+    for (var i = 0; i < this.browsers_.length; i++) {
+	    // Skip applying default zoom to "about:" pages
+	    if (this.browsers_[i].browser_.currentURI.spec.indexOf("about:") != 0) {
+    		this.browsers_[i].restoreZoomLevel();
+	    }
 	}
 }
 
@@ -308,107 +312,172 @@ BrowserManager.prototype.monitorKeys = function (evt) {
         modKey = evt.metaKey;
     }
     
-    if (evt.keyCode == 166) { // VK_BROWSER_BACK
-        browser_.getCurrentBrowser().goBack();
-    } else if (evt.keyCode == 167) { //VK_BROWSER_FORWARD
-        browser_.getCurrentBrowser().goForward();
-    } else if (evt.keyCode == 8 //VK_BACK (backspace) 
-                && !KeyboardAutoLauncher.isEditableNode(evt.target)) {
-        if (evt.shiftKey) {
-            browser_.getCurrentBrowser().goForward();    
-        } else {            
+    if (!modKey) {
+        if (evt.keyCode == 166) { // VK_BROWSER_BACK
             browser_.getCurrentBrowser().goBack();
+        } else if (evt.keyCode == 167) { //VK_BROWSER_FORWARD
+            browser_.getCurrentBrowser().goForward();
+        } else if (evt.keyCode == 8 //VK_BACK (backspace) 
+                    && !KeyboardAutoLauncher.isEditableNode(evt.target)) {
+            if (evt.shiftKey) {
+                browser_.getCurrentBrowser().goForward();    
+            } else {            
+                browser_.getCurrentBrowser().goBack();
+            }
+        } else if (evt.keyCode == 112) { // VK_F1
+            browser_.switchOrCreate("about:help");
+        } else if (evt.keyCode == 113) { // VK_F2
+            browser_.switchOrCreate("about:settings");
+        } else if (evt.keyCode == 114) { // VK_F3
+            browser_.switchOrCreate("about:downloads");
+        } else if (evt.keyCode == 115) { // VK_F4
+            browser_.switchOrCreate("about:places");
+        } else if (evt.keyCode == 116) { // VK_F5
+            browser_.getCurrentBrowser().reload();
+        } else if (evt.keyCode == 27) { // VK_ESCAPE
+            controls_.closePanel(); // Close all panels
         }
-    } else if (modKey) {
-        switch (evt.keyCode) {
+        return;
+    }
+        
+    switch (evt.keyCode) {
+        
+        // Windows Back/Forward
+        case 37: //VK_LEFT
+            if (platform_ == "win32") {
+                browser_.getCurrentBrowser().goBack();
+            }
+            break;
+        case 39: //VK_RIGHT
+            if (platform_ == "win32") {
+                browser_.getCurrentBrowser().goForward();
+            }
+            break;
             
-            // Windows Back/Forward
-            case 37: //VK_LEFT
-                if (platform_ == "win32") {
-                    browser_.getCurrentBrowser().goBack();
-                }
-                break;
-            case 39: //VK_RIGHT
-                if (platform_ == "win32") {
-                    browser_.getCurrentBrowser().goForward();
-                }
-                break;
-                
-            // Mac OSX Back/Forward
-            case 219: // [
-                if (platform_ == "osx") {
-                    browser_.getCurrentBrowser().goBack();
-                }
-                break;
-            case 221: // ]
-                if (platform_ == "osx") {
-                    browser_.getCurrentBrowser().goForward();
-                }
-                break;
-                                    
-            case 84:
-            case 78:
-                //Ctrl+t opens a new tab
-                //Ctrl+n opens a new page (does the same thing... using "page" lingo for tabs in Kyloland)
-                controls_.addTab();
-                break;    
-            case 75:
-                //Ctrl+k opens keyboard
-                if (controls_.isPanelOpen("keyboard")) {
-                    controls_.closePanel("keyboard");
-                } else {
-                    controls_.openPanel("keyboard");
-                }
-                break;
-            case 76:
-                //Ctrl+l opens url keyboard
-                if (controls_.isPanelOpen("keyboard_url")) {
-                    controls_.closePanel("keyboard_url");
-                } else {
-                    controls_.openPanel("keyboard_url");
-                }
-                break;
-            case 72:
-                //Ctrl+h goes home
-			    browser_.getCurrentBrowserObject().goHome();
-                break;
-            case 107:
-            case 61:  // osx
-                //Ctrl++ zooms in
-                browser_.getCurrentBrowserObject().zoomIn();
-                break;
-            case 109: 
-                //Ctrl+- zooms out
-                browser_.getCurrentBrowserObject().zoomOut();
-                break;
-            case 48:
-                //Ctrl+0 resets zoom level
-				var defaultZoom = parseFloat(gPrefService.getCharPref("polo.defaultZoomLevel"));
-                browser_.getCurrentBrowserObject().setZoomLevel(defaultZoom);
-                break;
-            case 77: 
-                //Ctrl+m minimizes
-                controls_.handleMinimize();
-                break;
-            case 79:
-                //Ctrl+o opens settings
-                browser_.switchOrCreate("about:settings");
-                break;
-            case 66:
-                //Ctrl+b opens bookmarks
-                browser_.switchOrCreate("about:places");
-                break;
-            case 82: 
-                //Ctrl+r reloads the page
+        // Mac OSX Back/Forward
+        case 219: // [
+            if (platform_ == "osx") {
+                browser_.getCurrentBrowser().goBack();
+            }
+            break;
+        case 221: // ]
+            if (platform_ == "osx") {
+                browser_.getCurrentBrowser().goForward();
+            }
+            break;
+                                
+        case 84:
+        case 78:
+            //Ctrl+t opens a new tab
+            //Ctrl+n opens a new page (does the same thing... using "page" lingo for tabs in Kyloland)
+            controls_.addTab();
+            break;    
+        case 75:
+            //Ctrl+k opens keyboard
+            if (controls_.isPanelOpen("keyboard")) {
+                controls_.closePanel("keyboard");
+            } else {
+                controls_.openPanel("keyboard");
+            }
+            break;
+        case 76:
+            //Ctrl+l opens url keyboard
+            if (controls_.isPanelOpen("keyboard_url")) {
+                controls_.closePanel("keyboard_url");
+            } else {
+                controls_.openPanel("keyboard_url");
+            }
+            break;
+        case 72:
+            //Ctrl+h goes home
+		    browser_.getCurrentBrowserObject().goHome();
+            break;
+        case 107:
+        case 61:  // osx
+            //Ctrl++ zooms in
+            browser_.getCurrentBrowserObject().zoomIn();
+            break;
+        case 109: 
+            //Ctrl+- zooms out
+            browser_.getCurrentBrowserObject().zoomOut();
+            break;
+        case 48:
+            //Ctrl+0 resets zoom level
+            browser_.getCurrentBrowserObject().restoreZoomLevel(true);
+            break;
+        case 77: 
+            //Ctrl+m minimizes
+            controls_.handleMinimize();
+            break;
+        case 74:
+            //Ctrl+j opens downloads
+            browser_.switchOrCreate("about:downloads");
+            break;            
+        case 79:
+            //Ctrl+o opens settings
+            browser_.switchOrCreate("about:settings");
+            break;
+        case 66:
+            //Ctrl+b opens bookmarks
+            browser_.switchOrCreate("about:places");
+            break;
+        case 82: 
+            //Ctrl+r reloads the page
+            if (evt.shiftKey) {
+                // Ctrl+Shift+r ignores cache
+                browser_.getCurrentBrowser().reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
+            } else {
                 browser_.getCurrentBrowser().reload();
-                break;
-            case 81:
-                //Ctrl+q quits
-                controls_.confirmClose();
-                break;
-            
+            }
+            break;
+        case 116:
+            //Ctrl+F5 forces refresh
+            browser_.getCurrentBrowser().reloadWithFlags(Ci.nsIWebNavigation.LOAD_FLAGS_BYPASS_CACHE);
+            break;
+        case 81:
+            //Ctrl+q quits
+            controls_.confirmClose();
+            break;
+        
+    }
+}
+
+/**
+ * Handles app commands (special commands sent by media keyboards, remotes, etc.)
+ * @name handleAppCommandEvent
+ * @param evt the AppCommand event
+ */
+BrowserManager.prototype.handleAppCommandEvent = function (evt) {
+  evt.stopPropagation();
+  switch (evt.command) {
+      case "Back":
+        browser_.getCurrentBrowser().goBack();
+        break;
+      case "Forward":
+        browser_.getCurrentBrowser().goForward();
+        break;
+      case "Reload":
+        browser_.getCurrentBrowser().reload();
+        break;
+      case "Stop":
+        browser_.getCurrentBrowser().stop();
+        break;
+      case "Search":
+        if (controls_.isPanelOpen("keyboard_url")) {
+            controls_.closePanel("keyboard_url");
+        } else {
+            controls_.openPanel("keyboard_url");
         }
-	}
+        break;
+      case "Bookmarks":
+        browser_.switchOrCreate("about:places");
+        break;
+      case "Home":
+        browser_.getCurrentBrowserObject().goHome();
+        break;
+      default:
+        break;
+  }
 }
 
 /**
@@ -595,7 +664,7 @@ BrowserManager.prototype.createNewBrowser = function (focus, url) {
     if (url) {
         this.loadURL(url);
     }
-    
+
     return browser;
 };
 
@@ -949,8 +1018,25 @@ BrowserManager.prototype.initBrowser = function () {
         gPrefService.clearUserPref("browser.tabs.savedSession");
     }
     
-    // Check for command line tabs
+    // Get urls and options from command line
     var clh = Cc["@hcrest.com/polo/final-clh;1"].getService(Ci.nsICommandLineHandler);
+    
+    // Check for command line options
+    var cliOpts = clh.wrappedJSObject.getStartupOptions();
+    for (var i=0, j=cliOpts.length; i<j; i++) {
+        let [opt, val] = cliOpts[i].split('=');
+        switch (opt) {
+            case "debug":
+                gDebugTools.enable();
+                break;
+                
+            default:
+                debug("unexpected command line option: " + opt);
+                break;
+        }
+    }
+    
+    // Check for command line tabs
     var cliURIs = clh.wrappedJSObject.getStartupURIs();
     
     for (var i=0, j=cliURIs.length; i<j; i++) {
@@ -1161,27 +1247,14 @@ function app_onload() {
 
     start_missing_plugin_installer();
     registerStyleSheets();
-    
-	gHomeChooser.init();
+
     gZoomWidget.init();
     gToolsMenu.init();
     Help.init();
     HTMLTooltip.init();
     SWUpdate.init();
 
-    var debugPrefs = gPrefService.getBranch("debug.");
-    if (debugPrefs.getBoolPref("enableDebugTools")) {
-        new DebugTools();
-    }
     SWUpdate.checkAndPrompt();
-    
-    //TODO: Horrible hack for Mac not being able to minimize when fullscreen
-    if (platform_ == "osx" || platform_ == "x11") {      
-        window.setTimeout(function () {
-                window.fullScreen = true;
-        }, 100);
-        document.getElementById("polo-main").addEventListener("click", gLayoutManager.checkFullScreen.bind(gLayoutManager), false);
-    }
 }
 
 /**

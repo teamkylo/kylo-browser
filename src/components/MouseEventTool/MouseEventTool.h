@@ -25,7 +25,7 @@
 #include <fstream>
 #include "windows.h"
 
-typedef std::pair<const char*,short> AppSignalPair;
+typedef std::pair<std::string, short> AppSignalPair;
 typedef std::vector<AppSignalPair> AppSignalPairVec;
 #else //WIN32
 #ifdef __APPLE__

@@ -30,7 +30,7 @@ static MouseEventTool* myself;
 static HWND mainHWND;
 static DWORD mainPID;
 
-#define _DEBUG_
+//#define _DEBUG_
 
 #ifdef _DEBUG_
 static std::wofstream _log;
@@ -187,19 +187,23 @@ NS_IMETHODIMP MouseEventTool::RemapButton(const char *processName, PRInt16 input
 {
     // get vector for input event
     AppSignalPairVec* aspv = getVecFromInputValue(inputEvent);
-    
+
     // if process name exists in vector, reset its output
-    for (AppSignalPairVec::iterator i = aspv->begin(); i != aspv->end(); ++i) 
+    for (AppSignalPairVec::iterator i = aspv->begin(); i != aspv->end();)
     {
         AppSignalPair p = *i;
-        if (strcmp(p.first, processName) == 0)
+        if (strcmp(p.first.c_str(), processName) == 0)
         {
-            p.second = outputEvent;
-            return S_OK;
+#ifdef _DEBUG_
+            _log << "Replacing button map for " << processName << " input: " << inputEvent << " output: " << outputEvent << std::endl;
+#endif
+            aspv->erase(i);
+        } else {
+            ++i;
         }
     }
 
-    aspv->push_back(std::make_pair(processName, outputEvent));
+    aspv->push_back(std::make_pair(std::string(processName), outputEvent));
 
     // otherwise, add a new pair to the vector
     return S_OK;
@@ -212,13 +216,15 @@ NS_IMETHODIMP MouseEventTool::UnmapButton(const char *processName, PRInt16 input
     AppSignalPairVec* aspv = getVecFromInputValue(inputEvent);
     
     // if process name exists in vector, remove it
-    for (AppSignalPairVec::iterator i = aspv->begin(); i != aspv->end(); ++i) 
+    for (AppSignalPairVec::iterator i = aspv->begin(); i != aspv->end();)
     {
         AppSignalPair p = *i;
-        if (strcmp(p.first, processName) == 0)
+        if (strcmp(p.first.c_str(), processName) == 0)
         {
             aspv->erase(i);
             return S_OK;
+        } else {
+            ++i;
         }
     }
 
@@ -328,6 +334,10 @@ bool MouseEventTool::HandleMouseEvent(WPARAM wParam, LPARAM lParam)
         return false;
     }
 
+
+#ifdef _DEBUG_
+    _log << "number of mappings for " << wParam << ": " << aspv->size() << std::endl;
+#endif
     if (aspv->size() > 0) {
         AppSignalPair p = aspv->at(0);
         short signalToSend = p.second;

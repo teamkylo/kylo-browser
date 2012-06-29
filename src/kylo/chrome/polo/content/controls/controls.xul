@@ -88,16 +88,4 @@
             <spacer flex="1"/>
         </hbox>
     </panel>
-	
-    <panel id="homepage-chooser-menu">
-        <hbox flex="1">
-            <spacer flex="1"/>
-            <vbox>
-                <spacer flex="1"/>
-                <hbox id="homepage-chooser-buttonGroup"/>
-                <spacer flex="1"/>
-            </vbox>
-            <spacer flex="1"/>
-        </hbox>
-    </panel>	
 </overlay>

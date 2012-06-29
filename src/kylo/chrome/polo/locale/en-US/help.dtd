@@ -70,6 +70,12 @@
 <!ENTITY help.shortcutHome "Click and hold the home icon to set the current page as the home page">
 <!ENTITY help.shortcutBookmark "Click and hold the bookmarks icon to bookmark the current page in the default bookmarks directory">
 
+<!ENTITY help.shortcutHelp "Use F1 to jump to the help screen">
+
+<!ENTITY help.win32.shortcutSettings "Use F2 or Ctrl + o to jump to the settings screen">
+<!ENTITY help.win32.shortcutDownloads "Use F3 or Ctrl + j to jump to the downloads screen">
+<!ENTITY help.win32.shortcutBookmarks "Use F4 or Ctrl + b to jump to the bookmarks screen">
+
 <!ENTITY help.win32.shortcutGoBack "Use Ctrl + left arrow or Backspace to navigate back">
 <!ENTITY help.win32.shortcutGoForward "Use Ctrl + right arrow or Shift + Backspace to navigate forward">
 <!ENTITY help.win32.shortcutNewTab "Use Ctrl + n to open a new page">
@@ -81,6 +87,10 @@
 <!ENTITY help.win32.shortcutMinimzie "Use Ctrl + m minimize Kylo">
 <!ENTITY help.win32.shortcutReload "Use Ctrl + r reload the current page">
 <!ENTITY help.win32.shortcutQuit "Use Ctrl + q to quit Kylo">
+
+<!ENTITY help.osx.shortcutSettings "Use F2 or Command + o to jump to the settings screen">
+<!ENTITY help.osx.shortcutDownloads "Use F3 or Command + j to jump to the downloads screen">
+<!ENTITY help.osx.shortcutBookmarks "Use F4 or Command + b to jump to the bookmarks screen">
 
 <!ENTITY help.osx.shortcutGoBack "Use Command + [ to navigate back">
 <!ENTITY help.osx.shortcutGoForward "Use Command + ] to navigate forward">

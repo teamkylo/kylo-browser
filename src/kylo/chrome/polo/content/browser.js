@@ -34,8 +34,8 @@ function Browser(idx, deck) {
     deck.appendChild(notification);
     
     this.title_ = "";
+    this.bookmarkTitle_ = null;
     this.icon_ = null;
-    this.url_ = "";
     this.browser_ = el;
     
     this.giveBrowserFocusOnLoadComplete_ = true;
@@ -55,8 +55,7 @@ function Browser(idx, deck) {
     
     this.numNetworkRequests_ = 0;
     this.navigation_ = "NEW";
-
-    this.zoomLevel_ = 1;
+    this.zoomLevel_ = null;
     this.longClickLink_ = "";
     this.longClickTimeout_ = "";
     
@@ -84,7 +83,7 @@ Browser.prototype.getMarkupDocumentViewer = function () {
  * @returns {Number} The current zoom level
  */
 Browser.prototype.getZoomLevel = function() {
-    return this.zoomLevel_;
+    return this.getMarkupDocumentViewer().fullZoom;
 }
 
 /**
@@ -94,9 +93,56 @@ Browser.prototype.getZoomLevel = function() {
  * @param {Number} zoom The zoom level to set the browser to
  */
 Browser.prototype.setZoomLevel = function(zoom) {
+    zoom = parseFloat(zoom).toFixed(2);
     this.getMarkupDocumentViewer().fullZoom = zoom;
-    gZoomWidget.setZoom(zoom);
-    this.zoomLevel_ = zoom;
+    
+    if (zoom == this.zoomLevel_) {
+        return;
+    }
+    
+    // Start by setting this null - the "unset" state
+    this.zoomLevel_ = null;
+    
+    // See if we should store our zoom level for the last URI loaded
+    if (this.browser_.currentURI && this.browser_.currentURI.spec.indexOf("about:") != 0) {
+        var defaultZoom = parseFloat(gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel"));
+        if (zoom != defaultZoom) {
+            this.zoomLevel_ = zoom;
+            try {
+                gContentPrefService.setPref(this.browser_.currentURI, "polo.content.zoomLevel", this.zoomLevel_);
+            } catch(e) {
+                debug(e);
+            }
+        } else {
+            try {
+                gContentPrefService.removePref(this.browser_.currentURI, "polo.content.zoomLevel");    
+            } catch (e) {
+                // didn't have a site-specific pref set
+            }
+        }
+    }
+    
+    // Update the zoom widget if it's open and we're the selected browser object
+    if (controls_.isPanelOpen("zoom") && browser_.getCurrentBrowserObject() == this) {
+        gZoomWidget.setZoom(this.zoomLevel_);
+    }
+}
+
+/**
+ * Sets the zoom level to the last user-set state, or if reset = true, then to the
+ * default zoom level
+ * @name restoreZoomLevel
+ * @param {Boolean} reset Reset to the default zoom level or not (default) 
+ */
+Browser.prototype.restoreZoomLevel = function(reset) {
+    var zoom = this.zoomLevel_;
+    if (this.zoomLevel_ === null || reset) {
+        zoom = 1;
+        if (this.getURL().indexOf("about:") != 0) {
+            zoom = gPrefService.getBranch("polo.").getCharPref("defaultZoomLevel");
+        }
+    }
+    this.setZoomLevel(zoom);
 }
 
 /**
@@ -260,9 +306,14 @@ Browser.prototype.handleBrowserCommand = function (evt) {
  * @name updateControls
  */
 Browser.prototype.updateControls = function () {
-    controls_.setTitle(this, this.title_);
+    var title = this.getTitle();
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }    
+    controls_.setTitle(this, title);
     controls_.setIcon(this, this.icon_);
-    controls_.setURLLabel(this, this.url_);
+    controls_.setURLLabel(this, this.browser_.currentURI.spec);
     controls_.setLoading(this, this.loading_);
     controls_.setBackEnabled(this, this.browser_.canGoBack);
     controls_.setForwardEnabled(this, this.browser_.canGoForward);    
@@ -305,6 +356,10 @@ Browser.prototype.getDisplayTitleURI = function () {
     }
     
     var title = this.getTitle();
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }
     if (this.loading_ && !title) {
         return [i18nStrings_["browser"].getString("browser.loadingUrlTitle"), uri];
     }
@@ -322,6 +377,27 @@ Browser.prototype.getTitle = function () {
 };
 
 /**
+ * Returns the title stored with the associated URI in the Bookmarks DB.
+ * @name getBookmarkTitle
+ * @returns {String} The title associated with the bookmark 
+ */
+Browser.prototype.getBookmarkTitle = function () {
+    if (this.bookmarkTitle_ !== null) {
+        return this.bookmarkTitle_;
+    }
+    
+    if (this.originalURI_) {
+        var bmk = PlacesUtils.getMostRecentBookmarkForURI(this.originalURI_); 
+        if (bmk > -1) {
+            this.bookmarkTitle_ = PlacesUtils.bookmarks.getItemTitle(bmk);
+            return this.bookmarkTitle_;
+        }
+    }    
+    
+    return "";
+}
+
+/**
  * Returns the favicon for this browser's page
  * @name getIcon
  * @returns {String} URL of the favicon 
@@ -336,7 +412,7 @@ Browser.prototype.getIcon = function () {
  * @returns {String} The url of the browsers page.
  */
 Browser.prototype.getURL = function () {
-    return this.url_ || this.browser_.currentURI.spec || null;
+    return this.browser_.currentURI.spec || null;
 }
 
 /**
@@ -355,6 +431,28 @@ Browser.prototype.QueryInterface = function(aIID) {
 }
 
 /**
+ * Function that does the work to see if our contentTitle had changed, fires necessary events,
+ * handles bookmark title override.
+ * @name handleDocumentTitleUpdate() 
+ */
+Browser.prototype.handleDocumentTitleUpdate = function () {
+    var title = this.browser_.contentTitle;
+    
+    if (gPrefService.getBranch("polo.pages.").getBoolPref("use_bookmark_titles")) {
+        var bmkTitle = this.getBookmarkTitle();
+        title = bmkTitle || title;
+    }
+    
+    controls_.setTitle(this, title);
+    
+    if (this.title_ != this.browser_.contentTitle) {
+        this.title_ = this.browser_.contentTitle;
+        
+        browser_.notifyDocumentTitleChanged(this);
+    }
+}
+
+/**
  * Callback for DOMContent listener.  Called when the page's content has been loaded.
  * Sets the title member variable and sets the title in the controls.
  * @name contentLoaded 
@@ -363,8 +461,7 @@ Browser.prototype.QueryInterface = function(aIID) {
 Browser.prototype.contentLoaded = function (evt) {
     // duplicates titleChanged?
     window.setTimeout(function () {
-        this.title_ = this.browser_.contentTitle;
-        controls_.setTitle(this, this.browser_.contentTitle);
+        this.handleDocumentTitleUpdate();
     }.bind(this),0);
 }
 
@@ -377,9 +474,7 @@ Browser.prototype.contentLoaded = function (evt) {
 Browser.prototype.titleChanged = function (evt) {
     // make sure it's the root document that changed and not an iframe
     if (this.browser_ == evt.currentTarget) {       
-        this.title_ = this.browser_.contentTitle;        
-        browser_.notifyDocumentTitleChanged(this);        
-        controls_.setTitle(this, this.browser_.contentTitle);
+        this.handleDocumentTitleUpdate();
     }
 }
 
@@ -407,10 +502,12 @@ Browser.prototype.beginPageLoad = function (uri, originalURI) {
     this.originalURI_ = originalURI; // i.e. about:help instead of file://c:/Program Files/Polo/blah/blah/blah
     
     this.loading_ = true;
+    this.icon_ = null;
+    this.bookmarkTitle_ = null;
+    
     if (!this.lastURI_  || (this.lastURI_.host != uri.host)) {
         controls_.setIcon(this, PlacesUtils.favicons.getFaviconImageForPage(uri).spec);
     }    
-    this.icon_ = null;
     
     controls_.setLoading(this, true);
     controls_.setTitle(this, i18nStrings_["browser"].getString("browser.loadingUrlTitle"));
@@ -525,10 +622,32 @@ Browser.prototype.onStateChange = function(aProgress, aRequest, aFlag, aStatus) 
  * @param {Object} aURI
  * @interface nsIWebProgress
  */
-Browser.prototype.onLocationChange = function(aProgress, aRequest, aURI) {
+Browser.prototype.onLocationChange = function(aProgress, aRequest, aURI, aFlags) {
     if (aProgress.DOMWindow == this.browser_.contentWindow) {
-        controls_.setURLLabel(this, this.browser_.currentURI.spec);
-        this.url_ = this.browser_.currentURI.spec;
+        if (browser_.getCurrentBrowserObject() == this) {
+            controls_.setURLLabel(this, this.browser_.currentURI.spec);
+            controls_.setBackEnabled(this, this.browser_.canGoBack);
+            controls_.setForwardEnabled(this, this.browser_.canGoForward);
+        }
+        
+        // See if we can restore the zoom level for the new URI from a saved annotation
+        var saveData = null;
+        try {
+            saveData = gContentPrefService.getPref(aURI, "polo.content.zoomLevel");
+        } catch(e) {
+            // Annotation doesn't exist
+        }
+
+        if (saveData) {
+            this.zoomLevel_ = saveData;
+            this.getMarkupDocumentViewer().fullZoom = this.zoomLevel_;  
+            if (controls_.isPanelOpen("zoom") && browser_.getCurrentBrowserObject() == this) {
+                gZoomWidget.setZoom(this.zoomLevel_);
+            }    
+        } else {
+            this.restoreZoomLevel(true);
+        }               
+        
     }
 }
 

@@ -16,9 +16,10 @@
 <!ENTITY settings.zoomTabLabel "Zoom">
 <!ENTITY settings.privacyTabLabel "Privacy">
 <!ENTITY settings.networkTabLabel "Network">
-<!ENTITY settings.screenTabLabel "Screen">
+<!ENTITY settings.screenTabLabel "Display">
 <!ENTITY settings.compatibilityTabLabel "Compatibility">
 <!ENTITY settings.themeTabLabel "Theme">
+<!ENTITY settings.advancedTabLabel "Advanced">
 <!-- Main -->
 <!ENTITY settings.homePageLabel "Home page">
 <!ENTITY settings.openPageButton "Select an open page">
@@ -41,6 +42,7 @@
 <!ENTITY settings.autoHideLabel "Auto-hide the control bar">
 <!ENTITY settings.enableAutoLaunchLabel "Show the on-screen keyboard when form fields are selected">
 <!ENTITY settings.enableAutoZoomLabel "Zoom in on form fields when typing">
+<!ENTITY settings.enableRightClickLabel "Go back on right-click">
 <!-- Content -->
 <!ENTITY settings.enableJSLabel "Enable JavaScript">
 <!ENTITY settings.textSizeLabel "Set the minimum text size">
@@ -54,6 +56,13 @@
 <!-- Privacy -->
 <!ENTITY settings.clearDataLabel "Clear all history, passwords, cookies, cache, etc.">
 <!ENTITY settings.clearDataButtonLabel "Clear private data">
+<!ENTITY settings.privacy.historyLabel "History">
+<!ENTITY settings.privacy.passwordsLabel "Passwords">
+<!ENTITY settings.privacy.cookiesLabel "Cookies">
+<!ENTITY settings.privacy.cacheLabel "Cache">
+<!ENTITY settings.privacy.downloadsLabel "Downloads">
+<!ENTITY settings.privacy.formdataLabel "Form Data">
+<!ENTITY settings.privacy.sessionsLabel "Sessions">
 <!-- Network -->
 <!ENTITY settings.proxyLabel "Configure proxy for Internet access">
 <!ENTITY settings.noProxyLabel "No proxy">
@@ -76,9 +85,11 @@
 <!ENTITY settings.150Percent "150">
 <!ENTITY settings.175Percent "175">
 <!ENTITY settings.200Percent "200">
-
 <!-- Themes -->
 <!ENTITY settings.addons.unknownDate "Unknown">
 <!ENTITY settings.addons.enableAddon.label "Enable">
 <!ENTITY settings.addons.disableAddon.label "Disable">
 <!ENTITY settings.addons.uninstallAddon.label "Uninstall">
+<!-- Advanced -->
+<!ENTITY settings.advanced.useBookmarkTitlesLabel "Use bookmark titles for page titles">
+<!ENTITY settings.advanced.ipcPluginsEnabledLabel "Run plugins in a separate process">
