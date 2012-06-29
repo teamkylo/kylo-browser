@@ -47,6 +47,7 @@ Section -un.main
     RMDir /r $INSTDIR\components
     RMDir /r $INSTDIR\defaults
     RMDir /r $INSTDIR\extensions
+    RMDir /r $INSTDIR\Plugins
     RMDir /r $INSTDIR\xulrunner
     Delete $INSTDIR\application.ini
     Delete $INSTDIR\chrome.manifest

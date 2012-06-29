@@ -104,6 +104,7 @@ Section "$(SectNameMain)" SecBrowser
     ; Icon file
     File /oname=${ICO_NAME} ${MUI_ICON}
     
+    call WMP_DoInstall
     call MSVC_DoInstall
 SectionEnd
 
@@ -325,6 +326,15 @@ Function MSVC_DoInstall
           ${EndIf}    
           Delete $R1
       ${EndIf}
+FunctionEnd
+
+Function WMP_DoInstall
+    ${IfNot} ${FileExists} $INSTDIR\Plugins
+        CreateDirectory "$INSTDIR\Plugins"
+    ${EndIf}
+    SetOutPath $INSTDIR\Plugins
+    
+    File /nonfatal /r ${WMP_PLUGIN_DIR}\*.*
 FunctionEnd
 
 Function FlashInstallerPage

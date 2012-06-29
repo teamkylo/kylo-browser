@@ -194,8 +194,13 @@ LayoutManager.prototype.checkFullScreen = function () {
  * if you are over 720p and performs the initial resize
  * @name checkOnStartup
  */
-LayoutManager.prototype.checkOnStartup = function () {
+LayoutManager.prototype.checkOnStartup = function () { 
+    this.checkFullScreen();
     this.resize();
+    //TODO: Horrible hack for Mac not being able to minimize when fullscreen
+    if (platform_ == "osx" || platform_ == "x11") {      
+        document.getElementById("polo-main").addEventListener("click", this.checkFullScreen.bind(this), false);
+    }    
     
     var self = this;
     AddonManager.getAddonsByTypes(["theme"], 
@@ -546,7 +551,6 @@ LayoutManager.prototype.resize = function () {
         
         gZoomWidget.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
         gToolsMenu.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
-		gHomeChooser.resize(this.browserDeck_.clientWidth, this.browserDeck_.clientHeight);
     }
 }
 

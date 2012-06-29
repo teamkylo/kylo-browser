@@ -26,10 +26,10 @@ pref("browser.xul.error_pages.enabled", true);
 
 // Add crash protection to plugins
 pref("dom.ipc.plugins.enabled", true);
+pref("dom.ipc.plugins.java.enabled", false);
 pref("dom.ipc.plugins.enabled.npswf32.dll", true);
 pref("dom.ipc.plugins.enabled.npctrl.dll", true);
 pref("dom.ipc.plugins.enabled.npqtplugin.dll", true);
-pref("dom.ipc.plugins.java.enabled", false);
 
 // Disable HW acceleration
 pref("gfx.direct2d.disabled", true);

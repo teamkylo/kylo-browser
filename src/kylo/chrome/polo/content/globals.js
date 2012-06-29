@@ -119,87 +119,6 @@ var gToolsMenu = {
 }
 
 /**
- * gHomeChooser - may need to die. When homepage != default, 
- * we show this when they click the home button. It provides two
- * options: 1) the default homepage and 2) the user's homepage.
- */
-var gHomeChooser = {
-    init: function () {
-        this.panel_ = document.getElementById("homepage-chooser-menu");
-		this.panelAnchor_ = document.getElementById("controlsOverlay");
-        this.buttonGroup_ = document.getElementById("homepage-chooser-buttonGroup");
-        
-        this.panel_.addEventListener("click", this, false);
-        this.buttonGroup_.addEventListener("click", this, false);
-    },
-    
-    handleEvent: function (evt) {
-        controls_.closePanel("homechooser");
-		
-        // catch clicks off the items to close
-        if (evt.currentTarget == this.panel_) {
-            return;
-        }
-        
-        browser_.loadURL(evt.target.uri);
-    },
-    
-    update: function () {       
-        var homepageURI = gPrefService.getCharPref("browser.startup.homepage");     
-        if (this.buttonGroup_.firstChild && 
-		    this.buttonGroup_.firstChild._url == homepageURI) {
-            return;
-        }
-        
-        while (this.buttonGroup_.lastChild) {
-            this.buttonGroup_.removeChild(this.buttonGroup_.lastChild);
-        }
-    
-        var home = document.createElement("placesgriditem")
-        home.id = "homepagechoose-custom-home-option";
-        home.uri = homepageURI;
-        home.setAttribute("type", "bookmark");
-        home.setAttribute("title", homepageURI.replace(/[^:\/]*:\/\/|www\.|\/.*$/ig, ""));
-        home.setAttribute("src", "chrome://polo/skin/places/images/default.png");
-        
-        var defaultURI = gPrefService.getDefaultBranch("browser.startup.").getCharPref("homepage");
-        var portal = document.createElement("placesgriditem")
-        portal.id = "homepagechoose-default-home-option";
-        portal.uri = defaultURI
-        portal.setAttribute("type", "bookmark");
-        portal.setAttribute("title", "Kylo Home");
-        portal.setAttribute("src", "chrome://polo/skin/places/images/default.png");
-        
-        gPagePreview.getPreview(homepageURI, function(imageURI){
-            home.setAttribute("src", imageURI && imageURI.spec || "chrome://polo/skin/places/images/default.png");
-        });
-        
-        gPagePreview.getPreview(defaultURI, function(imageURI){
-            portal.setAttribute("src", imageURI && imageURI.spec || "chrome://polo/skin/places/images/default.png");
-        });
-        
-        this.buttonGroup_.appendChild(home);
-        this.buttonGroup_.appendChild(portal);      
-    },
-    
-    resize: function (w, h) {
-        this.panel_.setAttribute("width", w);
-        this.panel_.setAttribute("height", h);       
-    },  
-    
-    open: function () {     
-        this.update();      
-        this.panel_.openPopup(this.panelAnchor_, "before_end", 0, 0, false, false);  
-    },
-    
-    close: function () {
-        if (this.panel_.state == "open") {
-            this.panel_.hidePopup();
-        }
-    },
-}
-
-/**
  * Handles the interactions with the zoom panel.
  * @name gZoomWidget
  */
@@ -247,7 +166,6 @@ var gZoomWidget = {
             this.defaultZoom_ = Math.round(parseFloat(gPrefService.getCharPref("polo.defaultZoomLevel")) * 100) / 100;
             this.panel_.openPopup(this.anchorTop_, "after_start", 0, 0, false, false);
             this.setZoom(browser_.getCurrentBrowserObject().getMarkupDocumentViewer().fullZoom);
-			
         }
     },
     
@@ -296,7 +214,7 @@ var gZoomWidget = {
             this.zoomOutBtn_.removeAttribute("disabled");
         }
 
-        if (zoom == this.defaultZoom_) {
+        if (zoom === this.defaultZoom_) {
             this.zoomResetBtn_.setAttribute("disabled", true);
         } else {
             this.zoomResetBtn_.removeAttribute("disabled");
