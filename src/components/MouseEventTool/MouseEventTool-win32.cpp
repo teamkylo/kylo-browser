@@ -68,7 +68,9 @@ HINSTANCE GetHInstance()
 MouseEventTool::MouseEventTool()
 {
 #ifdef _DEBUG_
-    _log.open("C:\\Users\\kwood\\mouseeventtool.log", std::ios::app);
+    WCHAR buff[512];
+    _snwprintf_s(buff, _countof(buff), _TRUNCATE, L"%s\\Hillcrest Labs\\Kylo\\mouseeventtool.log", _wgetenv(L"APPDATA"));
+    _log.open(buff, std::ios::app);
     _log << "======== START" << std::endl;
 #endif
 
@@ -140,6 +142,10 @@ MouseEventTool::MouseEventTool()
     // ...and now I can get the PID (for comparison).
     GetWindowThreadProcessId(mainHWND, &mainPID);
 
+#ifdef _DEBUG_
+    _log << "Got main PID: " << mainPID << std::endl;
+#endif
+
     remapping_ = new AppSignalPairVec[NUM_WM_MESSAGES];
 
     prevMousePoint_.x = -1;
@@ -166,11 +172,12 @@ void MouseEventTool::AddHook()
     }
     myself = this;
 
+    hinstDLL = GetHInstance();
+
     hhook = SetWindowsHookEx(WH_MOUSE_LL,
             MouseHookProc,
-            NULL,
+            hinstDLL,
             0);
-            //GetCurrentThreadId());
 
     return;
 }
