@@ -45,6 +45,7 @@ NS_IMPL_ISUPPORTS1_CI(MouseEventTool, IMouseEventTool)
 #define FULLSCREEN_FLASH_CLASS_NAME L"ShockwaveFlashFullScreen"
 #define FULLSCREEN_SILVERLIGHT_CLASS_NAME L"AGFullScreenWinClass"
 #define OOP_PLUGIN_CLASS_NAME L"GeckoPluginWindow"
+#define FLASH_SANDBOX_CLASS_NAME L"GeckoFPSandboxChildWindow"
 
 
 HINSTANCE GetHInstance()
@@ -268,6 +269,7 @@ bool MouseEventTool::HandleMouseEvent(WPARAM wParam, LPARAM lParam)
 {
     bool fullScreenPlugin = false;
     bool oopPlugin = false;
+    bool flashSB = false;
 
     MSLLHOOKSTRUCT* mouseStruct = (MSLLHOOKSTRUCT*) lParam;
 
@@ -293,10 +295,12 @@ bool MouseEventTool::HandleMouseEvent(WPARAM wParam, LPARAM lParam)
 
     oopPlugin = (lstrcmpi(curWinClassName, OOP_PLUGIN_CLASS_NAME) == 0);
 
+    flashSB = (lstrcmpi(curWinClassName, FLASH_SANDBOX_CLASS_NAME) == 0);
+
     // Only do stuff if our cursor is over the main window
     // ... OR we're dealing with full screen flash/silverlight...
     // ... OR we're dealing with out of process plugins...
-    if (curWinPID != mainPID && !fullScreenPlugin && !oopPlugin) {
+    if (curWinPID != mainPID && !fullScreenPlugin && !oopPlugin && !flashSB) {
 #ifdef _DEBUG_
         if (wParam != 512) {
             _log << "outside main window - cursor window: " << curWinClassName << " | " << curWinPID << ", fullScreenPlugin: " << fullScreenPlugin << ", oopPlugin: " << oopPlugin << std::endl;
