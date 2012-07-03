@@ -1,0 +1,37 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+@namespace "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+@namespace xul "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+@namespace html "http://www.w3.org/1999/xhtml";
+
+.button-clear,
+.appearance-clear {
+    -moz-appearance: none;
+    -moz-border-top-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+	-moz-window-shadow: none;
+	-moz-box-shadow: none;
+    background: none;
+    border: none;
+}
+
+.button-clear,
+.button-clear:hover,
+.button-clear[disabled=true]:hover {
+    -moz-border-image: none;
+}
+
+.button-clear > .button-box {
+	margin: 0;
+	padding: 0;
+}
+

@@ -25,6 +25,8 @@ if sys.platform == 'darwin':
     from mac import platform_build
 if sys.platform == 'win32':
     from win32 import platform_build
+if sys.platform.startswith('linux'):
+    from linux import platform_build
 # ----------------------
 
 logger = None

@@ -1,0 +1,80 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+div {
+    font-size: 22px;
+    color: #d2d2d2;    
+}
+
+#credits {
+    background: rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255,255,255, 0.5);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 0 20px 20px 20px;
+}
+
+#contentBox {
+    overflow-y: scroll;
+}
+
+#content {
+    margin: 25px;
+    padding: 0;
+    width: 100%;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 60px;
+    color: #efefef;
+    margin: 0;
+}
+
+h2 {
+    font-size: 26px;
+    color: #efefef;
+    width: 100%;
+    margin: 20px 0 10px 0;
+    text-align: center;
+}
+
+h3 {
+    font-size: 24px;
+    color: #efefef;   
+    width: 100%;
+    margin: 20px 0 10px 0;
+    text-align: center;     
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    font-size: 22px;
+    color: #b6b6b6;
+    width: 100%;
+    text-align: center;
+}
+
+p.credits {
+    font-size: 20px;
+    color: #b6b6b6;
+    width: 100%;
+    text-align: center;    
+    max-width: 600px;   
+    margin: 0 auto;     
+}

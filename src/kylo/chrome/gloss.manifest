@@ -10,5 +10,9 @@ skin	global	classic/1.0	gloss/skin/global/
 skin 	mozapps	classic/1.0	gloss/skin/mozapps/
 skin	polo	classic/1.0	gloss/skin/polo/
 
+skin	global	classic/1.0	gloss/skin-linux/global/ 	os=Linux
+skin 	mozapps	classic/1.0	gloss/skin-linux/mozapps/	os=Linux
+skin	polo	classic/1.0	gloss/skin-linux/polo/		os=Linux
+
 style   about:help    chrome://polo/skin/common/os-osx.css os=Darwin
 style   about:help    chrome://polo/skin/common/os-win32.css os=WINNT            

@@ -1,0 +1,122 @@
+window {
+    -moz-appearance: none;
+	cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+page {
+	background: url("chrome://polo/skin/common/images/downloads_bg.jpg") repeat top left;
+}
+
+#downloadManager {
+    background: none;
+}
+
+/* Download View */
+#downloadView {
+    -moz-appearance: none;  
+    -moz-border-bottom-colors: none;
+    background: none;
+    margin: 0;
+    padding: 32px 32px 0 32px;
+}
+
+/* Download View Items */
+richlistitem {
+    -moz-border-image: url("chrome://polo/skin/common/images/listitem_bg.png") 10 10 14 10 / 10px 10px 14px 10px;
+	margin: 3px;
+}
+
+richlistitem:last-child {
+    -moz-border-bottom-colors: transparent transparent;
+}
+
+richlistitem[type="download"] {
+  padding: 4px 8px 4px 4px;
+  min-height: 46px;
+}
+
+richlistitem[type="download"][selected="true"] {
+    outline: none;
+    background: none;
+}
+
+richlistitem[type="download"] .name {
+    font-size: 24px;
+    color: #efefef;
+    text-shadow: 0 0 7px #000000;
+}
+
+richlistitem[type="download"] .dateTime {
+    font-size: 22px;
+    color: #b4b4b4;    
+    text-shadow: 0 0 7px #000000; 
+}
+
+richlistitem[type="download"] .status {
+    font-size: 22px;
+    color: #b4b4b4;    
+    text-shadow: 0 0 7px #000000; 
+}
+
+richlistitem[type="download"] button {
+	-moz-border-image: url("chrome://global/skin/images/btn/button_embed_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+richlistitem[type="download"] button:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_embed_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+richlistitem[type="download"] button.closeBtn {
+	margin-left: 10px;
+	width: 50px;
+    min-width: 50px;
+    background: url("chrome://polo/skin/common/images/close.png") no-repeat;
+    -moz-border-image: none;
+}
+
+richlistitem[type="download"] button.closeBtn:not([disabled=true]):hover {
+    background: url("chrome://polo/skin/common/images/close_over.png") no-repeat;
+	-moz-border-image: none;
+}
+
+richlistitem[type="download"] button.closeBtn label {
+    display: none;
+}
+
+#search {
+    -moz-appearance: none;
+	height: 66px;
+    background: -moz-linear-gradient(#9f9f9f,#7c7c7c 3%,#626262 50%,#4e4e4e 51%,#6a6a6a 97%,#1d1d1d);
+	padding: 0px 32px;
+}
+
+progressmeter {
+    margin-left: 10px !important;
+}
+
+.blockedIcon {
+  list-style-image: url(chrome://global/skin/icons/Error.png);
+}
+
+/* prevent flickering when changing states */
+.downloadTypeIcon {
+  min-height: 32px;
+  min-width: 32px;
+  margin-right: 24px;
+}
+
+.button-container {
+    margin-left: 8px;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+}
+
+
+
+/* Mac Overrides*/
+
+richlistitem[type="download"]:not([selected="true"]):nth-child(odd) {
+  background-color: transparent;
+}
+
+/* End Mac Hacks */

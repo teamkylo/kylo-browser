@@ -22,6 +22,7 @@ from common import build_util
 from common import optimizejars
 from common.build_prefs import Settings
 import os
+import sys
 import shutil
 import re
 import zipfile
@@ -58,7 +59,8 @@ def makejar(delete_files=True):
     try:
         chrome_mfst = open(chrome_mfst_path, 'r+')
     except IOError as e:
-        logger.error("chrome.manifest missing! Can't create omni.jar")
+        logger.error("%s missing! Can't create omni.jar" % chrome_mfst_path)
+        sys.exit()
         
     # Binary components stay in the main chrome.manifest, everything else goes in a copy in the omni.jar
     bin_mfst = []

@@ -1,0 +1,92 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+#places-fldr-tree {
+  -moz-appearance: none;
+  border: none !important;
+  background: none;
+  min-width: 600px;  
+  -moz-border-image: url("chrome://polo/skin/common/images/area_bg.png") 8 8 8 8 / 8px 8px 8px 8px;
+}
+
+/* ::::: tree rows ::::: */
+treechildren::-moz-tree-row {
+    -moz-appearance: none;
+    border: none !important;
+	background: none;
+    margin: 5px 0px;
+    padding: 0;
+	min-height: 60px;
+}
+
+treechildren::-moz-tree-row(hover) {
+	background: -moz-linear-gradient(#08a0fa,#063d5e);
+}
+
+treechildren::-moz-tree-row(selected) {
+    background: -moz-linear-gradient(#b1d915,#4b5d02);
+}
+
+/* ::::: tree images ::::: */
+treechildren::-moz-tree-image {
+    -moz-padding-end: 4;
+	height: 50px;
+    width: 78px;	
+	list-style-image: url("chrome://polo/skin/places/images/folder_icon.png");	
+}
+
+treechildren::-moz-tree-image(invalid-move-dest) {
+    list-style-image: url("chrome://polo/skin/places/images/folder_icon_error.png"); 
+}
+
+treechildren::-moz-tree-image(closed),
+treechildren::-moz-tree-image(open) {
+	width: 0;
+    display: none;
+	list-style-image: none;
+}
+
+/* ::::: tree cells ::::: */
+treechildren::-moz-tree-cell-text {   
+    margin: 0 0 0 5px;
+    padding: 0;
+    font-size: 24px;
+    color: #efefef;
+}
+
+treechildren::-moz-tree-cell-text(invalid-move-dest) {   
+    color: #333333;
+}
+
+/* ::::: twisty :::::  */
+treechildren::-moz-tree-twisty {
+    padding: 0 !important;
+    display: none;
+	width: 0;
+	height: 0;
+}
+
+treechildren::-moz-tree-twisty(closed) {
+    -moz-padding-end: 4;
+    width: 78px;
+	height: 50px;
+	list-style-image: url("chrome://polo/skin/places/images/folder_icon_plus.png");
+}
+
+treechildren::-moz-tree-twisty(open) {
+    -moz-padding-end: 4;
+    width: 78px;	
+	height: 50px;
+    list-style-image: url("chrome://polo/skin/places/images/folder_icon_minus.png");
+}
+
+/* ::::: indents :::::: */
+treechildren::-moz-tree-indentation {
+  width: 50px;
+}

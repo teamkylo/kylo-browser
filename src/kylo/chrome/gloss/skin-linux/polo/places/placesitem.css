@@ -1,0 +1,101 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+.places-grid-item-container {
+    width: 180px;
+    height: 110px;
+	margin: 10px;
+}
+
+.places-grid-folder-container {
+    width: 180px;
+    height: 110px;
+    margin: 10px;
+	-moz-border-image: url("images/folder_border.png") 25 17 5 18 / 25px 17px 5px 18px;
+}
+
+.places-grid-folder-container:not([disabled=true]):hover {
+    -moz-border-image: url("images/folder_border_over.png") 25 17 5 18 / 25px 17px 5px 18px;
+}
+
+.places-grid-upfolder-container {
+    width: 180px;
+    height: 110px;
+    margin: 10px;
+	background: url("images/upfolder_border.png");
+}
+
+.places-grid-upfolder-container:not([disabled=true]):hover {
+    background: url("images/upfolder_border_over.png");
+}
+
+.places-grid-upfolder-container > .places-grid-folder-titleBox {
+	display: none;
+}
+
+.places-grid-item-preview {
+    width: 160px;
+    height: 90px;
+    margin: 10px;
+}
+
+.places-grid-item-titleBox {    
+    width: 180px;
+    height: 110px;
+    -moz-border-image: url("../common/images/thumbnail_border.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+.places-grid-item-title {
+    font-size: 22px;
+    font-weight: bold !important;
+    color: #efefef;
+    text-shadow: #000000 0 3px 0;
+    height: 30px;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 3px;
+    text-align: center;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    background: rgba(0,0,0,0.6);
+}
+
+.places-grid-folder-titleBox {    
+    max-width: 145px;
+    max-height: 80px;
+	overflow: hidden;
+}
+
+.places-grid-folder-title {	
+    font-size: 22px;
+    font-weight: bold !important;
+    color: #efefef;
+    text-shadow: #000000 0 0 3px, #000000 0 0 5px;
+    margin: 0 !important;
+    padding: 10px 3px;
+    text-align: center;
+    -moz-box-align: center;
+    -moz-box-pack: center;	
+}
+ 
+placesgriditem[selected] .places-grid-item-titleBox {
+    -moz-border-image: url("../common/images/thumbnail_border_green.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+placesgriditem:not([disabled=true]):hover .places-grid-item-titleBox {
+    -moz-border-image: url("../common/images/thumbnail_border_blue.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+places-snapshot[selected] .places-grid-item-titleBox {
+	-moz-border-image: url("../common/images/thumbnail_border_green.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+places-snapshot:not([selected]):hover .places-grid-item-titleBox {
+    -moz-border-image: url("../common/images/thumbnail_border_blue.png") 10 10 10 10 / 10px 10px 10px 10px;
+}

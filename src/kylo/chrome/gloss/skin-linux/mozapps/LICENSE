@@ -1,0 +1,17 @@
+Much of the source code and image assets in this directory and all 
+subdirectories derives from the Gecko SDK (various versions, 1.9.2 -> 5.0). 
+Many of the files contain their original Mozilla license headers. Some of these 
+files have been modified to affect the stylistic layout of Kylo. Some files 
+have been more or less replaced with same or similarly named files. Many of the 
+original files are missing a license header. In the most obvious cases, the MPL 
+2.0 license header and Kylo copyright preamble have been applied to source code 
+that is original to Kylo.
+
+The code in this directory is subject to the terms of the Mozilla Public 
+License. Where not otherwise specified and where the source can not be 
+attributed to the Gecko SDK or to the Mozilla development group, MPL v. 2.0 
+applies.  
+
+TODO: Severely vet this directory and all subdirectories. Remove Gecko style 
+sheets that don't apply to Kylo. Replace style sheets with 100% custom Kylo 
+code. Fix all license headers. 

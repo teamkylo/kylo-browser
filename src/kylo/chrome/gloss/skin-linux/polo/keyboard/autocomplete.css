@@ -1,0 +1,129 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+@namespace html url("http://www.w3.org/1999/xhtml");
+
+.kb-textarea {
+	-moz-appearance: none;
+	-moz-border-image: url("images/text_field.png") 0 20 0 20 / 0px 20px 0px 20px;
+	-moz-box-align: center;
+	-moz-box-pack: center;
+	padding: 0;
+	margin: 0 0 4px 0;
+    font-size: 24px;
+    color: #999999;
+	background: none;
+}
+
+#popup_autocomplete {
+	-moz-border-image: url("images/large_text_field.png") 12 12 12 12 / 12px 12px 12px 12px;
+	padding: 0;
+	margin: 7px 0 0 5px;
+	height: 250px;
+}
+
+.autocomplete-box {
+	-moz-user-focus: ignore;
+	-moz-appearance: none;	
+	background: none;
+	margin: -10px 0;
+}
+
+.autocomplete-box > scrollbox {
+	overflow-y: auto;
+	overflow-x: visible;
+}
+
+.autocomplete-items {
+    
+}
+
+autocompleteresult {
+	-moz-appearance: none;
+	-moz-box-align: center;
+	-moz-border-image: url("chrome://polo/skin/common/images/listitem_bg.png") 10 10 14 10 / 10px 10px 14px 10px;
+    margin: 6px 6px 0px 3px;
+	padding: 0;
+    background: none;
+}
+
+autocompleteresult description {
+	cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+autocompleteresult[type=auto_search] {
+	-moz-border-image: url("chrome://polo/skin/common/images/listitem_bg_selected.png") 10 10 14 10 / 10px 10px 14px 10px;
+}
+
+autocompleteresult[type=empty] {
+    display: none;
+}
+
+
+
+autocompleteresult:hover {
+	-moz-border-image: url("chrome://polo/skin/common/images/listitem_bg_over.png") 10 10 14 10 / 10px 10px 14px 10px;
+}
+
+.autocomplete-item-inner-container {
+    padding: 0;
+	margin: -4px 0;
+	max-height: 66px;
+	height: 66px;
+	overflow: hidden;
+}
+
+.autocomplete-item-title {
+	font-size: 24px;
+	color: #efefef;
+	text-shadow: 0 0 7px #000000;
+    margin: 0 5px;
+}
+
+.autocomplete-item-url {
+	font-size: 22px;
+	color: #cccccc;
+    margin: 0 5px;
+}
+
+autocompleteresult:hover .autocomplete-item-url {
+	color: #33aaff;
+}
+
+.autocomplete-item-image {
+    background: url("chrome://polo/skin/controls/images/favicon_bg.png") no-repeat bottom;
+    max-width: 36px;
+    max-height: 50px;
+	width: 36px;
+	height: 50px;
+    padding: 17px 10px 17px 10px;
+	margin: 0;
+} 
+
+autocompleteresult[type=auto_search] .autocomplete-item-image {
+	background: url("chrome://polo/skin/images/menu/menu_search.png") no-repeat top;
+	max-width: 52px;
+	max-height: 52px;
+	width: 52px;
+	height: 52px;
+	padding: 0;
+	margin: -4px 0;
+}
+
+.ac-normal-text > html|span {
+  margin: 0 !important;
+  padding: 0;
+}
+
+html|span.ac-emphasize-text {
+  font-weight: bold;
+  text-decoration: underline;
+}
+

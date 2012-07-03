@@ -1,0 +1,64 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+dialog {
+    /*-moz-border-image: url("../images/menu/menu_bg.png") 40 21 40 21 / 40px 21px 40px 21px;*/
+    padding: 0;
+    color: #efefef;
+	/*background: none;*/
+	background-color: grey;
+}
+
+#title-bar {
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    height: 60px;
+	background: url("../common/images/header_bg.png") repeat-x top;
+	margin-bottom: 20px;
+}
+
+#title-bar-title {
+    color: #efefef; 
+    text-shadow: 0 0 7px #000000;
+    font-weight: bold;
+    font-size: 22px;
+    margin: 0;
+	padding: 0 20px 0 20px;
+}
+
+#title-bar-close {
+    display: none;
+}
+
+.dialog-content-box {
+    margin: 0;
+    padding: 0;
+	background: none;	
+}
+
+#info\.title,
+#info\.header,
+#info\.body {
+    color: #efefef;
+    font-size: 28px !important; 
+    text-shadow: 0 0 7px #000000;   	
+}
+
+#info\.body {
+    max-height: 400px;
+    cursor: url("chrome://polo-contentaccessible/content/arrow-cursor.png"), auto !important;
+}
+
+#infoContainer[forcescroll=true] {
+    overflow: auto;
+}
+
+.dialog-button-box {    
+    padding: 0 15px 10px 15px;
+}

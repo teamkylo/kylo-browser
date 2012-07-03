@@ -1,0 +1,195 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+#overscan-top, 
+#overscan-bottom, 
+#overscan-left, 
+#overscan-right {
+  background: black;
+}
+
+#overscan-top[active=true], 
+#overscan-bottom[active=true], 
+#overscan-left[active=true], 
+#overscan-right[active=true] {
+  background: #a6a6a6;
+}
+
+#overscan-adjust {
+  background: #cbcac6;
+  border: 10px solid #efefef;
+}
+
+#overscan-adjust[highlight~=bottom] {
+  border-bottom-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=left] {
+  border-left-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=right] {
+  border-right-color: #1152f4;
+}
+
+#overscan-adjust[highlight~=top] {
+  border-top-color: #1152f4;
+}
+
+#overscan-text {
+  color: #efefef;
+  font-size: 36px;
+  width: 300px;
+  text-align: center;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+}
+
+#overscan-buttons {
+  padding: 10px;
+  width: 220px;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+}
+
+#overscan-cancel {
+  -moz-border-image: url("chrome://global/skin/images/btn/button_red_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#overscan-arrow-box-outer {
+  -moz-box-align: center;
+  -moz-box-pack: center;
+}
+
+#overscan-arrow-box-mid {
+  -moz-box-align: center;
+  -moz-box-pack: center;
+}
+
+
+#overscan-arrow-box-inner {
+  background-color: black;
+  border: 10px solid #efefef;
+  width: 510px;
+  height: 287px;
+  -moz-box-align: center;
+  -moz-box-pack: center;
+  margin: 13px 15px;
+  padding: 18px;
+}
+
+#overscan-arrow-box-inner > hbox {
+  width: 510px;
+}
+
+
+
+/* TODO: remove this hack; this is intended to blend in to the background and be invisible */
+#overscan-counter {
+  width: 100px;
+  opacity: 0;
+}
+
+
+#overscan-buttons {
+  -moz-box-align: center;
+  margin-left: 30px;
+}
+
+.overscan-arrow {
+  -moz-appearance: none;
+  -moz-border-top-colors: none;
+  -moz-border-left-colors: none;
+  -moz-border-right-colors: none;
+  -moz-border-bottom-colors: none;
+  -moz-user-select: -moz-none;
+  -moz-border-image: none;
+  -moz-margin-start: 0px;
+  min-width: inherit;  
+  height: 88px;
+  width: 103px;
+}  
+  
+.overscan-arrow:hover {
+  -moz-border-image: none;
+}
+
+.overscan-arrow:focus > .button-box {
+  border: none;
+}
+
+#overscan-arrow-left-more, #overscan-arrow-left-less,
+#overscan-arrow-right-more, #overscan-arrow-right-less {
+  height: 103px;
+  width: 88px;
+}
+
+#overscan-arrow-bottom-less {
+  background: url("bottom_less.png") no-repeat;
+}
+
+#overscan-arrow-bottom-less:hover {
+  background: url("bottom_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-bottom-more {
+  background: url("bottom_more.png") no-repeat;
+}
+
+#overscan-arrow-bottom-more:hover {
+  background: url("bottom_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-left-less {
+  background: url("left_less.png") no-repeat;
+}
+
+#overscan-arrow-left-less:hover {
+  background: url("left_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-left-more {
+  background: url("left_more.png") no-repeat;
+}
+
+#overscan-arrow-left-more:hover {
+  background: url("left_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-right-less {
+  background: url("right_less.png") no-repeat;
+}
+
+#overscan-arrow-right-less:hover {
+  background: url("right_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-right-more {
+  background: url("right_more.png") no-repeat;
+}
+
+#overscan-arrow-right-more:hover {
+  background: url("right_more_hover.png") no-repeat;
+}
+
+#overscan-arrow-top-less {
+  background: url("top_less.png") no-repeat;
+}
+
+#overscan-arrow-top-less:hover {
+  background: url("top_less_hover.png") no-repeat;
+}
+
+#overscan-arrow-top-more {
+  background: url("top_more.png") no-repeat;
+}
+
+#overscan-arrow-top-more:hover {
+  background: url("top_more_hover.png") no-repeat;
+}

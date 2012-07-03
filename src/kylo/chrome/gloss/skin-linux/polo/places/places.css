@@ -1,0 +1,146 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. 
+ * 
+ * Copyright 2005-2012 Hillcrest Laboratories, Inc. All rights reserved. 
+ * Hillcrest Labs, the Loop, Kylo, the Kylo logo and the Kylo cursor are 
+ * trademarks of Hillcrest Laboratories, Inc.
+ * */
+
+#places-toolbar {
+    -moz-box-align: center;
+    height: 66px;
+    background: -moz-linear-gradient(#9f9f9f,#7c7c7c 3%,#626262 50%,#4e4e4e 51%,#6a6a6a 97%,#1d1d1d);
+    font-size: 22px;
+    color: #EFEFEF;
+    text-shadow: 0 0 7px #000000;
+    padding: 0px 32px;
+}
+
+#places-current-action-title[hidden=true] {
+	display: none;
+}
+
+#places-fldr-location[hidden=true] {
+    display: none;
+}
+
+#places-box {
+	background: url("images/places_bg.jpg") repeat top left;
+	margin: 0;
+}
+
+#places-toolbar-buttonset:not([buttonset~=select]) > #places-select-btn,
+#places-toolbar-buttonset:not([buttonset~=add-bookmark]) > #places-add-bookmark-btn,
+#places-toolbar-buttonset:not([buttonset~=add-folder]) > #places-add-folder-btn,
+#places-toolbar-buttonset:not([buttonset~=del-bookmark]) > #places-delete-bookmark-button,
+#places-toolbar-buttonset:not([buttonset~=del-folder]) > #places-delete-folder-button,
+#places-toolbar-buttonset:not([buttonset~=save-bookmark]) > #places-save-bookmark-button,
+#places-toolbar-buttonset:not([buttonset~=save-folder]) > #places-save-folder-button,
+#places-toolbar-buttonset:not([buttonset~=cancel]) > #places-cancel-button {
+    display: none;
+}
+
+#places-empty-message {
+    height: 250px;
+    color: #efefef;
+    font-size: 28px;
+    opacity: 0.30;
+    -moz-box-align: center;
+    -moz-box-pack: center;
+    margin: 12px;
+}
+
+#places-close-button {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_red_off.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#places-close-button:not([disabled=true]):hover {
+    -moz-border-image: url("chrome://global/skin/images/btn/button_red_over.png") 15 15 15 15 / 15px 15px 15px 15px;
+}
+
+#places-bookmark-item-tooltip-title {
+    font-weight: bolder;
+}
+
+#places-grid {
+    overflow-x: auto;
+	margin: 0;
+	padding: 0 32px;
+}
+
+
+#places-grid[state=select] placesgriditem[type=bookmark] .places-grid-item-titleBox {
+	-moz-border-image: url("../common/images/thumbnail_border_edit.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+#places-grid[state=select] placesgriditem[type=bookmark]:hover .places-grid-item-titleBox {
+    -moz-border-image: url("../common/images/thumbnail_border_edit_over.png") 10 10 10 10 / 10px 10px 10px 10px;
+}
+
+#places-grid[state=select] placesgriditem[type=folder] .places-grid-folder-container {
+    -moz-border-image: url("images/folder_border_edit.png") 25 17 5 18 / 25px 17px 5px 18px;
+}
+
+#places-grid[state=select] placesgriditem[type=folder]:hover .places-grid-folder-container {
+    -moz-border-image: url("images/folder_border_edit_over.png") 25 17 5 18 / 25px 17px 5px 18px;
+}
+
+#places-grid[state=select] placesgriditem[type=upfolder] {
+    opacity: 0.40;
+}
+
+#places-open-pages-list {
+	overflow-x: hidden;
+	padding: 0px;
+	min-width: 230px;
+	-moz-border-image: url("chrome://polo/skin/common/images/area_bg_light.png") 8 8 8 8 / 8px 8px 8px 8px;
+}
+
+#places-open-pages-list:not([hidden=true]) + spacer + grid + spacer {
+	display: none;
+}
+
+#places-open-pages-list > * {
+	padding: 0px;
+	margin: 0px;
+}
+
+#places-edit-ui {
+	margin: 15px 35px 40px 35px;
+}
+
+#places-edit-ui > grid {
+	-moz-border-image: url("chrome://polo/skin/common/images/area_bg.png") 8 8 8 8 / 8px 8px 8px 8px;
+}
+
+#places-edit-ui > grid > rows > row {
+    margin: 0;
+	padding: 0 0 8px 0;
+}
+
+#places-edit-ui > grid > rows > row > label {
+	min-width: 130px;
+	padding: 10px;
+}
+
+#places-edit-ui > grid > rows > row > textbox {
+	-moz-appearance: none;
+	background: none !important;
+	border: none;
+    -moz-border-image: url("chrome://polo/skin/common/images/area_bg.png") 8 8 8 8 / 8px 8px 8px 8px;
+	color: #efefef;
+	font-size: 23px;
+}
+
+/*
+ * Fake style that holds special values for determining layout of the bookmarks grid
+ */
+span.places-grid-dimensions {
+    width: 200px;
+    margin-left: 32px;
+    margin-right: 32px;
+    
+    display: none;
+}
+
