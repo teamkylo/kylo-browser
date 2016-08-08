@@ -11,7 +11,7 @@ __Some helpful documents:__
 - directory_map.txt  
 This file describes the basic outline of the Kylo source code directory structure.
 
-- build_instructions.txt  
+- build_instructions.md
 Basic documentation of the Kylo build process.
 
 - LICENSE  
@@ -22,9 +22,9 @@ Helpful info regarding use of the Kylo name and trademarks. If you're planning o
 
 For the latest information about Kylo, visit us at [kylo.tv](http://kylo.tv).
 
-For additional information and resources, check out our [commnunity forums](http://kylo.tv/community), [blog](http://team.kylo.tv) and our [developer portal](http://code.kylo.tv).
+For additional information and resources, check out our [blog](http://team.kylo.tv).
 
-For more information about Hillcrest Labs and their motion control pointing technology, please visit [hillcrestlabs.com](http://hillcrestlabs.com)
+For more information about Hillcrest Labs, please visit [hillcrestlabs.com](http://hillcrestlabs.com).
 
 * * *
 &copy; 2012-2016 Hillcrest Labs. All rights reserved. Hillcrest Labs, Kylo, and the Loop are trademarks of Hillcrest Laboratories, Inc.
