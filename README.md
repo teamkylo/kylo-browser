@@ -27,4 +27,4 @@ For additional information and resources, check out our [commnunity forums](http
 For more information about Hillcrest Labs and their motion control pointing technology, please visit [hillcrestlabs.com](http://hillcrestlabs.com)
 
 * * *
-&copy; 2012 Hillcrest Labs. All rights reserved. Hillcrest Labs, Kylo, and the Loop are trademarks of Hillcrest Laboratories, Inc.
+&copy; 2012-2016 Hillcrest Labs. All rights reserved. Hillcrest Labs, Kylo, and the Loop are trademarks of Hillcrest Laboratories, Inc.
