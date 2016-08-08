@@ -6,8 +6,8 @@ The Kylo web browser was made open source in 2012. The first open source release
 See the [Github project releases](https://github.com/teamkylo/kylo-browser/releases) for binary files.
 
 Versions:
-0.6.1.70394
-0.7.0.73104
+ * 0.6.1.70394
+ * 0.7.0.73104
 
 * * *
 &copy; 2016 Hillcrest Labs. All rights reserved. Hillcrest Labs and Kylo are trademarks of Hillcrest Laboratories, Inc.
