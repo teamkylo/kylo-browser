@@ -4,7 +4,7 @@ permalink: none
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "config.rb"]
 auto: true
-markdown: rdiscount
+markdown: kramdown
 pygments: true
 safe: true
 
