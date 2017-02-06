@@ -5,7 +5,7 @@ permalink: none
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "config.rb"]
 auto: true
 markdown: kramdown
-pygments: true
+highlighter: rouge
 safe: true
 
 # Themes are encouraged to use these universal variables 
