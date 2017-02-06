@@ -21,8 +21,9 @@ This zip file also includes the Kylo.exe executable that was created from xulrun
 
 
 #### Patched XULRunner Versions
-* [XULRunner 12.0](http://hillcrestlabs.com/downloads/kylo/kylo-browser_xulrunner-12.0.en-US.win32%2Bpatch_721817.zip)
-* [XULRunner 10.0.2](http://hillcrestlabs.com/downloads/kylo/kylo-browser_xulrunner-10.0.2.en-US.win32%2Bpatch_721817.zip)
+* [XULRunner 12.0](https://github.com/teamkylo/kylo-browser/releases/download/v1.1.1/kylo-browser_xulrunner-12.0.en-US.win32.patch_721817.zip)
+* [XULRunner 10.0.2](https://github.com/teamkylo/kylo-browser/releases/download/v0.6.1.70394/kylo-browser_xulrunner-10.0.2.en-US.win32.patch_721817.zip)
 
 #### Patch Source
-* [Download patch file here](http://hillcrestlabs.com/downloads/kylo/721817_xulrunner_cant_find_plugin-container_v3.patch)
+* [Download patch file here](https://github.com/teamkylo/kylo-browser/releases/download/v1.1.1/721817_xulrunner_cant_find_plugin-container_v3.patch)
+
