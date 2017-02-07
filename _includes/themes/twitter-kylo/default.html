@@ -46,33 +46,15 @@
 $(document).ready(
   function() {
     $(".collapse").collapse();
-    $('.dropdown-toggle').dropdown()
-    
-    if ($("#rssWidget").length > 0 &&
-        $("#rssWidgetHost").length > 0) {
-      
-      //feed = 'https://github.com/teamkylo/kylo-browser/commits/master.atom';
-      feed = 'https://github.com/organizations/teamkylo/kwood1138.private.atom?token=83a7b5894bfce6f4b5b4d03b07974b1f';
-      
-      $.YQL = function(query, callback) {
-          var encodedQuery = encodeURIComponent(query.toLowerCase()),
-              url = 'http://query.yahooapis.com/v1/public/yql?q='
-                  + encodedQuery + '&format=json&callback=?';
-          $.getJSON(url, callback);
-      };      
-      
-      $.YQL("select * from atom where url='" + feed + "' limit 3",
-        function(data){
-          if (!data.query.results) return;
-          var blogPost=data.query.results.entry;
-          $.each(blogPost,function(index, blogPost){
-            //$('#rssWidget').append("<li><a href='"+blogPost.link.href+"'>"+blogPost.title.content+"</a></li>");
-            $('#rssWidget').append("<li class='gh_activity'><a href='" + blogPost.author.uri + "'><img src='" + blogPost.thumbnail.url + "' width='" + blogPost.thumbnail.width + "' height='" + blogPost.thumbnail.height + "'/></a> <a href='" + blogPost.link.href + "' target='_blank'>" + blogPost.title.content + "</a></li>");
-          });
-          $('#rssWidgetHost').fadeIn('slow');  
-        });  
-      
-    };
+    $('.dropdown-toggle').dropdown();
+    $('.os-win').hide();
+    $('.os-osx').hide();
+    if (navigator.appVersion.indexOf("Win") != -1) {
+      $('.os-win').show();
+    }
+    if (navigator.appVersion.indexOf("Mac") != -1) {
+      $('.os-osx').show();
+    }
   }
 )
 </script>
