@@ -1,12 +1,10 @@
 # This is the default format. 
-# For more see: https://github.com/mojombo/jekyll/wiki/Permalinks
+# For more see: http://jekyllrb.com/docs/permalinks/
 permalink: none 
 
 exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md", "config.rb"]
-auto: true
 markdown: kramdown
 highlighter: rouge
-safe: true
 
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
@@ -29,7 +27,7 @@ author :
 # Else if you are pushing to username.github.com, replace with your username.
 # Finally if you are pushing to a GitHub project page, include the project name at the end.
 #
-production_url : http://code.kylo.tv
+production_url : http://kylo.tv
 
 # All Jekyll-Bootstrap specific configurations are namespaced into this hash
 #
