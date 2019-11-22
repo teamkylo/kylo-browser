@@ -20,10 +20,6 @@ Lawyer stuff. Lists Open Source licenses and terms.
 - TRADEMARKS  
 Helpful info regarding use of the Kylo name and trademarks. If you're planning on distributing a modified version of Kylo, YOU SHOULD READ THIS.
 
-For the latest information about Kylo, visit us at [kylo.tv](http://kylo.tv).
-
-For additional information and resources, check out our [blog](http://team.kylo.tv).
-
 For more information about Hillcrest Labs, please visit [hillcrestlabs.com](http://hillcrestlabs.com).
 
 * * *
