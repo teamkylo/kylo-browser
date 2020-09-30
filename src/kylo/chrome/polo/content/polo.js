@@ -77,9 +77,7 @@ BrowserMonitor.prototype.openURI = function(aURI, aOpener, aWhere, aContext) {
                 accessKey: "C",
                 popup: null,
                 callback: function(aNotificationBar, aButton) {
-                    // TODO this alwayss closes the last tab... not good if new tabs
-                    //      have been opened since notification was shown
-                    browser_.closeTab(browser_.browsers_.length - 1);
+                    browser_.closeTab(browser.getBrowserIndex());
                     return true;
                 }
             }

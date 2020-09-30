@@ -87,6 +87,15 @@ Browser.prototype.getZoomLevel = function() {
 }
 
 /**
+ * Returns index of browser
+ * @name getBrowserIndex
+ * @returns {Number} The current index of browser
+ */
+Browser.prototype.getBrowserIndex = function () {
+    return this.browserIndex_;
+}
+
+/**
  * Sets the zoom level for the current browser and updates
  * the zoom widget as well
  * @name setZoomLevel
